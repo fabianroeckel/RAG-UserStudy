@@ -1,2 +1,6 @@
 streamlit
 openai
+streamlit_extras
+streamlit_pdf_viewer
+streamlit_modal
+PyPDF2
