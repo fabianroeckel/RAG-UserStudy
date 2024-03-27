@@ -26,7 +26,6 @@ def main():
     if st.button('Start Experiment'):
         if 'key' not in st.session_state:
             sessionID = getSessionID()
-            sessionID = getCachedSessionID()
             generateNewCSFFiles(sessionID)
             st.session_state['sessionID'] = sessionID
             st.session_state["question_number"] = 0

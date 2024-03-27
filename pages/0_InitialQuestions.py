@@ -30,8 +30,7 @@ def language_level():
     return proficiency
 
 def main():
-    #st.write(st.session_state.sessionID)
-    st.write(getCachedSessionID())
+    st.write(st.session_state.sessionID)
     st.header('Welcome to the Experiment!')
     st.write('Please provide some demographic information before starting the experiment.')
 

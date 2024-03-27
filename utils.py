@@ -81,7 +81,6 @@ def getCachedSessionID():
     session_info = runtime._session_mgr.get_session_info(session_id)
     if session_info is None:
         raise RuntimeError("Couldn't get your Streamlit Session object.")
-    session_id = random.randint(1,10)
     return session_id
 
 

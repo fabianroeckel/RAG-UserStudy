@@ -17,7 +17,7 @@ def chat_content(role, content):
 def display_chat_content():
     st.session_state.messages.append({"role": "user", "content": getQuestion(st.session_state.sessionID, page_number)})
     st.session_state.messages.append({"role": "assistant", "content": getResponse(st.session_state.sessionID, page_number)})
-
+    print(page_number)
 ##LAYOUT
 with st.sidebar:
     st.text("Progress")
@@ -49,7 +49,7 @@ with st.container():
         st.text(textwrap.fill("general instructions and scenario here - Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.", width=300))
         st.checkbox("I have read the general instructions")
         st.radio("ATTENTION QUESTION", ("Yes", "No"))
-    col_a, col_b, col_c = st.columns([1,1,1])
+    col_a, col_b, col_c = st.columns([3,3,3])
 
     with st.expander("Data Preview"):
         with col_a:
@@ -65,15 +65,9 @@ with st.container():
 
     st.markdown("---")
 
-col1, col2, col3 = st.columns([2,6, 2])
+col_chat, col_questionaire = st.columns([6,4])
 
-with col1:
-    with st.container(height=600,border=True):
-        open_modal = st.button("Open")
-        if open_modal:
-            modal.open()
-
-with col2:
+with col_chat:
     with st.container(height=600, border=True):
         if "messages" not in st.session_state:
             st.session_state.messages = []
@@ -82,7 +76,7 @@ with col2:
         for message in st.session_state.messages:
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
-        source1, source2, source3, source4, spacer = st.columns([1,1,1,1,6])
+        source1, source2, source3, source4, spacer = st.columns([2,2,2,2,2])
         with source1:
             open_modal = st.button("Source1")
             if open_modal:
@@ -109,7 +103,7 @@ with col2:
             st.session_state.messages.append({"role": "assistant", "content": full_response})
 
 
-with col3:
+with col_questionaire:
     with st.form("user form"):
 
         st.title('Questionnaire')
