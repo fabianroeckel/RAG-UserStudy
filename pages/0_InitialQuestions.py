@@ -1,5 +1,6 @@
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
+from utils import *
 
 
 def demographic_questions():
@@ -29,7 +30,8 @@ def language_level():
     return proficiency
 
 def main():
-    st.write(st.session_state.sessionID)
+    #st.write(st.session_state.sessionID)
+    st.write(getCachedSessionID())
     st.header('Welcome to the Experiment!')
     st.write('Please provide some demographic information before starting the experiment.')
 

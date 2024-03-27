@@ -74,6 +74,18 @@ def getSessionID():
         raise RuntimeError("Couldn't get your Streamlit Session object.")
     return session_id
 
+@st.cache_data
+def getCachedSessionID():
+    runtime = get_instance()
+    session_id = get_script_run_ctx().session_id
+    session_info = runtime._session_mgr.get_session_info(session_id)
+    if session_info is None:
+        raise RuntimeError("Couldn't get your Streamlit Session object.")
+    session_id = random.randint(1,10)
+    return session_id
+
+
+
 def generateNewCSFFiles (sessionID):
     # Initialize file counter
     filenameUserStudy = f"./data/raw_answers/UserStudy/UserStudy_{sessionID}.csv"
