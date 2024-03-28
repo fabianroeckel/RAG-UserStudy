@@ -152,5 +152,3 @@ def displayPDF(file):
 
     # Displaying File
     st.markdown(pdf_display, unsafe_allow_html=True)
-
-st.set_page_config(layout="wide")

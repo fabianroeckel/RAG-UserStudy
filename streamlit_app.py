@@ -2,7 +2,6 @@ import streamlit as st
 from utils import *
 from streamlit_extras.switch_page_button import switch_page
 
-st.set_page_config(layout="wide")
 def main():
     st.title('Welcome to the Human-Computer Interaction Study')
     st.markdown("""
@@ -31,4 +30,6 @@ def main():
             st.session_state["question_number"] = 0
             st.write(st.session_state.sessionID)
         switch_page("initialquestions")
+
+st.set_page_config(layout="wide")
 main()

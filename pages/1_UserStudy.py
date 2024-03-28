@@ -23,7 +23,9 @@ with st.sidebar:
     st.text("Progress")
 
     st.progress(random.randint(1,100))
-
+    st.write(pd.read_csv('./data/RAG_Dataset.csv'))
+    st.write(pd.read_csv(f'./data/raw_answers/UserStudy/UserStudy_{st.session_state.sessionID}.csv'))
+    st.write(pd.read_csv(f'./data/raw_answers/UserGeneral/GeneralQuestions{st.session_state.sessionID}.csv'))
 
 with st.container():
     st.write(st.session_state.sessionID)
@@ -45,19 +47,6 @@ with st.container():
             totalPages = len(pdfReader.pages)
             pdf_viewer(file_path,pages_to_render=list(range(totalPages)))
 
-    with st.expander("Task Introduction and General Instructions"):
-        st.text(textwrap.fill("general instructions and scenario here - Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.", width=300))
-        st.checkbox("I have read the general instructions")
-        st.radio("ATTENTION QUESTION", ("Yes", "No"))
-    col_a, col_b, col_c = st.columns([3,3,3])
-
-    with st.expander("Data Preview"):
-        with col_a:
-            st.write(pd.read_csv('./data/RAG_Dataset.csv'))
-        with col_b:
-            st.write(pd.read_csv(f'./data/raw_answers/UserStudy/UserStudy_{st.session_state.sessionID}.csv'))
-        with col_c:
-            st.write(pd.read_csv(f'./data/raw_answers/UserGeneral/GeneralQuestions{st.session_state.sessionID}.csv'))
 
     question = getQuestion(st.session_state.sessionID, page_number)
     st.header(question)
