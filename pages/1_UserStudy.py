@@ -10,25 +10,31 @@ from streamlit_pdf_viewer import pdf_viewer
 from streamlit_modal import Modal
 import PyPDF2
 
-page_number = st.session_state.question_number
-def chat_content(role, content):
-    st.session_state['messages'].append({"role": role, "content": content})
-
 def display_chat_content():
-    st.session_state.messages.append({"role": "user", "content": getQuestion(st.session_state.sessionID, page_number)})
-    st.session_state.messages.append({"role": "assistant", "content": getResponse(st.session_state.sessionID, page_number)})
-    print(page_number)
+    st.session_state.messages = []
+    st.session_state.messages.append({"role": "user", "content": getQuestionAndResponse(st.session_state.sessionID)[0]})
+    st.session_state.messages.append({"role": "assistant", "content": getQuestionAndResponse(st.session_state.sessionID)[1]})
+    print("Start display content")
+
 ##LAYOUT
 with st.sidebar:
     st.text("Progress")
 
     st.progress(random.randint(1,100))
-    st.write(pd.read_csv('./data/RAG_Dataset.csv'))
+
     st.write(pd.read_csv(f'./data/raw_answers/UserStudy/UserStudy_{st.session_state.sessionID}.csv'))
-    st.write(pd.read_csv(f'./data/raw_answers/UserGeneral/GeneralQuestions{st.session_state.sessionID}.csv'))
+
+    st.write("Correct Responses")
+    st.write(pd.read_csv("data/RAG_Dataset-Correct_Responses.csv"))
+
+    st.write("Evident Baseless Information")
+    st.write(pd.read_csv("data/RAG_Dataset-Evident_Baseless_Information.csv"))
+
+    st.write("Evident Conflict")
+    st.write(pd.read_csv("data/RAG_Dataset-Evident_Conflict.csv"))
+
 
 with st.container():
-    st.write(st.session_state.sessionID)
     st.title("Your Finance-Co Pilot powered by ChatGPT4")
     modal = Modal(
         "Source Name",
@@ -48,7 +54,7 @@ with st.container():
             pdf_viewer(file_path,pages_to_render=list(range(totalPages)))
 
 
-    question = getQuestion(st.session_state.sessionID, page_number)
+    question = getQuestionAndResponse(st.session_state.sessionID)[0]
     st.header(question)
     st.text("You can use the chat interface to interact with your financial Co-Pilot to answer this task.")
 
@@ -58,26 +64,35 @@ col_chat, col_questionaire = st.columns([6,4])
 
 with col_chat:
     with st.container(height=600, border=True):
-        if "messages" not in st.session_state:
-            st.session_state.messages = []
-            display_chat_content()
+
+        display_chat_content()
 
         for message in st.session_state.messages:
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
-        source1, source2, source3, source4, spacer = st.columns([2,2,2,2,2])
-        with source1:
+
+
+
+
+        if st.session_state.sampled_study_type == "SingleSource":
             open_modal = st.button("Source1")
             if open_modal:
                 modal.open()
-        with source2:
-            open_modal = st.button("Source2")
-            if open_modal:
-                modal.open()
-        with source3:
-            open_modal = st.button("Source3")
-            if open_modal:
-                modal.open()
+
+        if st.session_state.sampled_study_type == "MultiSource":
+            source1, source2, source3, source4, spacer = st.columns([2,2,2,2,2])
+            with source1:
+                open_modal = st.button("Source1")
+                if open_modal:
+                    modal.open()
+            with source2:
+                open_modal = st.button("Source2")
+                if open_modal:
+                    modal.open()
+            with source3:
+                open_modal = st.button("Source3")
+                if open_modal:
+                    modal.open()
 
     with st.container():
         if prompt := st.chat_input("How can i help you?"):
@@ -101,4 +116,4 @@ with col_questionaire:
         decision = st.radio("Which company had the best quarter?", ('Nvidia', 'Apple', 'Intel', 'Amazon'))
 
         if st.form_submit_button():
-            update_questionaire(trust, decision, st.session_state.sessionID, page_number)
+            update_questionaire(trust, decision)
