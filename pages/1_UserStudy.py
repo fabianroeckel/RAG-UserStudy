@@ -18,7 +18,6 @@ def display_chat_content():
 
 ##LAYOUT
 with st.sidebar:
-    st.text("Progress")
 
     st.progress(random.randint(1,100))
 
