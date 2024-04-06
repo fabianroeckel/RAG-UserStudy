@@ -9,6 +9,13 @@ import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 import urllib
 import base64
+from pdf2jpg import pdf2jpg
+import numpy as np
+from PIL import Image
+import shutil
+
+FOOTER_ROWS = 300
+WHITE_VALUE = 255
 
 def getQuestion (sessionID, numberQuestion):
     print(numberQuestion)
@@ -185,4 +192,20 @@ def displayPDF(file):
     style="overflow: auto; width: 100%; height: 100%;">"""
 
     # Displaying File
+    st.markdown(pdf_display, unsafe_allow_html=True)
+
+
+
+def displayPDF(file_path, ui_width):
+    # Read file as bytes:
+    with open(file_path, "rb") as file:
+        bytes_data = file.read()
+
+    # Convert to utf-8
+    base64_pdf = base64.b64encode(bytes_data).decode("utf-8")
+
+    # Embed PDF in HTML
+    pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width={str(ui_width)} height={str(ui_width*4/3)} type="application/pdf"></iframe>'
+
+    # Display file
     st.markdown(pdf_display, unsafe_allow_html=True)

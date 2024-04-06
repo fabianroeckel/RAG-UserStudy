@@ -43,15 +43,19 @@ with st.container():
         padding=20,  # default value
         max_width=700  # default value
     )
-
     if modal.is_open():
         with modal.container():
-            file_path = "data/v1/docs/2023 Q3 NVDA.pdf"
+            file_path = "data/source_documents/0_single_documents/Q1/2023 Q1 AAPL.pdf"
             file = open(file_path, 'rb')
             pdfReader = PyPDF2.PdfReader(file)
+            if pdfReader.is_encrypted:
+                pdfReader.decrypt('')
             totalPages = len(pdfReader.pages)
-            pdf_viewer(file_path,pages_to_render=list(range(totalPages)))
 
+            #pdf_viewer(file_path,pages_to_render=list(range(totalPages)))
+            #st.image("data/source_documents/0_single_documents/Q1/2022 Q3 AAPL.jpg")
+             # Adjust as needed
+            displayPDF(file_path, 700)
 
     question = getQuestionAndResponse(st.session_state.sessionID)[0]
     st.header(question)

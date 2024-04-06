@@ -26,6 +26,7 @@ def main():
         if 'sessionID' not in st.session_state:
             sessionID = getSessionID()
             sampled_study_type = getSampledStudyType()
+            sampled_study_type = "SingleSource"
             generateNewCSFFiles(sessionID,sampled_study_type)
             st.session_state['sessionID'] = sessionID
 
