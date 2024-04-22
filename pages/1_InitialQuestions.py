@@ -1,7 +1,8 @@
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 from utils import *
-
+from streamlit_extras import vertical_slider
+import extra_streamlit_components as stx
 
 def demographic_questions():
     st.title('Demographic Information')
@@ -29,19 +30,23 @@ def language_level():
 
     return proficiency
 
-def main():
-    st.write(st.session_state.sessionID)
-    st.header('Welcome to the Experiment!')
-    st.write('Please provide some demographic information before starting the experiment.')
-
-    age, gender, educations = demographic_questions()
-    rag_experience, system_usage_frequency = similar_systems_experience()
-    proficiency = language_level()
-    general_questions_completed = False
-
-    st.write('Thank you for providing the information. You may proceed with the experiment now.')
-    if st.button('Start with the Experiment'):
-        switch_page("userstudy")
 
 
-main()
+
+
+
+st.write(st.session_state.sessionID)
+st.header('Welcome to the Experiment!')
+st.write('Please provide some demographic information before starting the experiment.')
+
+age, gender, educations = demographic_questions()
+rag_experience, system_usage_frequency = similar_systems_experience()
+proficiency = language_level()
+general_questions_completed = False
+
+st.write('Thank you for providing the information. You may proceed with the experiment now.')
+if st.button('Start with the Experiment'):
+    store_and_compute_time_difference()
+    switch_page("userstudy")
+
+

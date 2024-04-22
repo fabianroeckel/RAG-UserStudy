@@ -5,3 +5,4 @@ streamlit_pdf_viewer
 streamlit_modal
 PyPDF2
 streamlit_float
+pandas

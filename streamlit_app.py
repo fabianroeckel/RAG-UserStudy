@@ -25,18 +25,18 @@ def main():
     if st.button('Start Experiment'):
         if 'sessionID' not in st.session_state:
             sessionID = getSessionID()
-            sampled_study_type = getSampledStudyType()
-            sampled_study_type = "SingleSource"
-            generateNewCSFFiles(sessionID,sampled_study_type)
             st.session_state['sessionID'] = sessionID
 
         if 'question_number' not in st.session_state:
             st.session_state["question_number"] = 0
 
         if 'sampled_study_type' not in st.session_state:
+            sampled_study_type = getSampledStudyType()
+            sampled_study_type = "MultiSource"
             st.session_state["sampled_study_type"] = sampled_study_type
+            generateNewCSFFiles(sessionID, sampled_study_type)
 
-        switch_page("initialquestions")
+        switch_page("consentToParticipate")
 
 st.set_page_config(layout="wide")
 main()

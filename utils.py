@@ -7,74 +7,41 @@ from streamlit.runtime import get_instance
 from streamlit.runtime.scriptrunner import get_script_run_ctx
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
-import urllib
 import base64
-from pdf2jpg import pdf2jpg
-import numpy as np
-from PIL import Image
-import shutil
+from datetime import datetime
 
 FOOTER_ROWS = 300
 WHITE_VALUE = 255
 
-def getQuestion (sessionID, numberQuestion):
-    print(numberQuestion)
+
+def get_question_and_response(session_id):
     pd.set_option('display.max_colwidth', None)
-    user_file = f"./data/raw_answers/UserStudy/UserStudy_{sessionID}.csv"
+    user_file = f"./data/raw_answers/UserStudy/UserStudy_{session_id}.csv"
     user_df = pd.read_csv(user_file)
-    # Find the row in the dataset file with the matching QuestionID
-
-    #question_id = user_df.iloc[[numberQuestion]]["QuestionID"]
-
-    #question_type = user_df.iloc[[numberQuestion]]["shuffled_questiontypes"]
-    print("user_df.iloc[numberQuestion]")
-    print(user_df.iloc[numberQuestion])
-    question_id = user_df.iloc[numberQuestion]["QuestionID"]
-    question_type = user_df.iloc[numberQuestion]["shuffled_questiontypes"]
-    print(f"Question_type: {question_type}")
-    study_dataset_df = ""
-    if question_type == "Correct":
-        study_dataset_df = pd.read_csv("./data/RAG_Dataset-Correct_Responses.csv")
-        print(study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["Question"])
-
-    if question_type == "EvidentBaselessInformation":
-        study_dataset_df = pd.read_csv("./data/RAG_Dataset-Evident_Baseless_Information.csv", on_bad_lines='skip')
-
-    if question_type == "EvidentConflict":
-        study_dataset_df = pd.read_csv("./data/RAG_Dataset-Evident_Conflict.csv")
-
-
-    question = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["Question"].values[0]
-    return question
-
-def getQuestionAndResponse (sessionID):
-    pd.set_option('display.max_colwidth', None)
-    user_file = f"./data/raw_answers/UserStudy/UserStudy_{sessionID}.csv"
-    user_df = pd.read_csv(user_file)
-
 
     question_id = user_df.iloc[st.session_state.question_number]["QuestionID"]
     question_type = user_df.iloc[st.session_state.question_number]["shuffled_questiontypes"]
 
-
+    df = pd.read_csv("./data/RAG_Dataset.csv")
     if question_type == "Correct":
-        study_dataset_df = pd.read_csv("./data/RAG_Dataset-Correct_Responses.csv")
-        print(study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["Question"])
+        study_dataset_df = df[df['Type'] == 'Correct']
 
     if question_type == "EvidentBaselessInformation":
-        study_dataset_df = pd.read_csv("./data/RAG_Dataset-Evident_Baseless_Information.csv", on_bad_lines='skip')
+        study_dataset_df = df[df['Type'] == 'BaselessInformation']
 
     if question_type == "EvidentConflict":
-        study_dataset_df = pd.read_csv("./data/RAG_Dataset-Evident_Conflict.csv")
-
+        study_dataset_df = df[df['Type'] == 'EvidentConflict']
 
     question = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["Question"].values[0]
     response = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["Response"].values[0]
-    return question, response
+    decision_options = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["DecisionOptions"].values[0]
+    decision_options = decision_options[1:-1].split(', ')
+    return question, response, decision_options
 
-def getSampledQuestionIDs():
+
+def get_sampled_question_ids():
     # Generate a list of 20 question IDs (for demonstration purpose, you can replace this with your actual logic)
-    return random.sample(range(1, 41), 20)
+    return random.sample(range(1, 31), 20)
 
 def getSampledStudyType():
     study_type = random.sample(range(1, 3), 1)
@@ -88,7 +55,7 @@ def getSampledStudyType():
 
 def getShuffledOrderOfQuestions():
     # Create a list with the desired distribution
-    question_type = ["Correct"] * 10 + ["EvidentConflict"] * 3 + ["EvidentBaselessInformation"] * 7
+    question_type = ["Correct"] * 10 + ["EvidentConflict"] * 5 + ["EvidentBaselessInformation"] * 5
 
     # Shuffle the list to get a random order
     random.shuffle(question_type)
@@ -132,7 +99,7 @@ def generateNewCSFFiles (sessionID, sampled_studyType):
         writer.writerow(['userID', 'studyType','shuffled_questiontypes', 'QuestionID', 'Choice', 'Trust', 'Interaction'])
 
         # Get sampled question IDs
-        sampled_question_ids = getSampledQuestionIDs()
+        sampled_question_ids = get_sampled_question_ids()
 
         ## indicates if a question is linked to correct or incorrect answer (Evident conflict or hallucination)
         shuffled_questiontypes = getShuffledOrderOfQuestions()
@@ -178,25 +145,10 @@ def update_questionaire(trust, choice):
     else:
         st.rerun()
 
-def displayPDF(file):
-    # Opening file from file path
-    with open(file, "rb") as f:
-        base64_pdf = base64.b64encode(f.read()).decode('utf-8')
-
-    # Embedding PDF in HTML
-    pdf_display =  f"""<embed
-    class="pdfobject"
-    type="application/pdf"
-    title="Embedded PDF"
-    src="data:application/pdf;base64,{base64_pdf}"
-    style="overflow: auto; width: 100%; height: 100%;">"""
-
-    # Displaying File
-    st.markdown(pdf_display, unsafe_allow_html=True)
-
-
 
 def displayPDF(file_path, ui_width):
+    print("displayPDF")
+    print(file_path)
     # Read file as bytes:
     with open(file_path, "rb") as file:
         bytes_data = file.read()
@@ -209,3 +161,51 @@ def displayPDF(file_path, ui_width):
 
     # Display file
     st.markdown(pdf_display, unsafe_allow_html=True)
+
+def store_and_compute_time_difference():
+    # Check if the 'timestamp' exists in the session state
+    if 'timestamp' not in st.session_state:
+        # Store the current timestamp
+        st.session_state['timestamp'] = datetime.now()
+        return {'current_timestamp': st.session_state['timestamp'], 'previous_timestamp': None, 'time_difference': None}
+    else:
+        # Compute the difference between now and the stored timestamp
+        current_time = datetime.now()
+        time_difference = (current_time - st.session_state['timestamp']).total_seconds()
+
+        # Prepare the return data
+        return_data = {
+            'current_timestamp': current_time,
+            'previous_timestamp': st.session_state['timestamp'],
+            'time_difference': time_difference
+        }
+
+        # Update the stored timestamp to the current time
+        st.session_state['timestamp'] = current_time
+
+        return return_data
+
+
+def get_source_links(sessionID):
+    user_file = f"./data/raw_answers/UserStudy/UserStudy_{sessionID}.csv"
+    user_df = pd.read_csv(user_file)
+    studyType = st.session_state["sampled_study_type"]
+
+    question_id = user_df.iloc[st.session_state.question_number]["QuestionID"]
+
+    if studyType == "SingleSource":
+        folder_path = f"data/source_documents/1_combined_documents/Q{question_id}"
+        files = os.listdir(folder_path)
+        if len(files) > 0:
+            document_name = files[0]
+            document_path = os.path.join(folder_path, document_name)
+            return folder_path, document_path, document_name
+
+    if studyType == "MultiSource":
+        folder_path = f"data/source_documents/0_single_documents/Q{question_id}"
+        files = os.listdir(folder_path)
+        document_paths = [os.path.join(folder_path, file) for file in files]
+        return document_paths, files
+
+
+
