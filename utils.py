@@ -22,7 +22,7 @@ def get_question_and_response(session_id):
     question_id = user_df.iloc[st.session_state.question_number]["QuestionID"]
     question_type = user_df.iloc[st.session_state.question_number]["shuffled_questiontypes"]
 
-    df = pd.read_csv("./data/RAG_Dataset.csv")
+    df = pd.read_csv("data/RAG_Dataset.csv")
     if question_type == "Correct":
         study_dataset_df = df[df['Type'] == 'Correct']
 
@@ -32,11 +32,15 @@ def get_question_and_response(session_id):
     if question_type == "EvidentConflict":
         study_dataset_df = df[df['Type'] == 'EvidentConflict']
 
+    if question_type == "AttentionCheck":
+        study_dataset_df = df[df['Type'] == 'AttentionCheck']
+
     question = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["Question"].values[0]
     response = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["Response"].values[0]
+    task = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["Task"].values[0]
     decision_options = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["DecisionOptions"].values[0]
     decision_options = decision_options[1:-1].split(', ')
-    return question, response, decision_options
+    return question, response, decision_options, task
 
 
 def get_sampled_question_ids():
@@ -96,7 +100,7 @@ def generateNewCSFFiles (sessionID, sampled_studyType):
     # Create a CSV file and write headers
     with open(filenameUserStudy, mode='w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(['userID', 'studyType','shuffled_questiontypes', 'QuestionID', 'Choice', 'Trust', 'Interaction'])
+        writer.writerow(['userID', 'studyType','shuffled_questiontypes', 'QuestionID', 'Choice', 'Trust', 'TaskCompletionTime', "ClicksSource1", "ClicksSource2", "ClicksSource3", "ClicksSource4","TotalClicks", "ViewTimeSource1", "ViewTimeSource2", "ViewTimeSource3", "ViewTimeSource4", "TotalViewTime"])
 
         # Get sampled question IDs
         sampled_question_ids = get_sampled_question_ids()
@@ -105,13 +109,16 @@ def generateNewCSFFiles (sessionID, sampled_studyType):
         shuffled_questiontypes = getShuffledOrderOfQuestions()
 
         # Write 20 rows to the CSV file
-        for i in range(0,len(sampled_question_ids)):
+        for i in range(0,len(sampled_question_ids)+1):
             # Assuming 'Choice', 'Trust', 'Interaction' are placeholders and you need to fill them accordingly
             # You can modify this part according to your actual data generation logic
-            choice = "SomeChoice"
-            trust = "SomeTrust"
-            interaction = 0
-            writer.writerow([sessionID,sampled_studyType,shuffled_questiontypes[i], sampled_question_ids[i], choice, trust, interaction])
+            if i < 13:
+                writer.writerow([sessionID,sampled_studyType,shuffled_questiontypes[i], sampled_question_ids[i], "SomeChoice", "SomeTrust", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+            if i == 13:
+                writer.writerow([sessionID, sampled_studyType, "AttentionCheck", 31, "SomeChoice", "SomeTrust", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+            if i > 13:
+                writer.writerow([sessionID, sampled_studyType, shuffled_questiontypes[i-1], sampled_question_ids[i-1], "SomeChoice",
+                     "SomeTrust", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
     fileNameGeneralQuestions = f"./data/raw_answers/UserGeneral/GeneralQuestions{sessionID}.csv"
     with open(fileNameGeneralQuestions, mode='w', newline='') as file:
@@ -123,7 +130,10 @@ def generateNewCSFFiles (sessionID, sampled_studyType):
     print(f"CSV file '{filenameUserStudy}' and '{fileNameGeneralQuestions}' have been generated successfully.")
 
 
-def update_questionaire(trust, choice):
+def update_questionaire(trust, choice, task_completion_time,
+                        ClicksSource1, ClicksSource2, ClicksSource3, ClicksSource4,
+                        ViewTimeSource1, ViewTimeSource2, ViewTimeSource3, ViewTimeSource4):
+
     # Map likert scale options to numerical values
     trust_mapping = {'Not at all': 1, 'Slightly': 2, 'Moderately': 3, 'Very much': 4, 'Completely': 5}
     trust_numeric = trust_mapping[trust]
@@ -134,21 +144,51 @@ def update_questionaire(trust, choice):
 
     # Update the corresponding row in the DataFrame
     row = st.session_state.question_number  # Specify the row index you want to update
-    #df.iloc[row]['Trust'] = trust_numeric
-    #df.iloc[row]['Choice'] = choice
+    df.loc[row, 'Trust'] = trust_numeric
+    df.loc[row, 'Choice'] = choice
+    df.loc[row, 'TaskCompletionTime'] = int(task_completion_time)
+
+    #Clicks
+    totalClicks = (ClicksSource1 + ClicksSource2 + ClicksSource3 + ClicksSource4)
+    df.loc[row, "ClicksSource1"] = ClicksSource1
+    df.loc[row, "ClicksSource2"] = ClicksSource2
+    df.loc[row, "ClicksSource3"] = ClicksSource3
+    df.loc[row, "ClicksSource4"] = ClicksSource4
+    df.loc[row, "TotalClicks"] = totalClicks
+
+    #ViewTime
+    df.loc[row, "ViewTimeSource1"] = int(ViewTimeSource1)
+    df.loc[row, "ViewTimeSource2"] = int(ViewTimeSource2)
+    df.loc[row, "ViewTimeSource3"] = int(ViewTimeSource3)
+    df.loc[row, "ViewTimeSource4"] = int(ViewTimeSource4)
+    df.loc[row, "TotalViewTime"] = int(ViewTimeSource1 + ViewTimeSource2 + ViewTimeSource3 + ViewTimeSource4)
+
 
     # Write the updated DataFrame back to the CSV file
     df.to_csv(file_path, index=False)
     st.session_state.question_number = st.session_state.question_number + 1
-    if st.session_state.question_number == 19:
+
+    # Clicks
+    st.session_state["source_clicks1"] = 0
+    st.session_state["source_clicks2"] = 0
+    st.session_state["source_clicks3"] = 0
+    st.session_state["source_clicks4"] = 0
+
+    # ViewTime
+    st.session_state["source_watch_time1"] = 0
+    st.session_state["source_watch_time2"] = 0
+    st.session_state["source_watch_time3"] = 0
+    st.session_state["source_watch_time4"] = 0
+
+    ##Reset States to 0
+    if st.session_state.question_number == 20:
         switch_page("evaluation")
     else:
         st.rerun()
 
 
 def displayPDF(file_path, ui_width):
-    print("displayPDF")
-    print(file_path)
+
     # Read file as bytes:
     with open(file_path, "rb") as file:
         bytes_data = file.read()
@@ -162,26 +202,25 @@ def displayPDF(file_path, ui_width):
     # Display file
     st.markdown(pdf_display, unsafe_allow_html=True)
 
-def store_and_compute_time_difference():
+def store_and_compute_time_difference(var_name):
     # Check if the 'timestamp' exists in the session state
-    if 'timestamp' not in st.session_state:
+    if st.session_state[var_name] == 0:
         # Store the current timestamp
-        st.session_state['timestamp'] = datetime.now()
-        return {'current_timestamp': st.session_state['timestamp'], 'previous_timestamp': None, 'time_difference': None}
+        st.session_state[var_name] = datetime.now()
+        return {'current_timestamp': st.session_state[var_name], 'previous_timestamp': None, 'time_difference': None}
     else:
         # Compute the difference between now and the stored timestamp
         current_time = datetime.now()
-        time_difference = (current_time - st.session_state['timestamp']).total_seconds()
-
+        time_difference = (current_time - st.session_state[var_name]).total_seconds()
         # Prepare the return data
         return_data = {
             'current_timestamp': current_time,
-            'previous_timestamp': st.session_state['timestamp'],
+            'previous_timestamp': st.session_state[var_name],
             'time_difference': time_difference
         }
 
         # Update the stored timestamp to the current time
-        st.session_state['timestamp'] = current_time
+        st.session_state[var_name] = current_time
 
         return return_data
 

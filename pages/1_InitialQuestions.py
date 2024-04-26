@@ -3,6 +3,8 @@ from streamlit_extras.switch_page_button import switch_page
 from utils import *
 from streamlit_extras import vertical_slider
 import extra_streamlit_components as stx
+from datetime import datetime
+
 
 def demographic_questions():
     st.title('Demographic Information')
@@ -46,7 +48,8 @@ general_questions_completed = False
 
 st.write('Thank you for providing the information. You may proceed with the experiment now.')
 if st.button('Start with the Experiment'):
-    store_and_compute_time_difference()
+    if "timestamp" not in st.session_state:
+        st.session_state["timestamp"] = datetime.now()
     switch_page("userstudy")
 
 

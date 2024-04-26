@@ -36,7 +36,32 @@ def main():
             st.session_state["sampled_study_type"] = sampled_study_type
             generateNewCSFFiles(sessionID, sampled_study_type)
 
-        switch_page("consentToParticipate")
+        if "source_name" not in st.session_state:
+            st.session_state["source_name"] = ""
 
+        if "source_clicks1" not in st.session_state:
+            st.session_state["source_clicks1"] = 0
+            st.session_state["source_clicks2"] = 0
+            st.session_state["source_clicks3"] = 0
+            st.session_state["source_clicks4"] = 0
+            st.session_state["total_source_clicks"] = 0
+
+        if "source_watch_time1_datetime" not in st.session_state:
+            st.session_state["last_clicked_source"] = 0
+            st.session_state["source_watch_time1_datetime"] = 0
+            st.session_state["source_watch_time2_datetime"] = 0
+            st.session_state["source_watch_time3_datetime"] = 0
+            st.session_state["source_watch_time4_datetime"] = 0
+
+            st.session_state["source_watch_time1"] = 0
+            st.session_state["source_watch_time2"] = 0
+            st.session_state["source_watch_time3"] = 0
+            st.session_state["source_watch_time4"] = 0
+            st.session_state["total_watch_time"] = 0
+
+        if "task_completion_time" not in st.session_state:
+            st.session_state["task_completion_time"] =  0
+
+        switch_page("consentToParticipate")
 st.set_page_config(layout="wide")
 main()

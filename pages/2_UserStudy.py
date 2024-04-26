@@ -2,11 +2,12 @@ from utils import *
 from streamlit_modal import Modal
 import PyPDF2
 from time import sleep
+from datetime import datetime
 
 def display_chat_content():
     st.session_state.messages = []
-    st.session_state.messages.append({"role": "user", "content": get_question_and_response(st.session_state.sessionID)[0]})
-    st.session_state.messages.append({"role": "assistant", "content": get_question_and_response(st.session_state.sessionID)[1]})
+    st.session_state.messages.append({"role": "user", "content": question})
+    st.session_state.messages.append({"role": "assistant", "content": response})
 
 
 with st.sidebar:
@@ -18,13 +19,12 @@ with st.sidebar:
 
 with st.container():
     st.title("Your Finance-Co Pilot powered by ChatGPT4")
-    modal = Modal(
-        "Source Name",
+    modal = Modal(title=st.session_state["source_name"],
         key="demo-modal",
 
         # Optional
         padding=20,  # default value
-        max_width=700  # default value
+        max_width=1000  # default value
     )
     if modal.is_open():
         with modal.container():
@@ -34,10 +34,10 @@ with st.container():
             if pdfReader.is_encrypted:
                 pdfReader.decrypt('')
 
-            displayPDF(file_path, 685)
+            displayPDF(file_path, 900)
 
-    question = get_question_and_response(st.session_state.sessionID)[0]
-    st.header(question)
+    question, response, decision_options, task = get_question_and_response(st.session_state.sessionID)
+    st.header(task)
     st.text("You can use the chat interface to interact with your financial Co-Pilot to answer this task.")
 
     st.markdown("---")
@@ -65,12 +65,22 @@ with col_chat:
                 #st.session_state["source_link"] = "data/source_documents/0_single_documents/Q2/2022 Q3 AAPL.pdf"
                 if open_modal:
                     st.session_state["source_link"] = get_source_links(st.session_state.sessionID)[0][0]
+                    st.session_state["source_name"] = get_source_links(st.session_state.sessionID)[1][0]
+                    st.session_state["source_clicks1"] += 1
+                    st.session_state["source_watch_time1_datetime"] = datetime.now()
+                    st.session_state["last_clicked_source"] = 1
+
                     modal.open()
             with source2:
                 open_modal = st.button(get_source_links(st.session_state.sessionID)[1][1])
                 #st.session_state["source_link"] = "data/source_documents/0_single_documents/Q2/2022 Q3 AAPL.pdf"
                 if open_modal:
                     st.session_state["source_link"] = get_source_links(st.session_state.sessionID)[0][1]
+                    st.session_state["source_name"] = get_source_links(st.session_state.sessionID)[1][1]
+                    st.session_state["source_clicks2"] += 1
+                    st.session_state["total_source_clicks"] += 1
+                    st.session_state["source_watch_time2_datetime"] = datetime.now()
+                    st.session_state["last_clicked_source"] = 2
                     modal.open()
             if len(get_source_links(st.session_state.sessionID)[1]) >2:
                 with source3:
@@ -78,6 +88,11 @@ with col_chat:
                    #st.session_state["source_link"] = "data/source_documents/0_single_documents/Q2/2022 Q3 AAPL.pdf"
                     if open_modal:
                         st.session_state["source_link"] = get_source_links(st.session_state.sessionID)[0][2]
+                        st.session_state["source_name"] = get_source_links(st.session_state.sessionID)[1][2]
+                        st.session_state["source_clicks3"] += 1
+                        st.session_state["total_source_clicks"] += 1
+                        st.session_state["source_watch_time3_datetime"] = datetime.now()
+                        st.session_state["last_clicked_source"] = 3
                         modal.open()
             if len(get_source_links(st.session_state.sessionID)[1]) > 3:
                 with source4:
@@ -85,6 +100,11 @@ with col_chat:
                     #st.session_state["source_link"] = "data/source_documents/0_single_documents/Q2/2022 Q3 AAPL.pdf"
                     if open_modal:
                         st.session_state["source_link"] = get_source_links(st.session_state.sessionID)[0][3]
+                        st.session_state["source_name"] = get_source_links(st.session_state.sessionID)[1][3]
+                        st.session_state["source_clicks4"] += 1
+                        st.session_state["total_source_clicks"] += 1
+                        st.session_state["source_watch_time4_datetime"] = datetime.now()
+                        st.session_state["last_clicked_source"] = 4
                         modal.open()
 
 
@@ -107,13 +127,26 @@ with col_questionaire:
         st.title('Questionnaire')
         trust = st.select_slider('To what extent do you trust the accuracy of the response?',
                                          options=['Not at all', 'Slightly', 'Moderately', 'Very much', 'Completely'])
-        decision = st.radio("Which company had the best quarter?", get_question_and_response(st.session_state.sessionID)[2], horizontal=False)
+        decision = st.radio("Which company had the best quarter?", decision_options, horizontal=False)
 
         # Radio button to select whether there is an error
         detect_error = st.radio("Did you detect an error in the response?", ("No", "Yes"), index=0, horizontal=True,)
         error_content = st.text_input("Paste the content of the error inside this text field")
         if st.form_submit_button():
-            timeSpentPerTask = store_and_compute_time_difference()
+            timeSpentPerTask = store_and_compute_time_difference("timestamp")
             print("Time spent")
             print(timeSpentPerTask["time_difference"])
-            update_questionaire(trust, decision)
+
+            update_questionaire(trust,
+                                decision,
+                                timeSpentPerTask["time_difference"],
+                                st.session_state["source_clicks1"],
+                                st.session_state["source_clicks2"],
+                                st.session_state["source_clicks3"],
+                                st.session_state["source_clicks4"],
+                                st.session_state["source_watch_time1"],
+                                st.session_state["source_watch_time2"],
+                                st.session_state["source_watch_time3"],
+                                st.session_state["source_watch_time4"]
+                                )
+
