@@ -6,3 +6,4 @@ streamlit_modal
 PyPDF2
 streamlit_float
 pandas
+extra_streamlit_components
