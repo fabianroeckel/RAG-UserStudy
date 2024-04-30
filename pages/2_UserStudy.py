@@ -11,8 +11,6 @@ def display_chat_content():
 
 
 with st.sidebar:
-    st.progress(random.randint(1, 100))
-
     st.write(pd.read_csv(f'./data/raw_answers/UserStudy/UserStudy_{st.session_state.sessionID}.csv'))
 
 
@@ -127,7 +125,7 @@ with col_questionaire:
         st.title('Questionnaire')
         trust = st.select_slider('To what extent do you trust the accuracy of the response?',
                                          options=['Not at all', 'Slightly', 'Moderately', 'Very much', 'Completely'])
-        decision = st.radio("Which company had the best quarter?", decision_options, horizontal=False)
+        decision = st.radio(task, decision_options, horizontal=False)
 
         # Radio button to select whether there is an error
         detect_error = st.radio("Did you detect an error in the response?", ("No", "Yes"), index=0, horizontal=True,)

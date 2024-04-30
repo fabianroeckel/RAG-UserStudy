@@ -39,13 +39,13 @@ def get_question_and_response(session_id):
     response = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["Response"].values[0]
     task = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["Task"].values[0]
     decision_options = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["DecisionOptions"].values[0]
-    decision_options = decision_options[1:-1].split(', ')
+    decision_options = decision_options.split(';')
     return question, response, decision_options, task
 
 
 def get_sampled_question_ids():
     # Generate a list of 20 question IDs (for demonstration purpose, you can replace this with your actual logic)
-    return random.sample(range(1, 31), 20)
+    return random.sample(range(1, 22), 12)
 
 def getSampledStudyType():
     study_type = random.sample(range(1, 3), 1)
@@ -112,11 +112,11 @@ def generateNewCSFFiles (sessionID, sampled_studyType):
         for i in range(0,len(sampled_question_ids)+1):
             # Assuming 'Choice', 'Trust', 'Interaction' are placeholders and you need to fill them accordingly
             # You can modify this part according to your actual data generation logic
-            if i < 13:
+            if i < 7:
                 writer.writerow([sessionID,sampled_studyType,shuffled_questiontypes[i], sampled_question_ids[i], "SomeChoice", "SomeTrust", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-            if i == 13:
-                writer.writerow([sessionID, sampled_studyType, "AttentionCheck", 31, "SomeChoice", "SomeTrust", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-            if i > 13:
+            if i == 7:
+                writer.writerow([sessionID, sampled_studyType, "AttentionCheck", 21, "SomeChoice", "SomeTrust", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+            if i > 7:
                 writer.writerow([sessionID, sampled_studyType, shuffled_questiontypes[i-1], sampled_question_ids[i-1], "SomeChoice",
                      "SomeTrust", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
@@ -181,7 +181,7 @@ def update_questionaire(trust, choice, task_completion_time,
     st.session_state["source_watch_time4"] = 0
 
     ##Reset States to 0
-    if st.session_state.question_number == 20:
+    if st.session_state.question_number == 12:
         switch_page("evaluation")
     else:
         st.rerun()
@@ -241,7 +241,7 @@ def get_source_links(sessionID):
             return folder_path, document_path, document_name
 
     if studyType == "MultiSource":
-        folder_path = f"data/source_documents/0_single_documents/Q{question_id}"
+        folder_path = f"data/source_documents/0_single_documents_v2/Q{question_id}"
         files = os.listdir(folder_path)
         document_paths = [os.path.join(folder_path, file) for file in files]
         return document_paths, files
