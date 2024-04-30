@@ -182,6 +182,7 @@ def update_questionaire(trust, choice, task_completion_time,
 
     ##Reset States to 0
     if st.session_state.question_number == 12:
+        print("All tasks completed")
         switch_page("evaluation")
     else:
         st.rerun()
