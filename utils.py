@@ -9,6 +9,8 @@ import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 import base64
 from datetime import datetime
+from pdf2image import convert_from_path
+import tempfile
 
 FOOTER_ROWS = 300
 WHITE_VALUE = 255
@@ -135,7 +137,8 @@ def update_questionaire(trust, choice, task_completion_time,
                         ViewTimeSource1, ViewTimeSource2, ViewTimeSource3, ViewTimeSource4):
 
     # Map likert scale options to numerical values
-    trust_mapping = {'Not at all': 1, 'Slightly': 2, 'Moderately': 3, 'Very much': 4, 'Completely': 5}
+    trust_mapping = {'Not at all': 1, 'Slightly': 2, 'Somewhat': 3, 'Moderately': 4, 'Very much': 5, 'Quite a lot': 6,
+                     'Completely': 7}
     trust_numeric = trust_mapping[trust]
 
     # Load the CSV file
@@ -181,7 +184,7 @@ def update_questionaire(trust, choice, task_completion_time,
     st.session_state["source_watch_time4"] = 0
 
     ##Reset States to 0
-    if st.session_state.question_number == 12:
+    if st.session_state.question_number == 13:
         print("All tasks completed")
         switch_page("evaluation")
     else:
@@ -189,17 +192,14 @@ def update_questionaire(trust, choice, task_completion_time,
 
 
 def displayPDF(file_path, ui_width):
-
     # Read file as bytes:
     with open(file_path, "rb") as file:
         bytes_data = file.read()
-
     # Convert to utf-8
     base64_pdf = base64.b64encode(bytes_data).decode("utf-8")
 
     # Embed PDF in HTML
     pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width={str(ui_width)} height={str(ui_width*4/3)} type="application/pdf"></iframe>'
-
     # Display file
     st.markdown(pdf_display, unsafe_allow_html=True)
 
@@ -230,22 +230,22 @@ def get_source_links(sessionID):
     user_file = f"./data/raw_answers/UserStudy/UserStudy_{sessionID}.csv"
     user_df = pd.read_csv(user_file)
     studyType = st.session_state["sampled_study_type"]
-
     question_id = user_df.iloc[st.session_state.question_number]["QuestionID"]
 
     if studyType == "SingleSource":
         folder_path = f"data/source_documents/1_combined_documents/Q{question_id}"
-        files = os.listdir(folder_path)
-        if len(files) > 0:
-            document_name = files[0]
-            document_path = os.path.join(folder_path, document_name)
-            return folder_path, document_path, document_name
-
-    if studyType == "MultiSource":
+    elif studyType == "MultiSource":
         folder_path = f"data/source_documents/0_single_documents_v2/Q{question_id}"
-        files = os.listdir(folder_path)
-        document_paths = [os.path.join(folder_path, file) for file in files]
-        return document_paths, files
+    else:
+        raise ValueError("Invalid studyType")
 
+    if not os.path.exists(folder_path):
+        raise FileNotFoundError(f"Folder not found: {folder_path}")
 
+    files = os.listdir(folder_path)
+    document_paths = [os.path.join(folder_path, file) for file in files]
 
+    print("folder_path:", folder_path)
+    print("files:", files)
+
+    return document_paths, files

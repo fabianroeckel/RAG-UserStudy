@@ -7,3 +7,4 @@ PyPDF2
 streamlit_float
 pandas
 extra_streamlit_components
+pdf2image

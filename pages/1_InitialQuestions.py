@@ -38,6 +38,46 @@ def similar_systems_experience():
 
     return rag_experience, system_usage_frequency
 
+def perceived_usefulness():
+    st.title('Perceived Usefulness (PU)')
+    usefulness1 = st.select_slider(
+        'Using a RAG in my job would enable me to accomplish tasks more quickly.',
+        options=[
+            'Strongly disagree',
+            'Disagree',
+            'Neither agree nor disagree',
+            'Agree',
+            'Strongly agree'
+        ],
+        value='Neither agree nor disagree'  # Default selection
+    )
+    usefulness2 = st.select_slider(
+        'Using would make it easier to perform a similar job.',
+        options=[
+            'Strongly disagree',
+            'Disagree',
+            'Neither agree nor disagree',
+            'Agree',
+            'Strongly agree'
+        ],
+        value='Neither agree nor disagree'  # Default selection
+    )
+    return usefulness1, usefulness2
+
+def skepticism_towards_ai_content():
+    st.title('Skepticism Towards AI-generated Content')
+    skepticism = st.select_slider(
+        'General skepticism of users towards AI-generated content like ChatGPT or other Large Language Models.',
+        options=[
+            'Strongly disagree',
+            'Disagree',
+            'Neither agree nor disagree',
+            'Agree',
+            'Strongly agree'
+        ],
+        value='Neither agree nor disagree'  # Default selection
+    )
+    return skepticism
 
 def language_level():
     st.title('Language Level')

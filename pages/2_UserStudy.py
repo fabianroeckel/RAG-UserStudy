@@ -37,7 +37,10 @@ with st.container():
     question, response, decision_options, task = get_question_and_response(st.session_state.sessionID)
     st.header(task)
     st.text("You can use the chat interface to interact with your financial Co-Pilot to answer this task.")
-
+    with st.expander("Issues opening the PDF"):
+        url = "https://www.mozilla.org/de/firefox/new/"
+        st.markdown("Please use Firefox, as previously stated to conduct this experiment."
+                    " You can donwload it directly from this [link](%s)." % url)
     st.markdown("---")
 
 col_chat, col_questionaire = st.columns([6, 4])
@@ -52,8 +55,13 @@ with col_chat:
                 st.markdown(message["content"])
 
         if st.session_state.sampled_study_type == "SingleSource":
-            open_modal = st.button("Source1")
+            open_modal = st.button(get_source_links(st.session_state.sessionID)[1][0])
             if open_modal:
+                st.session_state["source_link"] = get_source_links(st.session_state.sessionID)[0][0]
+                st.session_state["source_name"] = get_source_links(st.session_state.sessionID)[1][0]
+                st.session_state["source_clicks1"] += 1
+                st.session_state["source_watch_time1_datetime"] = datetime.now()
+                st.session_state["last_clicked_source"] = 1
                 modal.open()
 
         if st.session_state.sampled_study_type == "MultiSource":
@@ -124,8 +132,10 @@ with col_questionaire:
 
         st.title('Questionnaire')
         trust = st.select_slider('To what extent do you trust the accuracy of the response?',
-                                         options=['Not at all', 'Slightly', 'Moderately', 'Very much', 'Completely'])
-        decision = st.radio(task, decision_options, horizontal=False)
+                                 options=['Not at all', 'Slightly', 'Somewhat', 'Moderately', 'Very much',
+                                          'Quite a lot', 'Completely'])
+        decision = st.radio(task, decision_options,index=0, horizontal=False)
+
 
         # Radio button to select whether there is an error
         detect_error = st.radio("Did you detect an error in the response?", ("No", "Yes"), index=0, horizontal=True,)
@@ -134,7 +144,6 @@ with col_questionaire:
             timeSpentPerTask = store_and_compute_time_difference("timestamp")
             print("Time spent")
             print(timeSpentPerTask["time_difference"])
-
             update_questionaire(trust,
                                 decision,
                                 timeSpentPerTask["time_difference"],
