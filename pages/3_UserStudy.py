@@ -16,7 +16,6 @@ with st.sidebar:
 
 
 with st.container():
-    st.title("Your Finance-Co Pilot powered by ChatGPT4")
     modal = Modal(title=st.session_state["source_name"],
         key="demo-modal",
 
@@ -35,12 +34,9 @@ with st.container():
             displayPDF(file_path, 900)
 
     question, response, decision_options, task = get_question_and_response(st.session_state.sessionID)
-    st.header(task)
-    st.text("You can use the chat interface to interact with your financial Co-Pilot to answer this task.")
-    with st.expander("Issues opening the PDF"):
-        url = "https://www.mozilla.org/de/firefox/new/"
-        st.markdown("Please use Firefox, as previously stated to conduct this experiment."
-                    " You can donwload it directly from this [link](%s)." % url)
+    st.title(task)
+    st.markdown("On the left side is the Chat with your RAG system which should help you to answer the question above. The red:[red icon and tex box] displays the question to the RAG-system. Behind the :orange[yellow icon is the answer given] from System. With all the source documents used to generate the content of the answer. "
+                "You can click the source documents and all the :orange[relevant passages are highlighted in yellow], you can also user CMD+F / STRG+F to search the pdf.")
     st.markdown("---")
 
 col_chat, col_questionaire = st.columns([6, 4])
@@ -130,16 +126,18 @@ with col_chat:
 with col_questionaire:
     with st.form("user form"):
 
-        st.title('Questionnaire')
-        trust = st.select_slider('To what extent do you trust the accuracy of the response?',
+        st.subheader('Please answer these questions below')
+        st.markdown("Based on the question, answer and sources given on the left.")
+        st.markdown('####')
+        trust = st.select_slider('**To what extent do you trust the accuracy of the response?**',
                                  options=['Not at all', 'Slightly', 'Somewhat', 'Moderately', 'Very much',
                                           'Quite a lot', 'Completely'])
-        decision = st.radio(task, decision_options,index=0, horizontal=False)
-
-
+        st.markdown('----')
+        decision = st.radio(f'**{task}**', decision_options,index=0, horizontal=False)
+        st.markdown('####')
         # Radio button to select whether there is an error
-        detect_error = st.radio("Did you detect an error in the response?", ("No", "Yes"), index=0, horizontal=True,)
-        error_content = st.text_input("Paste the content of the error inside this text field")
+        detect_error = st.radio("**Did you detect an error in the response?**", ("No", "Yes"), index=0, horizontal=True,)
+        error_content = st.text_input("**Paste the content of the error inside this text field**")
         if st.form_submit_button():
             timeSpentPerTask = store_and_compute_time_difference("timestamp")
             print("Time spent")
@@ -157,3 +155,7 @@ with col_questionaire:
                                 st.session_state["source_watch_time4"]
                                 )
 
+    with st.expander("Issues opening the PDF"):
+        url = "https://www.mozilla.org/de/firefox/new/"
+        st.markdown("Please use Firefox, as previously stated to conduct this experiment."
+                    " You can donwload it directly from this [link](%s)." % url)

@@ -39,7 +39,6 @@ def similar_systems_experience():
     return rag_experience, system_usage_frequency
 
 def perceived_usefulness():
-    st.title('Perceived Usefulness (PU)')
     usefulness1 = st.select_slider(
         'Using a RAG in my job would enable me to accomplish tasks more quickly.',
         options=[
@@ -51,21 +50,9 @@ def perceived_usefulness():
         ],
         value='Neither agree nor disagree'  # Default selection
     )
-    usefulness2 = st.select_slider(
-        'Using would make it easier to perform a similar job.',
-        options=[
-            'Strongly disagree',
-            'Disagree',
-            'Neither agree nor disagree',
-            'Agree',
-            'Strongly agree'
-        ],
-        value='Neither agree nor disagree'  # Default selection
-    )
-    return usefulness1, usefulness2
+    return usefulness1
 
 def skepticism_towards_ai_content():
-    st.title('Skepticism Towards AI-generated Content')
     skepticism = st.select_slider(
         'General skepticism of users towards AI-generated content like ChatGPT or other Large Language Models.',
         options=[
@@ -78,6 +65,30 @@ def skepticism_towards_ai_content():
         value='Neither agree nor disagree'  # Default selection
     )
     return skepticism
+
+
+import streamlit as st
+
+
+def financial_knowledge_questions():
+    st.title("Financial Knowledge Assessment")
+
+    # Question 1
+    companies_options = ["Amazon", "Microsoft", "Nvidia", "Intel", "Apple"]
+    st.subheader("Do you know the following companies and vaguely what they do?")
+    selected_companies = st.multiselect("Select companies:", companies_options)
+
+    # Question 2
+    st.subheader(
+    "Rate your familiarity and understanding of terms like Revenue, Inventory levels, shares, Net Income.")
+    st.write("Please rate from 0 to 5, where 0 means not familiar at all and 5 means very familiar.")
+    familiarity_rating = st.slider("Rate your familiarity:", 0, 5, 0)
+
+    # Question 3
+    st.subheader("Have you previously worked with or read SEC-10 documents?")
+    sec_10_documents = st.radio("Select one:", ["Yes", "No"])
+
+    return selected_companies, familiarity_rating, sec_10_documents
 
 def language_level():
     st.title('Language Level')
@@ -97,13 +108,16 @@ st.write('Please provide some demographic information before starting the experi
 
 age, gender, educations = demographic_questions()
 rag_experience, system_usage_frequency = similar_systems_experience()
+perceived_usefulness = perceived_usefulness()
+skepticism = skepticism_towards_ai_content()
 proficiency = language_level()
+selected_companies, familiarity_dict, sec_10_documents = financial_knowledge_questions()
 general_questions_completed = False
 
 st.write('Thank you for providing the information. You may proceed with the experiment now.')
 if st.button('Start with the Experiment'):
     if "timestamp" not in st.session_state:
         st.session_state["timestamp"] = datetime.now()
-    switch_page("userstudy")
+    switch_page("introductionToStudy")
 
 
