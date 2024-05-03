@@ -38,10 +38,9 @@ def main():
         if 'question_number' not in st.session_state:
             st.session_state["question_number"] = 0
 
-        if 'sampled_study_type' not in st.session_state:
-            sampled_study_type = getSampledStudyType()
-            st.session_state["sampled_study_type"] = sampled_study_type
-            generateNewCSFFiles(sessionID, sampled_study_type)
+        sampled_study_type = getSampledStudyType()
+        st.session_state["sampled_study_type"] = sampled_study_type
+        generateNewCSFFiles(sessionID, sampled_study_type)
 
         if "source_name" not in st.session_state:
             st.session_state["source_name"] = ""
