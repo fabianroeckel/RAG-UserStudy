@@ -65,7 +65,7 @@ def get_sampled_question_ids():
     return random.sample(range(1, 22), 12)
 
 def getSampledStudyType():
-    study_type = random.sample(range(1, 3), 1)
+    study_type = random.sample(range(1, 4), 1)
     studyType_mapping = {
         1: "NoSources",
         2: "SingleSource",
