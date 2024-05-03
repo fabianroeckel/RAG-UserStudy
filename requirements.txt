@@ -9,3 +9,5 @@ pandas
 extra_streamlit_components
 pdf2image
 streamlit_js_eval
+pydrive
+boto3

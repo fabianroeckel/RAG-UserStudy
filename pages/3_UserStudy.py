@@ -4,6 +4,8 @@ import PyPDF2
 from time import sleep
 from datetime import datetime
 from pdf2image import convert_from_path, convert_from_bytes
+import boto3
+
 
 def display_chat_content():
     st.session_state.messages = []
@@ -141,7 +143,7 @@ with col_questionaire:
         st.markdown('----')
         # Radio button to select whether there is an error
         # detect_error = st.radio("**Did you detect an error in the response?**", ("No", "Yes"), index=0, horizontal=True,)
-        error_content = st.text_input("**Paste the content of the error inside this text field**")
+        error_content = st.text_input("**If you detect an error, paste the content of the error inside this text field**")
         if st.form_submit_button():
             timeSpentPerTask = store_and_compute_time_difference("timestamp")
             print("Time spent")
@@ -158,9 +160,3 @@ with col_questionaire:
                                 st.session_state["source_watch_time3"],
                                 st.session_state["source_watch_time4"]
                                 )
-
-    with st.expander("Issues opening the PDF"):
-        url = "https://www.mozilla.org/de/firefox/new/"
-        st.markdown("Please use Firefox, as previously stated to conduct this experiment."
-                    " You can donwload it directly from this [link](%s)." % url)
-

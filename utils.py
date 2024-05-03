@@ -17,6 +17,10 @@ WHITE_VALUE = 255
 
 
 def get_question_and_response(session_id):
+
+
+
+
     pd.set_option('display.max_colwidth', None)
     user_file = f"./data/raw_answers/UserStudy/UserStudy_{session_id}.csv"
     user_df = pd.read_csv(user_file)
@@ -36,6 +40,8 @@ def get_question_and_response(session_id):
 
     if question_type == "AttentionCheck":
         study_dataset_df = df[df['Type'] == 'AttentionCheck']
+
+
 
     question = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["Question"].values[0]
 
