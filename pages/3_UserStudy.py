@@ -12,12 +12,6 @@ def display_chat_content():
     st.session_state.messages.append({"role": "user", "content": question})
     st.session_state.messages.append({"role": "assistant", "content": response})
 
-
-with st.sidebar:
-    st.write(pd.read_csv(f'./data/raw_answers/UserStudy/UserStudy_{st.session_state.sessionID}.csv'))
-
-
-
 with st.container():
     modal = Modal(title=st.session_state["source_name"],
         key="demo-modal",
