@@ -1,8 +1,6 @@
 import streamlit as st
 from utils import *
 from streamlit_extras.switch_page_button import switch_page
-import streamlit_js_eval
-import httpagentparser
 
 def main():
 
