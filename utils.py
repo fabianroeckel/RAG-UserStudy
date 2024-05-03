@@ -9,8 +9,8 @@ import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 import base64
 from datetime import datetime
-from pdf2image import convert_from_path
 import tempfile
+from pdf2image import convert_from_path, pdfinfo_from_path
 
 FOOTER_ROWS = 300
 WHITE_VALUE = 255
@@ -38,11 +38,17 @@ def get_question_and_response(session_id):
         study_dataset_df = df[df['Type'] == 'AttentionCheck']
 
     question = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["Question"].values[0]
+
     response = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["Response"].values[0]
+
+    if st.session_state.sampled_study_type == "SingleSource":
+        response = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["Response-Single"].values[0]
+    expander_title = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["ExpanderTitle"].values[0]
+    expander_text = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["ExpanderText"].values[0]
     task = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["Task"].values[0]
     decision_options = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["DecisionOptions"].values[0]
     decision_options = decision_options.split(';')
-    return question, response, decision_options, task
+    return question, response, decision_options, task, expander_title, expander_text
 
 
 def get_sampled_question_ids():
@@ -192,16 +198,14 @@ def update_questionaire(trust, choice, task_completion_time,
 
 
 def displayPDF(file_path, ui_width):
-    # Read file as bytes:
-    with open(file_path, "rb") as file:
-        bytes_data = file.read()
-    # Convert to utf-8
-    base64_pdf = base64.b64encode(bytes_data).decode("utf-8")
 
-    # Embed PDF in HTML
-    pdf_display = f'<iframe src="data:application/pdf;base64,{base64_pdf}" width={str(ui_width)} height={str(ui_width*4/3)} type="application/pdf"></iframe>'
-    # Display file
-    st.markdown(pdf_display, unsafe_allow_html=True)
+    info = pdfinfo_from_path(file_path, userpw=None, poppler_path=None)
+
+    maxPages = info["Pages"]
+    for page in range(1, maxPages + 1, 5):
+        images_from_path = convert_from_path(file_path, dpi=200, first_page=page, last_page=min(page + 5 - 1, maxPages))
+        for page in images_from_path:
+            st.image(page)
 
 def store_and_compute_time_difference(var_name):
     # Check if the 'timestamp' exists in the session state

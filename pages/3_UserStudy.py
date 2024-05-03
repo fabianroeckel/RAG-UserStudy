@@ -3,6 +3,7 @@ from streamlit_modal import Modal
 import PyPDF2
 from time import sleep
 from datetime import datetime
+from pdf2image import convert_from_path, convert_from_bytes
 
 def display_chat_content():
     st.session_state.messages = []
@@ -33,10 +34,13 @@ with st.container():
 
             displayPDF(file_path, 900)
 
-    question, response, decision_options, task = get_question_and_response(st.session_state.sessionID)
+    question, response, decision_options, task, expander_title, expander_text = get_question_and_response(st.session_state.sessionID)
     st.title(task)
-    st.markdown("On the left side is the Chat with your RAG system which should help you to answer the question above. The red:[red icon and tex box] displays the question to the RAG-system. Behind the :orange[yellow icon is the answer given] from System. With all the source documents used to generate the content of the answer. "
-                "You can click the source documents and all the :orange[relevant passages are highlighted in yellow], you can also user CMD+F / STRG+F to search the pdf.")
+    st.markdown("On the left side is the Chat with your RAG system which should help you to answer the question above. The red icon and tex box displays the question to the RAG-system. Behind the :orange[yellow icon is the answer given] from System. With all the source documents used to generate the content of the answer. "
+                "You can click the source documents and all the :orange[relevant passages are highlighted in yellow].")
+    with st.expander(expander_title):
+        st.markdown(expander_text)
+
     st.markdown("---")
 
 col_chat, col_questionaire = st.columns([6, 4])
@@ -50,6 +54,7 @@ with col_chat:
             with st.chat_message(message["role"]):
                 st.markdown(message["content"])
 
+        st.markdown("---")
         if st.session_state.sampled_study_type == "SingleSource":
             open_modal = st.button(get_source_links(st.session_state.sessionID)[1][0])
             if open_modal:
@@ -125,18 +130,17 @@ with col_chat:
 
 with col_questionaire:
     with st.form("user form"):
-
         st.subheader('Please answer these questions below')
         st.markdown("Based on the question, answer and sources given on the left.")
-        st.markdown('####')
+        st.markdown("----")
+        decision = st.radio(f'**{task}**', decision_options,index=0, horizontal=False)
+        st.markdown('----')
         trust = st.select_slider('**To what extent do you trust the accuracy of the response?**',
                                  options=['Not at all', 'Slightly', 'Somewhat', 'Moderately', 'Very much',
                                           'Quite a lot', 'Completely'])
         st.markdown('----')
-        decision = st.radio(f'**{task}**', decision_options,index=0, horizontal=False)
-        st.markdown('####')
         # Radio button to select whether there is an error
-        detect_error = st.radio("**Did you detect an error in the response?**", ("No", "Yes"), index=0, horizontal=True,)
+        # detect_error = st.radio("**Did you detect an error in the response?**", ("No", "Yes"), index=0, horizontal=True,)
         error_content = st.text_input("**Paste the content of the error inside this text field**")
         if st.form_submit_button():
             timeSpentPerTask = store_and_compute_time_difference("timestamp")
@@ -159,3 +163,4 @@ with col_questionaire:
         url = "https://www.mozilla.org/de/firefox/new/"
         st.markdown("Please use Firefox, as previously stated to conduct this experiment."
                     " You can donwload it directly from this [link](%s)." % url)
+
