@@ -40,7 +40,6 @@ def main():
 
         if 'sampled_study_type' not in st.session_state:
             sampled_study_type = getSampledStudyType()
-            sampled_study_type = "SingleSource"
             st.session_state["sampled_study_type"] = sampled_study_type
             generateNewCSFFiles(sessionID, sampled_study_type)
 
