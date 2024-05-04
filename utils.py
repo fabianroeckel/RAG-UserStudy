@@ -224,7 +224,7 @@ def displayPDF(file, ui_width):
     type="application/pdf"
     title="Embedded PDF"
     src="data:application/pdf;base64,{base64_pdf}"
-    style="overflow: auto; width: 100%; height: 100%;">"""
+    style="overflow: auto; width: 100%; height: 1000px;">"""
 
     # Displaying File
     st.markdown(pdf_display, unsafe_allow_html=True)
