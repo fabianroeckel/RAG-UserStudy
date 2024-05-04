@@ -209,8 +209,8 @@ def displayPDF(file_path, ui_width):
     info = pdfinfo_from_path(file_path, userpw=None, poppler_path=None)
 
     maxPages = info["Pages"]
-    for page in range(1, maxPages + 1, 7):
-        images_from_path = convert_from_path(file_path, dpi=120, first_page=page,use_pdftocairo=True, last_page=min(page + 7 - 1, maxPages))
+    for page in range(1, maxPages + 1, 3):
+        images_from_path = convert_from_path(file_path, dpi=120, first_page=page,use_pdftocairo=True, last_page=min(page + 3 - 1, maxPages))
         for page in images_from_path:
             st.image(page)
 def store_and_compute_time_difference(var_name):
