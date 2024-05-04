@@ -210,7 +210,7 @@ def displayPDF(file_path, ui_width):
 
     maxPages = info["Pages"]
     for page in range(1, maxPages + 1, 5):
-        images_from_path = convert_from_path(file_path, dpi=200, first_page=page, last_page=min(page + 5 - 1, maxPages))
+        images_from_path = convert_from_path(file_path, dpi=200, first_page=page,use_pdftocairo=True, last_page=min(page + 5 - 1, maxPages))
         for page in images_from_path:
             st.image(page)
 
