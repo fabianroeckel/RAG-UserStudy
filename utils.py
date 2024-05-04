@@ -9,7 +9,7 @@ import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 from datetime import datetime
 from pdf2image import convert_from_path, pdfinfo_from_path
-
+import base64
 FOOTER_ROWS = 300
 WHITE_VALUE = 255
 
@@ -210,9 +210,24 @@ def displayPDF(file_path, ui_width):
 
     maxPages = info["Pages"]
     for page in range(1, maxPages + 1, 5):
-        images_from_path = convert_from_path(file_path, dpi=200,thread_count=3, first_page=page,use_pdftocairo=True, last_page=min(page + 5 - 1, maxPages))
+        images_from_path = convert_from_path(file_path, dpi=200, first_page=page,use_pdftocairo=True, last_page=min(page + 5 - 1, maxPages))
         for page in images_from_path:
             st.image(page)
+def displayPDF(file, ui_width):
+    # Opening file from file path
+    with open(file, "rb") as f:
+        base64_pdf = base64.b64encode(f.read()).decode('utf-8')
+
+    # Embedding PDF in HTML
+    pdf_display =  f"""<embed
+    class="pdfobject"
+    type="application/pdf"
+    title="Embedded PDF"
+    src="data:application/pdf;base64,{base64_pdf}"
+    style="overflow: auto; width: 100%; height: 100%;">"""
+
+    # Displaying File
+    st.markdown(pdf_display, unsafe_allow_html=True)
 
 def store_and_compute_time_difference(var_name):
     # Check if the 'timestamp' exists in the session state
