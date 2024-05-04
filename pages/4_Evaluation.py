@@ -187,6 +187,6 @@ try:
         s3.upload_file(file_path, bucket_name, object_key)
         switch_page("thankyou")
 
-except KeyError as e:
+except (KeyError, AttributeError) as e:
     print('I got a KeyError - reason "%s"' % str(e))
     switch_page("streamlit_app")

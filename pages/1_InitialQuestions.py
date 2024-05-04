@@ -119,7 +119,7 @@ try:
         if "timestamp" not in st.session_state:
             st.session_state["timestamp"] = datetime.now()
         switch_page("introductionToStudy")
-except KeyError as e:
+except (KeyError, AttributeError) as e:
     print('I got a KeyError - reason "%s"' % str(e))
     switch_page("streamlit_app")
 
