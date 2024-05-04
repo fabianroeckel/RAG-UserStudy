@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit_extras.switch_page_button import switch_page
 
 def main():
     st.title("Thank You for Participating!")
@@ -18,4 +19,8 @@ def main():
     # You can add any additional content or contact information here
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyError as e:
+        print('I got a KeyError - reason "%s"' % str(e))
+        switch_page("streamlit_app")

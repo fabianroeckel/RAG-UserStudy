@@ -7,9 +7,7 @@ from streamlit.runtime import get_instance
 from streamlit.runtime.scriptrunner import get_script_run_ctx
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
-import base64
 from datetime import datetime
-import tempfile
 from pdf2image import convert_from_path, pdfinfo_from_path
 
 FOOTER_ROWS = 300

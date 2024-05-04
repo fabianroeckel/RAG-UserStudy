@@ -101,23 +101,26 @@ def language_level():
 
 
 
+try:
+    st.write(st.session_state.sessionID)
+    st.header('Welcome to the Experiment!')
+    st.write('Please provide some demographic information before starting the experiment.')
 
-st.write(st.session_state.sessionID)
-st.header('Welcome to the Experiment!')
-st.write('Please provide some demographic information before starting the experiment.')
+    age, gender, educations = demographic_questions()
+    rag_experience, system_usage_frequency = similar_systems_experience()
+    perceived_usefulness = perceived_usefulness()
+    skepticism = skepticism_towards_ai_content()
+    proficiency = language_level()
+    selected_companies, familiarity_dict, sec_10_documents = financial_knowledge_questions()
+    general_questions_completed = False
 
-age, gender, educations = demographic_questions()
-rag_experience, system_usage_frequency = similar_systems_experience()
-perceived_usefulness = perceived_usefulness()
-skepticism = skepticism_towards_ai_content()
-proficiency = language_level()
-selected_companies, familiarity_dict, sec_10_documents = financial_knowledge_questions()
-general_questions_completed = False
-
-st.write('Thank you for providing the information. You may proceed with the experiment now.')
-if st.button('Start with the Experiment'):
-    if "timestamp" not in st.session_state:
-        st.session_state["timestamp"] = datetime.now()
-    switch_page("introductionToStudy")
+    st.write('Thank you for providing the information. You may proceed with the experiment now.')
+    if st.button('Start with the Experiment'):
+        if "timestamp" not in st.session_state:
+            st.session_state["timestamp"] = datetime.now()
+        switch_page("introductionToStudy")
+except KeyError as e:
+    print('I got a KeyError - reason "%s"' % str(e))
+    switch_page("streamlit_app")
 
 
