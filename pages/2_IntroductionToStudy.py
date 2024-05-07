@@ -8,7 +8,7 @@ try:
     st.markdown("----")
 
     ## Step 1
-    col_image, col_text = st.columns([7, 3])
+    col_text, col_image = st.columns([3, 7])
     with col_image:
         st.image("media/Explanations/slides/Folie1.jpeg")
 
@@ -17,7 +17,7 @@ try:
         st.write("Welcome to the study! You'll be using a Retrieval Augmented Generation (RAG) system designed specifically for financial tasks. A screenshot of your workspace is on the left side of the interface, where you'll interact with the system.")
 
     ## Step 2
-    col_image, col_text = st.columns([7, 3])
+    col_text, col_image = st.columns([3, 7])
     with col_image:
         st.image("media/Explanations/slides/Folie2.jpeg")
 
@@ -26,7 +26,7 @@ try:
         st.write("You can identify your task highlighted in orange within the RAG system. This task is presented both as a title at the top of the interface and on the right side, where you'll input your answer.")
 
     ## Step 3
-    col_image, col_text = st.columns([7, 3])
+    col_text, col_image = st.columns([3, 7])
     with col_image:
         st.image("media/Explanations/slides/Folie3.jpeg")
 
@@ -35,7 +35,7 @@ try:
         st.write("If you encounter any unfamiliar financial terms during the task, additional information is available within the RAG system. Simply look for the box below the title highlighted in orange, and further explanations will be provided to assist you.")
 
     ## Step 4
-    col_image, col_text = st.columns([7, 3])
+    col_text, col_image = st.columns([3, 7])
     with col_image:
         st.image("media/Explanations/slides/Folie4.jpeg")
 
@@ -44,16 +44,16 @@ try:
         st.write("All necessary information related to the financial task is displayed on the left side within the RAG system. If you require additional context or wish to verify the information, you can access the sources provided.")
 
     ## Step 5
-    col_image, col_text = st.columns([7, 3])
+    col_text, col_image = st.columns([3, 7])
     with col_image:
         st.image("media/Explanations/slides/Folie5.jpeg")
 
     with col_text:
         st.subheader("Step 5: Verifying Accuracy")
-        st.write("To ensure the accuracy of the information provided by the RAG system, you can navigate through the attached PDF(s). Relevant sections within the PDF(s) are highlighted in yellow, making it easier for you to verify the correctness of the responses.")
+        st.write("You may have the option to check the PDFs file with the related information. To ensure the accuracy of the information provided by the RAG system, you can navigate through the attached PDF(s). Relevant sections within the PDF(s) are highlighted in yellow, making it easier for you to verify the correctness of the responses.")
 
     ## Step 6
-    col_image, col_text = st.columns([7, 3])
+    col_text, col_image = st.columns([3, 7])
     with col_image:
         st.image("media/Explanations/slides/Folie6.jpeg")
 

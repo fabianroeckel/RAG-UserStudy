@@ -10,6 +10,7 @@ from streamlit_extras.switch_page_button import switch_page
 from datetime import datetime
 from pdf2image import convert_from_path, pdfinfo_from_path
 import base64
+import re
 FOOTER_ROWS = 300
 WHITE_VALUE = 255
 
@@ -138,7 +139,10 @@ def generateNewCSFFiles (sessionID, sampled_studyType):
     fileNameGeneralQuestions = f"./data/raw_answers/UserGeneral/GeneralQuestions{sessionID}.csv"
     with open(fileNameGeneralQuestions, mode='w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(['userID', 'PreviousExperienceLLM', 'PreviousExperienceRAG'])
+        ##add header
+        writer.writerow(['userID', 'Age', 'Gender', 'Education', 'LanguageLevel', 'RAG-PreviousExperience', 'RAG-Usage', 'InitialTrust', 'CompaniesKnowledege', 'financial_literacy', 'sec_10_documents', 'EaseOfReading', 'FinalTrust', 'WillingnessToUse', 'CognitiveLoad', 'Usefulness1', 'Usefulness2', 'EaseOfUse1', 'EaseOfUse2', 'BI1', 'BI2'])
+        writer.writerow([sessionID, 0, 0, 0, 0, 0, 0,
+                         0,0,0,0, 0, 0, 0,0,0, 0, 0, 0, 0, 0])
 
 
 
@@ -236,6 +240,22 @@ def store_and_compute_time_difference(var_name):
         return return_data
 
 
+def sort_files_by_year_quarter(file_names):
+    # Define a regular expression pattern to match the year and quarter in the file name
+    pattern = r'(\d{4}) Q(\d)'
+
+    # Extract the year and quarter from each file name using regex and create a list of tuples (file_name, year, quarter)
+    file_years_quarters = [(file_name, int(match.group(1)), int(match.group(2))) for file_name in file_names for match
+                           in [re.search(pattern, file_name)] if match]
+
+    # Sort the list of tuples based on the year (second element of each tuple) and quarter (third element of each tuple)
+    sorted_files = sorted(file_years_quarters, key=lambda x: (x[1], x[2]))
+
+    # Extract only the file names from the sorted list of tuples
+    sorted_file_names = [file_name for file_name, _, _ in sorted_files]
+
+    return sorted_file_names
+
 def get_source_links(sessionID):
     user_file = f"./data/raw_answers/UserStudy/UserStudy_{sessionID}.csv"
     user_df = pd.read_csv(user_file)
@@ -244,15 +264,19 @@ def get_source_links(sessionID):
 
     if studyType == "SingleSource":
         folder_path = f"data/source_documents/1_combined_documents/Q{question_id}"
+        files = os.listdir(folder_path)
     elif studyType == "MultiSource":
         folder_path = f"data/source_documents/0_single_documents_v2/Q{question_id}"
+        files = os.listdir(folder_path)
+        files = sort_files_by_year_quarter(files)
     else:
         raise ValueError("Invalid studyType")
 
     if not os.path.exists(folder_path):
         raise FileNotFoundError(f"Folder not found: {folder_path}")
 
-    files = os.listdir(folder_path)
+
+    print(files)
     document_paths = [os.path.join(folder_path, file) for file in files]
 
     print("folder_path:", folder_path)

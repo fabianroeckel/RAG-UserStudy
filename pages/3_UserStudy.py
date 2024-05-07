@@ -13,6 +13,19 @@ try:
         st.session_state.messages.append({"role": "user", "content": question})
         st.session_state.messages.append({"role": "assistant", "content": response})
 
+    def display_chat_input_field():
+        with st.container():
+            if prompt := st.chat_input("How can i help you?"):
+                st.session_state.messages.append({"role": "user", "content": prompt})
+                # with st.chat_message("user"):
+                #    st.markdown(prompt)
+
+                # with st.chat_message("assistant"):
+                #   message_placeholder = st.empty()
+                full_response = "Based on the information provided, please use your best judgment to address the task at hand."
+                #    message_placeholder.markdown(full_response + "")
+                st.session_state.messages.append({"role": "assistant", "content": full_response})
+
     with st.container():
         modal = Modal(title=st.session_state["source_name"],
             key="demo-modal",
@@ -110,20 +123,6 @@ try:
                             st.session_state["source_watch_time4_datetime"] = datetime.now()
                             st.session_state["last_clicked_source"] = 4
                             modal.open()
-
-
-        with st.container():
-            if prompt := st.chat_input("How can i help you?"):
-                st.session_state.messages.append({"role": "user", "content": prompt})
-                # with st.chat_message("user"):
-                #    st.markdown(prompt)
-
-                # with st.chat_message("assistant"):
-                #   message_placeholder = st.empty()
-                full_response = "Based on the information provided, please use your best judgment to address the task at hand."
-                #    message_placeholder.markdown(full_response + "")
-                st.session_state.messages.append({"role": "assistant", "content": full_response})
-
 
     with col_questionaire:
         with st.form("user form"):
