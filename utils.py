@@ -116,7 +116,7 @@ def generateNewCSFFiles (sessionID, sampled_studyType):
     # Create a CSV file and write headers
     with open(filenameUserStudy, mode='w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(['userID', 'studyType','shuffled_questiontypes', 'QuestionID', 'Choice', 'Trust', 'TaskCompletionTime', "ClicksSource1", "ClicksSource2", "ClicksSource3", "ClicksSource4","TotalClicks", "ViewTimeSource1", "ViewTimeSource2", "ViewTimeSource3", "ViewTimeSource4", "TotalViewTime"])
+        writer.writerow(['userID', 'studyType','shuffled_questiontypes', 'QuestionID', 'Choice', 'Trust', 'Error', 'ErrorText', 'TaskCompletionTime', "ClicksSource1", "ClicksSource2", "ClicksSource3", "ClicksSource4","TotalClicks", "ViewTimeSource1", "ViewTimeSource2", "ViewTimeSource3", "ViewTimeSource4", "TotalViewTime"])
 
         # Get sampled question IDs
         sampled_question_ids = get_sampled_question_ids()
@@ -129,12 +129,12 @@ def generateNewCSFFiles (sessionID, sampled_studyType):
             # Assuming 'Choice', 'Trust', 'Interaction' are placeholders and you need to fill them accordingly
             # You can modify this part according to your actual data generation logic
             if i < 7:
-                writer.writerow([sessionID,sampled_studyType,shuffled_questiontypes[i], sampled_question_ids[i], "SomeChoice", "SomeTrust", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+                writer.writerow([sessionID,sampled_studyType,shuffled_questiontypes[i], sampled_question_ids[i], "SomeChoice", "SomeTrust",0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
             if i == 7:
-                writer.writerow([sessionID, sampled_studyType, "AttentionCheck", 21, "SomeChoice", "SomeTrust", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+                writer.writerow([sessionID, sampled_studyType, "AttentionCheck", 21, "SomeChoice", "SomeTrust",0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
             if i > 7:
                 writer.writerow([sessionID, sampled_studyType, shuffled_questiontypes[i-1], sampled_question_ids[i-1], "SomeChoice",
-                     "SomeTrust", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+                     "SomeTrust",0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
     fileNameGeneralQuestions = f"./data/raw_answers/UserGeneral/GeneralQuestions{sessionID}.csv"
     with open(fileNameGeneralQuestions, mode='w', newline='') as file:
@@ -149,14 +149,19 @@ def generateNewCSFFiles (sessionID, sampled_studyType):
     print(f"CSV file '{filenameUserStudy}' and '{fileNameGeneralQuestions}' have been generated successfully.")
 
 
-def update_questionaire(trust, choice, task_completion_time,
+def update_questionaire(trust, choice, error, errortext, task_completion_time,
                         ClicksSource1, ClicksSource2, ClicksSource3, ClicksSource4,
                         ViewTimeSource1, ViewTimeSource2, ViewTimeSource3, ViewTimeSource4):
 
     # Map likert scale options to numerical values
-    trust_mapping = {'Not at all': 1, 'Slightly': 2, 'Somewhat': 3, 'Moderately': 4, 'Very much': 5, 'Quite a lot': 6,
-                     'Completely': 7}
-    trust_numeric = trust_mapping[trust]
+    likert_mapping = {'1. Strongly Disagree': 1,
+                      '2. Disagree': 2,
+                      '3. Somewhat Disagree': 3,
+                      '4. Neither Disagree nor Agree': 4,
+                      '5. Somewhat Agree': 5,
+                      '6. Agree': 6,
+                      '7. Strongly Agree': 7}
+    trust_numeric = likert_mapping[trust]
 
     # Load the CSV file
     file_path = f'./data/raw_answers/UserStudy/UserStudy_{st.session_state.sessionID}.csv'
@@ -167,6 +172,10 @@ def update_questionaire(trust, choice, task_completion_time,
     df.loc[row, 'Trust'] = trust_numeric
     df.loc[row, 'Choice'] = choice
     df.loc[row, 'TaskCompletionTime'] = int(task_completion_time)
+
+    df.loc[row, 'Error'] = error
+    df.loc[row, 'ErrorText'] = errortext
+
 
     #Clicks
     totalClicks = (ClicksSource1 + ClicksSource2 + ClicksSource3 + ClicksSource4)

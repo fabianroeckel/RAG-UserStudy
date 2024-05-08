@@ -13,7 +13,7 @@ def main():
     hide_pages("pages/5_ThankYou.py")
     st.title('Welcome to the Human-Computer Interaction Study')
     st.markdown("""
-    ###### Conducted by [Your Institution or Research Group]
+    ###### Conducted by KSRI – Karlsruhe Digital Service Research & Innovation Hub in Coorperation with the University of Bayreuth
 
     Welcome to our online experiment exploring the interaction with RAG-systems.
 
@@ -23,7 +23,7 @@ def main():
     - Your responses will remain confidential and will only be used for research purposes.
 
     **Estimated Time:**
-    The experiment is expected to take approximately [insert estimated time] minutes to complete.
+    The experiment is expected to take approximately 30-45 minutes to complete.
 
     Thank you for your participation! Let's get started and contribute to advancements in HCI research.
 

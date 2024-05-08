@@ -125,25 +125,32 @@ try:
                             modal.open()
 
     with col_questionaire:
-        with st.form("user form"):
+        with st.form("user form", clear_on_submit=True):
             st.subheader('Please answer these questions below')
             st.markdown("Based on the question, answer and sources given on the left.")
             st.markdown("----")
             decision = st.radio(f'**{task}**', decision_options,index=0, horizontal=False)
             st.markdown('----')
-            trust = st.select_slider('**To what extent do you trust the accuracy of the response?**',
-                                     options=['Not at all', 'Slightly', 'Somewhat', 'Moderately', 'Very much',
-                                              'Quite a lot', 'Completely'])
+            trust = st.select_slider('**I trust the accuracy and reliability of the answer provided by this system.**',
+                                     options=['1. Strongly Disagree',
+                                                '2. Disagree',
+                                                '3. Somewhat Disagree',
+                                                '4. Neither Disagree nor Agree',
+                                                '5. Somewhat Agree',
+                                                '6. Agree',
+                                                '7. Strongly Agree'])
             st.markdown('----')
             # Radio button to select whether there is an error
-            # detect_error = st.radio("**Did you detect an error in the response?**", ("No", "Yes"), index=0, horizontal=True,)
-            error_content = st.text_input("**If you detect an error, paste the content of the error inside this text field**")
+            error = st.radio("**Did you detect an error in the response?**", ("No", "Yes"), index=0, horizontal=True)
+            error_text = st.text_input("**If you detect an error, paste the content of the error inside this text field**")
             if st.form_submit_button():
                 timeSpentPerTask = store_and_compute_time_difference("timestamp")
                 print("Time spent")
                 print(timeSpentPerTask["time_difference"])
                 update_questionaire(trust,
                                     decision,
+                                    error,
+                                    error_text,
                                     timeSpentPerTask["time_difference"],
                                     st.session_state["source_clicks1"],
                                     st.session_state["source_clicks2"],
