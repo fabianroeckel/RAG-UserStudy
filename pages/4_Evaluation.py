@@ -112,7 +112,7 @@ try:
             key="pu_1_slider",
             value='4. Neither Disagree nor Agree'  # Default selection
         )
-        st.subheader(" 'The RAG system made it easier to perform tasks that are similar to the ones tested.'")
+        st.subheader("The RAG system made it easier to perform tasks that are similar to the ones tested.")
         usefulness2 = st.select_slider(
             'Select an option between 1. Strongly Disagree and 7. Strongly Agree',
             options=[
@@ -148,7 +148,7 @@ try:
             key="poe_1_slider",
             value='4. Neither Disagree nor Agree'  # Default selection
         )
-        st.subheader("'Interacting with the RAG system was clear and understandable.'")
+        st.subheader("Interacting with the RAG system was clear and understandable.")
         ease_of_use2 = st.select_slider(
             'Select an option between 1. Strongly Disagree and 7. Strongly Agree',
             options=[
