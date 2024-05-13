@@ -51,7 +51,7 @@ def demographic_questions():
 
 def similar_systems_experience():
     st.title('Experience with RAG Systems')
-    with st.expander("What is a RAG-System?"):
+    with st.expander("What is a RAG-System?", expanded=True):
         col_expl, col_video = st.columns([6, 4])
         with col_expl:
             st.markdown("**RAG**, which stands for **Retrieval-Augmented Generation**, is an AI framework designed to enhance the responses of large language models (LLMs) by incorporating real-time information from external databases or knowledge bases. This approach helps to ground the model's responses in accurate and current information, making them more reliable and contextually relevant. ")
