@@ -6,28 +6,13 @@ import extra_streamlit_components as stx
 from datetime import datetime
 
 
-def inital_questions_update(age, gender, education, proficiency, rag_experience, system_usage_frequency,
+def inital_questions_update(rag_experience, system_usage_frequency,
                             skepticism, selected_companies, familiarity_dict, sec_10_documents):
     print()
     file_path = f"./data/raw_answers/UserGeneral/GeneralQuestions{st.session_state.sessionID}.csv"
     df = pd.read_csv(file_path)
     row = 0
     # AGE
-    df.loc[row, 'Age'] = age
-
-    # GENDER
-    gender_mapping = {'Male': 0, 'Female': 1, 'Other': 2}
-    df.loc[row, 'Gender'] = gender_mapping[gender]
-
-    # EDUCATION
-    education_mapping = {'High School': 0, "Bachelor's Degree": 1, "Masters's Degree": 2, "PhD": 3, "Other": 4}
-    df.loc[row, 'Education'] = education_mapping[education]
-
-    # LANGUAGE
-    language_mapping = {'BasicUser(A1-A2)': 0, 'IndependentUser(B1-B2)': 1, 'ProficientUser(C1-C2)': 2,
-                        'Native Speaker': 3}
-    df.loc[row, "LanguageLevel"] = language_mapping[proficiency]
-
     df.loc[row, 'RAG-PreviousExperience'] = rag_experience
     df.loc[row, 'RAG-Usage'] = system_usage_frequency
     df.loc[row, 'InitialTrust'] = skepticism
@@ -38,15 +23,6 @@ def inital_questions_update(age, gender, education, proficiency, rag_experience,
     df.to_csv(file_path, index=False)
     print(df)
     print(df.head())
-
-def demographic_questions():
-    st.title('Demographic Information')
-    age = st.number_input('What is your age?', min_value=18, max_value=120)
-    gender = st.selectbox('What is your gender?', ['Male', 'Female', 'Other'])
-    education = st.selectbox('What is your level of education?',
-                             ['High School', 'Bachelor\'s Degree', 'Master\'s Degree', 'PhD', 'Other'])
-
-    return age, gender, education
 
 
 def similar_systems_experience():
@@ -167,12 +143,6 @@ def financial_knowledge_questions():
 
     return selected_companies, likert_mapping[financial_literacy], sec_mapping[sec_10_documents]
 
-def language_level():
-    st.title('Language Level')
-    proficiency = st.selectbox('How would you rate your proficiency with the English language of the system?',
-                               ['BasicUser(A1-A2)', 'IndependentUser(B1-B2)', 'ProficientUser(C1-C2)', 'Native Speaker'])
-
-    return proficiency
 
 
 
@@ -182,10 +152,6 @@ try:
     st.header('Welcome to the Experiment!')
     st.write('Please provide some demographic information before starting the experiment.')
 
-    age, gender, education = demographic_questions()
-    st.markdown("##")
-    proficiency = language_level()
-    st.markdown("##")
     rag_experience, system_usage_frequency = similar_systems_experience()
     st.markdown("##")
     skepticism = skepticism_towards_ai_content()
@@ -199,7 +165,7 @@ try:
         if "timestamp" not in st.session_state:
             st.session_state["timestamp"] = datetime.now()
 
-        inital_questions_update(age, gender, education, proficiency, rag_experience, system_usage_frequency, skepticism,
+        inital_questions_update(rag_experience, system_usage_frequency, skepticism,
                                 selected_companies, familiarity_dict, sec_10_documents)
         switch_page("introductionToStudy")
 except (KeyError, AttributeError) as e:

@@ -7,7 +7,7 @@ import boto3
 
 
 
-def final_evaluation_per_user(EaseOfReading, FinalTrust, WillingnessToUse, CognitiveLoad, Usefulness1, Usefulness2, EaseOfUse1, EaseOfUse2, BI1, BI2):
+def final_evaluation_per_user(age, gender, education,proficiency, EaseOfReading, FinalTrust, WillingnessToUse, CognitiveLoad, Usefulness1, Usefulness2, EaseOfUse1, EaseOfUse2, BI1, BI2):
     likert_mapping = {'1. Strongly Disagree': 1,
                       '2. Disagree': 2,
                       '3. Somewhat Disagree': 3,
@@ -20,6 +20,21 @@ def final_evaluation_per_user(EaseOfReading, FinalTrust, WillingnessToUse, Cogni
     df = pd.read_csv(file_path)
     row = 0
 
+
+    df.loc[row, 'Age'] = age
+
+    # GENDER
+    gender_mapping = {'Male': 0, 'Female': 1, 'Other': 2}
+    df.loc[row, 'Gender'] = gender_mapping[gender]
+
+    # EDUCATION
+    education_mapping = {'High School': 0, "Bachelor's Degree": 1, "Masters's Degree": 2, "PhD": 3, "Other": 4}
+    df.loc[row, 'Education'] = education_mapping[education]
+
+    # LANGUAGE
+    language_mapping = {'BasicUser(A1-A2)': 0, 'IndependentUser(B1-B2)': 1, 'ProficientUser(C1-C2)': 2,
+                        'Native Speaker': 3}
+    df.loc[row, "LanguageLevel"] = language_mapping[proficiency]
     df.loc[row, 'EaseOfReading'] = likert_mapping[EaseOfReading]
     df.loc[row, 'FinalTrust'] = likert_mapping[FinalTrust]
     df.loc[row, 'WillingnessToUse'] = likert_mapping[WillingnessToUse]
@@ -223,10 +238,32 @@ try:
         return intention1, intention2
 
 
+    def language_level():
+        st.title('Language Level')
+        proficiency = st.selectbox('How would you rate your proficiency with the English language of the system?',
+                                   ['BasicUser(A1-A2)', 'IndependentUser(B1-B2)', 'ProficientUser(C1-C2)',
+                                    'Native Speaker'])
+
+        return proficiency
+
+
+    def demographic_questions():
+        st.title('Demographic Information')
+        age = st.number_input('What is your age?', min_value=18, max_value=120)
+        gender = st.selectbox('What is your gender?', ['Male', 'Female', 'Other'])
+        education = st.selectbox('What is your level of education?',
+                                 ['High School', 'Bachelor\'s Degree', 'Master\'s Degree', 'PhD', 'Other'])
+
+        return age, gender, education
+
 
     st.title("Final Evaluation and Feedback")
     st.subheader('Please answer the following questions to provide feedback on your experience. After completing, press the "Finish the study" button to save your results at the end of the page.')
 
+    age, gender, education = demographic_questions()
+    st.markdown("##")
+    proficiency = language_level()
+    st.markdown("##")
     FinalTrust = skepticism_towards_ai_content()
     WillingnessToUse = willingness_to_use_model()
     CognitiveLoad = cognitive_load()
@@ -236,7 +273,8 @@ try:
     BI1, BI2 = behavioral_intention()
 
     if st.button("Finish the study"):
-        final_evaluation_per_user(EaseOfReading, FinalTrust, WillingnessToUse, CognitiveLoad, Usefulness1, Usefulness2,
+        #age, gender, education, proficiency,
+        final_evaluation_per_user(age, gender, education,proficiency, EaseOfReading, FinalTrust, WillingnessToUse, CognitiveLoad, Usefulness1, Usefulness2,
                                   EaseOfUse1, EaseOfUse2, BI1, BI2)
 
         ## UPLOADING TO AMAZON S3

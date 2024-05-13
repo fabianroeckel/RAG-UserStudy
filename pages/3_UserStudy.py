@@ -8,6 +8,9 @@ import boto3
 
 
 try:
+    df = pd.read_csv(f"./data/raw_answers/UserStudy/UserStudy_{st.session_state.sessionID}.csv")
+    st.write(df)
+
     def display_chat_content():
         st.session_state.messages = []
         st.session_state.messages.append({"role": "user", "content": question})
@@ -149,10 +152,11 @@ try:
                                                 '4. Neither Disagree nor Agree',
                                                 '5. Somewhat Agree',
                                                 '6. Agree',
-                                                '7. Strongly Agree'])
+                                                '7. Strongly Agree'],
+                                     value='4. Neither Disagree nor Agree')
             st.markdown('----')
             # Radio button to select whether there is an error
-            error = st.radio("**Did you detect an error in the response?**", ("No", "Yes"), index=0, horizontal=True)
+            error = st.radio("**Did you detect an error in the response?**", ("Dummy", "No", "Yes"), index=0, horizontal=False)
             error_text = st.text_input("**If you detect an error, paste the content of the error inside this text field**")
             if st.form_submit_button():
                 timeSpentPerTask = store_and_compute_time_difference("timestamp")
