@@ -130,6 +130,17 @@ try:
             st.markdown("Based on the question, answer and sources given on the left.")
             st.markdown("----")
             decision = st.radio(f'**{task}**', decision_options,index=0, horizontal=False)
+            st.markdown(
+                """
+            <style>
+                div[role=radiogroup] label:first-of-type {
+                    visibility: hidden;
+                    height: 0px;
+                }
+            </style>
+            """,
+                unsafe_allow_html=True,
+            )
             st.markdown('----')
             trust = st.select_slider('**I trust the accuracy and reliability of the answer provided by this system.**',
                                      options=['1. Strongly Disagree',

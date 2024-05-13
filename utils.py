@@ -56,6 +56,7 @@ def get_question_and_response(session_id):
     task = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["Task"].values[0]
     decision_options = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["DecisionOptions"].values[0]
     decision_options = decision_options.split(';')
+    decision_options = ['0. dummy-preselect'] + decision_options
     return question, response, decision_options, task, expander_title, expander_text
 
 
