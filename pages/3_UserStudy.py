@@ -8,8 +8,6 @@ import boto3
 
 
 try:
-    df = pd.read_csv(f"./data/raw_answers/UserStudy/UserStudy_{st.session_state.sessionID}.csv")
-    st.write(df)
 
     def display_chat_content():
         st.session_state.messages = []
@@ -82,7 +80,6 @@ try:
                 source1, source2, source3, source4, spacer = st.columns([2, 2, 2, 2, 2])
                 with source1:
                     open_modal = st.button(get_source_links(st.session_state.sessionID)[1][0])
-                    #st.session_state["source_link"] = "data/source_documents/0_single_documents/Q2/2022 Q3 AAPL.pdf"
                     if open_modal:
                         st.session_state["source_link"] = get_source_links(st.session_state.sessionID)[0][0]
                         st.session_state["source_name"] = get_source_links(st.session_state.sessionID)[1][0]
@@ -93,7 +90,6 @@ try:
                         modal.open()
                 with source2:
                     open_modal = st.button(get_source_links(st.session_state.sessionID)[1][1])
-                    #st.session_state["source_link"] = "data/source_documents/0_single_documents/Q2/2022 Q3 AAPL.pdf"
                     if open_modal:
                         st.session_state["source_link"] = get_source_links(st.session_state.sessionID)[0][1]
                         st.session_state["source_name"] = get_source_links(st.session_state.sessionID)[1][1]
@@ -105,7 +101,6 @@ try:
                 if len(get_source_links(st.session_state.sessionID)[1]) >2:
                     with source3:
                         open_modal = st.button(get_source_links(st.session_state.sessionID)[1][2])
-                       #st.session_state["source_link"] = "data/source_documents/0_single_documents/Q2/2022 Q3 AAPL.pdf"
                         if open_modal:
                             st.session_state["source_link"] = get_source_links(st.session_state.sessionID)[0][2]
                             st.session_state["source_name"] = get_source_links(st.session_state.sessionID)[1][2]
@@ -117,7 +112,6 @@ try:
                 if len(get_source_links(st.session_state.sessionID)[1]) > 3:
                     with source4:
                         open_modal = st.button(get_source_links(st.session_state.sessionID)[1][3])
-                        #st.session_state["source_link"] = "data/source_documents/0_single_documents/Q2/2022 Q3 AAPL.pdf"
                         if open_modal:
                             st.session_state["source_link"] = get_source_links(st.session_state.sessionID)[0][3]
                             st.session_state["source_name"] = get_source_links(st.session_state.sessionID)[1][3]

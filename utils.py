@@ -273,10 +273,10 @@ def get_source_links(sessionID):
     question_id = user_df.iloc[st.session_state.question_number]["QuestionID"]
 
     if studyType == "SingleSource":
-        folder_path = f"data/source_documents/1_combined_documents/Q{question_id}"
+        folder_path = f"data/source_documents/short/1_combined_documents/Q{question_id}"
         files = os.listdir(folder_path)
     elif studyType == "MultiSource":
-        folder_path = f"data/source_documents/0_single_documents_v2/Q{question_id}"
+        folder_path = f"data/source_documents/short/0_single_documents_v2/Q{question_id}"
         files = os.listdir(folder_path)
         files = sort_files_by_year_quarter(files)
     else:

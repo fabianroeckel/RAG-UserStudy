@@ -42,6 +42,19 @@ def similar_systems_experience():
 
         with col_video:
             st.image("media/rag_gif.gif")
+
+    retrieval_augmentation_generation = st.radio(
+        "How does a Retrieval augmented generation system work?",
+        options=[
+            "a) It searches for relevant information, augments it, and generates a response.",
+            "b) It generates a response without retrieving any external data.",
+            "c) It integrates retrieved data but does not generate a response.",
+            "d) It retrieves information, but does not integrate it with existing knowledge."
+        ],
+        key="rag_system_question",
+        index=0  # Default selection
+    )
+
     rag_experience = st.selectbox('Have you ever used a RAG system before?', ['Yes', 'No'])
     system_usage_frequency = st.selectbox('How often do you use similar applications or systems?',
                                           ['Daily', 'Weekly', 'Monthly', 'Rarely', 'Never'])
