@@ -175,7 +175,7 @@ def update_questionaire(trust, choice, error, errortext, task_completion_time,
     df.loc[row, 'TaskCompletionTime'] = int(task_completion_time)
 
     df.loc[row, 'Error'] = error
-    df.loc[row, 'ErrorText'] = errortext
+    df.loc[row, 'ErrorText'] = str(errortext)
 
 
     #Clicks

@@ -4,6 +4,7 @@ from streamlit_extras.switch_page_button import switch_page
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 try:
+    st.progress(15, f"Study Progress: 15% Complete")
     st.header("Understanding Your Task in This Study")
     st.markdown("----")
 
@@ -62,6 +63,7 @@ try:
         st.write("After reviewing the information and verifying its accuracy, proceed to answer the questions related to the financial task. You'll find these questions on the right side within the RAG system interface. Feel free to indicate your confidence level in the responses or report any errors you may have identified.")
 
     if st.button('I Understand! Let\'s Start the Experiment'):
+        st.session_state.progress = 15
         switch_page("Userstudy")
 except (KeyError, AttributeError) as e:
     print('I got a KeyError - reason "%s"' % str(e))

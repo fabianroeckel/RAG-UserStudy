@@ -46,9 +46,10 @@ try:
                 displayPDF(file_path, 900)
 
         question, response, decision_options, task, expander_title, expander_text = get_question_and_response(st.session_state.sessionID)
+
+        st.progress(st.session_state.progress, f"Study Progress: {st.session_state.progress}% Complete")
         st.title(task)
-        st.markdown("On the left side is the Chat with your RAG system which should help you to answer the question above. The red icon and tex box displays the question to the RAG-system. Behind the :orange[yellow icon is the answer given] from System. With all the source documents used to generate the content of the answer. "
-                    "You can click the source documents and all the :orange[relevant passages are highlighted in yellow].")
+        st.markdown("On the left side, you will find the chat with your RAG system, designed to assist you in answering the question above. The red icon and text box display the question submitted to the RAG system. The yellow icon indicates the system's response, including all the source documents used to generate the answer. By clicking on the source documents, all relevant passages will be highlighted in yellow for easy reference.")
         with st.expander(expander_title):
             st.markdown(expander_text)
 
@@ -153,6 +154,7 @@ try:
             error = st.radio("**Did you detect an error in the response?**", ("Dummy", "No", "Yes"), index=0, horizontal=False)
             error_text = st.text_input("**If you detect an error, paste the content of the error inside this text field**")
             if st.form_submit_button():
+                st.session_state.progress += 5
                 timeSpentPerTask = store_and_compute_time_difference("timestamp")
                 print("Time spent")
                 print(timeSpentPerTask["time_difference"])

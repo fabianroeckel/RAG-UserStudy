@@ -4,13 +4,14 @@ from streamlit_extras.switch_page_button import switch_page
 from st_pages import hide_pages, Page
 
 def main():
+    st.progress(0, text=f"Study Progress: 0% Complete")
     hide_pages("streamlit_app.py")
     hide_pages("pages/0_ConsentToParticipate.py")
     hide_pages("pages/1_InitialQuestions.py")
-    hide_pages("pages/2_IntroductionToStudy.py")
-    hide_pages("pages/3_UserStudy.py")
-    hide_pages("pages/4_Evaluation.py")
-    hide_pages("pages/5_ThankYou.py")
+    hide_pages("pages/3_IntroductionToStudy.py")
+    hide_pages("pages/4_UserStudy.py")
+    hide_pages("pages/5_Evaluation.py")
+    hide_pages("pages/6_ThankYou.py")
     st.title('Welcome to the Human-Computer Interaction Study')
     st.markdown("""
     ###### Conducted by KSRI – Karlsruhe Digital Service Research & Innovation Hub in Coorperation with the University of Bayreuth
