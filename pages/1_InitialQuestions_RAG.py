@@ -4,6 +4,7 @@ from utils import *
 from streamlit_extras import vertical_slider
 import extra_streamlit_components as stx
 from datetime import datetime
+from loguru import logger
 
 
 def inital_questions_update_rag(rag_experience, system_usage_frequency,
@@ -91,21 +92,22 @@ def skepticism_towards_ai_content():
     return likert_mapping[skepticism]
 
 try:
+    logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
+    logger.add(logname)
+    logger.info("PreQuestions Rag started")
     st.progress(10, f"Study Progress: 10% Complete")
     st.title('Pre-Study Questionaire: AI-Systems')
     st.write('Please provide some demographic information before starting the experiment.')
 
     rag_experience, system_usage_frequency = similar_systems_experience()
+    logger.info(f"Previous RAG Experience {rag_experience}")
+    logger.info(f"System usage frequency {system_usage_frequency}")
     st.markdown("##")
     skepticism = skepticism_towards_ai_content()
-    # The question
-    general_questions_completed = False
+    logger.info(f"AI Skepticism {skepticism}")
 
     st.write('Thank you for providing the information. You may proceed with the experiment now.')
     if st.button('Start with the Experiment'):
-        if "timestamp" not in st.session_state:
-            st.session_state["timestamp"] = datetime.now()
-
         inital_questions_update_rag(rag_experience, system_usage_frequency, skepticism)
         switch_page("initialQuestions_Finance")
 except (KeyError, AttributeError) as e:

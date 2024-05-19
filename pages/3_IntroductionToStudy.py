@@ -1,5 +1,7 @@
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
+from loguru import logger
+from datetime import datetime
 
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
@@ -64,6 +66,9 @@ try:
 
     if st.button('I Understand! Let\'s Start the Experiment'):
         st.session_state.progress = 15
+        if "timestamp" not in st.session_state:
+            st.session_state["timestamp"] = datetime.now()
+        logger.info(f"Introduction to study completed and User study starts")
         switch_page("Userstudy")
 except (KeyError, AttributeError) as e:
     print('I got a KeyError - reason "%s"' % str(e))

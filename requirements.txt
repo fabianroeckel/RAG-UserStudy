@@ -12,3 +12,4 @@ streamlit_js_eval
 pydrive
 boto3
 st-pages
+loguru

@@ -4,10 +4,10 @@ from utils import *
 from streamlit_extras import vertical_slider
 import extra_streamlit_components as stx
 from datetime import datetime
+from loguru import logger
 
 
 def inital_questions_update_finance(selected_companies, familiarity_dict, sec_10_documents):
-    print()
     file_path = f"./data/raw_answers/UserGeneral/GeneralQuestions{st.session_state.sessionID}.csv"
     df = pd.read_csv(file_path)
     row = 0
@@ -16,8 +16,7 @@ def inital_questions_update_finance(selected_companies, familiarity_dict, sec_10
     df.loc[row, 'sec_10_documents'] = sec_10_documents
 
     df.to_csv(file_path, index=False)
-    print(df)
-    print(df.head())
+
 
 def financial_knowledge_questions():
     st.subheader("Financial Knowledge Assessment")
@@ -65,6 +64,8 @@ def financial_knowledge_questions():
 
 
 try:
+    logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
+    logger.add(logname)
     st.progress(10, f"Study Progress: 10% Complete")
     st.title('Pre-Study Questionaire: Financial Knowledge')
     selected_companies, familiarity_dict, sec_10_documents = financial_knowledge_questions()
@@ -83,14 +84,16 @@ try:
         "C. To provide the company's audited financial statements, including the balance sheet, income statement, and cash flow statement.",
         "D. To disclose any material weaknesses in internal controls over financial reporting."
     ])
+    logger.info(f"Answer to Knowledge Check SEC-10 {answer}")
     general_questions_completed = False
 
     st.write('Thank you for providing the information. You may proceed with the experiment now.')
     if st.button('Start with the Experiment'):
-        if "timestamp" not in st.session_state:
-            st.session_state["timestamp"] = datetime.now()
-
+        logger.info(f"Experiment started {datetime.now()}")
         inital_questions_update_finance(selected_companies, familiarity_dict, sec_10_documents)
+        logger.info(f"Initial questions selected companies {selected_companies}")
+        logger.info(f"Initial questions financial_literacy {familiarity_dict}")
+        logger.info(f"Initial questions sec_10_documents {sec_10_documents}")
         switch_page("introductionToStudy")
 except (KeyError, AttributeError) as e:
     print('I got a KeyError - reason "%s"' % str(e))

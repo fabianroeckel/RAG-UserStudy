@@ -5,9 +5,12 @@ from time import sleep
 from datetime import datetime
 from pdf2image import convert_from_path, convert_from_bytes
 import boto3
+from loguru import logger
 
 
 try:
+    logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
+    logger.add(logname)
 
     def display_chat_content():
         st.session_state.messages = []
@@ -30,7 +33,6 @@ try:
     with st.container():
         modal = Modal(title=st.session_state["source_name"],
             key="demo-modal",
-
             # Optional
             padding=20,  # default value
             max_width=1000  # default value
@@ -58,7 +60,7 @@ try:
     col_chat, col_questionaire = st.columns([6, 4])
 
     with col_chat:
-        with st.container(height=600, border=True):
+        with st.container(height=750, border=True):
 
             display_chat_content()
 
@@ -75,6 +77,7 @@ try:
                     st.session_state["source_clicks1"] += 1
                     st.session_state["source_watch_time1_datetime"] = datetime.now()
                     st.session_state["last_clicked_source"] = 1
+                    logger.info(f"Source: {st.session_state['source_name']} opened")
                     modal.open()
 
             if st.session_state.sampled_study_type == "MultiSource":
@@ -87,7 +90,7 @@ try:
                         st.session_state["source_clicks1"] += 1
                         st.session_state["source_watch_time1_datetime"] = datetime.now()
                         st.session_state["last_clicked_source"] = 1
-
+                        logger.info(f"Source: {st.session_state['source_name']} opened")
                         modal.open()
                 with source2:
                     open_modal = st.button(str(f"[2] {str(get_source_links(st.session_state.sessionID)[1][1])}"))
@@ -98,6 +101,7 @@ try:
                         st.session_state["total_source_clicks"] += 1
                         st.session_state["source_watch_time2_datetime"] = datetime.now()
                         st.session_state["last_clicked_source"] = 2
+                        logger.info(f"Source: {st.session_state['source_name']} opened")
                         modal.open()
                 if len(get_source_links(st.session_state.sessionID)[1]) >2:
                     with source3:
@@ -109,6 +113,7 @@ try:
                             st.session_state["total_source_clicks"] += 1
                             st.session_state["source_watch_time3_datetime"] = datetime.now()
                             st.session_state["last_clicked_source"] = 3
+                            logger.info(f"Source: {st.session_state['source_name']} opened")
                             modal.open()
                 if len(get_source_links(st.session_state.sessionID)[1]) > 3:
                     with source4:
@@ -120,6 +125,7 @@ try:
                             st.session_state["total_source_clicks"] += 1
                             st.session_state["source_watch_time4_datetime"] = datetime.now()
                             st.session_state["last_clicked_source"] = 4
+                            logger.info(f"Source: {st.session_state['source_name']} opened")
                             modal.open()
 
     with col_questionaire:
@@ -128,6 +134,7 @@ try:
             st.markdown("Based on the question, answer and sources given on the left.")
             st.markdown("----")
             decision = st.radio(f'**{task}**', decision_options,index=0, horizontal=False)
+
             st.markdown(
                 """
             <style>
@@ -156,8 +163,19 @@ try:
             if st.form_submit_button():
                 st.session_state.progress += 5
                 timeSpentPerTask = store_and_compute_time_difference("timestamp")
-                print("Time spent")
-                print(timeSpentPerTask["time_difference"])
+                logger.info(f"Time spent on this taks: {timeSpentPerTask['time_difference']}")
+                logger.info(f"Selected trust {trust}")
+                logger.info(f"Selected error {error}")
+                logger.info(f"Selected error {error_text}")
+                logger.info(f"Selected error {error_text}")
+                logger.info(f"Clicks on source1 {st.session_state['source_clicks1']}")
+                logger.info(f"Clicks on source2 {st.session_state['source_clicks2']}")
+                logger.info(f"Clicks on source3 {st.session_state['source_clicks3']}")
+                logger.info(f"Clicks on source4 {st.session_state['source_clicks4']}")
+                logger.info(f"Watch time on source1 {st.session_state['source_watch_time1']}")
+                logger.info(f"Watch time on source2 {st.session_state['source_watch_time2']}")
+                logger.info(f"Watch time on source3 {st.session_state['source_watch_time3']}")
+                logger.info(f"Watch time on source4 {st.session_state['source_watch_time4']}")
                 update_questionaire(trust,
                                     decision,
                                     error,

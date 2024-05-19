@@ -211,7 +211,6 @@ def update_questionaire(trust, choice, error, errortext, task_completion_time,
 
     ##Reset States to 0
     if st.session_state.question_number == 9:
-        print("All tasks completed")
         switch_page("evaluation")
     else:
         st.rerun()
@@ -285,10 +284,6 @@ def get_source_links(sessionID):
         raise FileNotFoundError(f"Folder not found: {folder_path}")
 
 
-    print(files)
     document_paths = [os.path.join(folder_path, file) for file in files]
-
-    print("folder_path:", folder_path)
-    print("files:", files)
 
     return document_paths, files

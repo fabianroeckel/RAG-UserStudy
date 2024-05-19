@@ -2,6 +2,7 @@ import streamlit as st
 from utils import *
 from streamlit_extras.switch_page_button import switch_page
 from st_pages import hide_pages, Page
+from loguru import logger
 
 def main():
     st.progress(0, text=f"Study Progress: 0% Complete")
@@ -35,12 +36,16 @@ def main():
         if 'sessionID' not in st.session_state:
             sessionID = getSessionID()
             st.session_state['sessionID'] = sessionID
+            logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
+            logger.add(logname)
+            logger.info(f"New userID created {sessionID}")
 
         if 'question_number' not in st.session_state:
             st.session_state["question_number"] = 0
 
         sampled_study_type = getSampledStudyType()
         st.session_state["sampled_study_type"] = sampled_study_type
+        logger.info(f"Assigned studytype {sampled_study_type}")
         generateNewCSFFiles(sessionID, sampled_study_type)
 
         if "source_name" not in st.session_state:

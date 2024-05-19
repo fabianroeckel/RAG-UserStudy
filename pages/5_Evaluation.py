@@ -4,51 +4,56 @@ from utils import *
 from streamlit_extras import vertical_slider
 import extra_streamlit_components as stx
 import boto3
+from loguru import logger
 
 
 
-def final_evaluation_per_user(age, gender, education,proficiency, EaseOfReading, FinalTrust, WillingnessToUse, CognitiveLoad, Usefulness1, Usefulness2, EaseOfUse1, EaseOfUse2, BI1, BI2):
-    likert_mapping = {'1. Strongly Disagree': 1,
-                      '2. Disagree': 2,
-                      '3. Somewhat Disagree': 3,
-                      '4. Neither Disagree nor Agree': 4,
-                      '5. Somewhat Agree': 5,
-                      '6. Agree': 6,
-                      '7. Strongly Agree': 7}
-
-    file_path = f"./data/raw_answers/UserGeneral/GeneralQuestions{st.session_state.sessionID}.csv"
-    df = pd.read_csv(file_path)
-    row = 0
-
-
-    df.loc[row, 'Age'] = age
-
-    # GENDER
-    gender_mapping = {'Male': 0, 'Female': 1, 'Other': 2}
-    df.loc[row, 'Gender'] = gender_mapping[gender]
-
-    # EDUCATION
-    education_mapping = {'High School': 0, "Bachelor's Degree": 1, "Masters's Degree": 2, "PhD": 3, "Other": 4}
-    df.loc[row, 'Education'] = education_mapping[education]
-
-    # LANGUAGE
-    language_mapping = {'BasicUser(A1-A2)': 0, 'IndependentUser(B1-B2)': 1, 'ProficientUser(C1-C2)': 2,
-                        'Native Speaker': 3}
-    df.loc[row, "LanguageLevel"] = language_mapping[proficiency]
-    df.loc[row, 'EaseOfReading'] = likert_mapping[EaseOfReading]
-    df.loc[row, 'FinalTrust'] = likert_mapping[FinalTrust]
-    df.loc[row, 'WillingnessToUse'] = likert_mapping[WillingnessToUse]
-    df.loc[row, 'CognitiveLoad'] = likert_mapping[CognitiveLoad]
-    df.loc[row, 'Usefulness1'] = likert_mapping[Usefulness1]
-    df.loc[row, 'Usefulness2'] = likert_mapping[Usefulness2]
-    df.loc[row, 'EaseOfUse1'] = likert_mapping[EaseOfUse1]
-    df.loc[row, 'EaseOfUse2'] = likert_mapping[EaseOfUse2]
-    df.loc[row, 'BI1'] = likert_mapping[BI1]
-    df.loc[row, 'BI2'] = likert_mapping[BI2]
-    df.to_csv(file_path, index=False)
 
 
 try:
+    logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
+    logger.add(logname)
+
+    def final_evaluation_per_user(age, gender, education, proficiency, EaseOfReading, FinalTrust, WillingnessToUse,
+                                  CognitiveLoad, Usefulness1, Usefulness2, EaseOfUse1, EaseOfUse2, BI1, BI2):
+        likert_mapping = {'1. Strongly Disagree': 1,
+                          '2. Disagree': 2,
+                          '3. Somewhat Disagree': 3,
+                          '4. Neither Disagree nor Agree': 4,
+                          '5. Somewhat Agree': 5,
+                          '6. Agree': 6,
+                          '7. Strongly Agree': 7}
+
+        file_path = f"./data/raw_answers/UserGeneral/GeneralQuestions{st.session_state.sessionID}.csv"
+        df = pd.read_csv(file_path)
+        row = 0
+
+        df.loc[row, 'Age'] = age
+        # GENDER
+        gender_mapping = {'Male': 0, 'Female': 1, 'Other': 2}
+        df.loc[row, 'Gender'] = gender_mapping[gender]
+
+        # EDUCATION
+        education_mapping = {'High School': 0, "Bachelor's Degree": 1, "Masters's Degree": 2, "PhD": 3, "Other": 4}
+        df.loc[row, 'Education'] = education_mapping[education]
+
+        # LANGUAGE
+        language_mapping = {'BasicUser(A1-A2)': 0, 'IndependentUser(B1-B2)': 1, 'ProficientUser(C1-C2)': 2,
+                            'Native Speaker': 3}
+        df.loc[row, "LanguageLevel"] = language_mapping[proficiency]
+        df.loc[row, 'EaseOfReading'] = likert_mapping[EaseOfReading]
+        df.loc[row, 'FinalTrust'] = likert_mapping[FinalTrust]
+        df.loc[row, 'WillingnessToUse'] = likert_mapping[WillingnessToUse]
+        df.loc[row, 'CognitiveLoad'] = likert_mapping[CognitiveLoad]
+        df.loc[row, 'Usefulness1'] = likert_mapping[Usefulness1]
+        df.loc[row, 'Usefulness2'] = likert_mapping[Usefulness2]
+        df.loc[row, 'EaseOfUse1'] = likert_mapping[EaseOfUse1]
+        df.loc[row, 'EaseOfUse2'] = likert_mapping[EaseOfUse2]
+        df.loc[row, 'BI1'] = likert_mapping[BI1]
+        df.loc[row, 'BI2'] = likert_mapping[BI2]
+        df.to_csv(file_path, index=False)
+
+
     def willingness_to_use_model():
         st.title('Willingness to use')
         st.subheader('I would use this RAG model for future tasks similar to the one tested.')
