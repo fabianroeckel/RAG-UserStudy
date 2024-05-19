@@ -68,7 +68,7 @@ try:
 
             st.markdown("---")
             if st.session_state.sampled_study_type == "SingleSource":
-                open_modal = st.button(get_source_links(st.session_state.sessionID)[1][0])
+                open_modal = st.button(str(f"[1] {str(get_source_links(st.session_state.sessionID)[1][0])}"))
                 if open_modal:
                     st.session_state["source_link"] = get_source_links(st.session_state.sessionID)[0][0]
                     st.session_state["source_name"] = get_source_links(st.session_state.sessionID)[1][0]
@@ -80,7 +80,7 @@ try:
             if st.session_state.sampled_study_type == "MultiSource":
                 source1, source2, source3, source4, spacer = st.columns([2, 2, 2, 2, 2])
                 with source1:
-                    open_modal = st.button(get_source_links(st.session_state.sessionID)[1][0])
+                    open_modal = st.button(str(f"[1] {str(get_source_links(st.session_state.sessionID)[1][0])}"))
                     if open_modal:
                         st.session_state["source_link"] = get_source_links(st.session_state.sessionID)[0][0]
                         st.session_state["source_name"] = get_source_links(st.session_state.sessionID)[1][0]
@@ -90,7 +90,7 @@ try:
 
                         modal.open()
                 with source2:
-                    open_modal = st.button(get_source_links(st.session_state.sessionID)[1][1])
+                    open_modal = st.button(str(f"[2] {str(get_source_links(st.session_state.sessionID)[1][1])}"))
                     if open_modal:
                         st.session_state["source_link"] = get_source_links(st.session_state.sessionID)[0][1]
                         st.session_state["source_name"] = get_source_links(st.session_state.sessionID)[1][1]
@@ -101,7 +101,7 @@ try:
                         modal.open()
                 if len(get_source_links(st.session_state.sessionID)[1]) >2:
                     with source3:
-                        open_modal = st.button(get_source_links(st.session_state.sessionID)[1][2])
+                        open_modal = st.button(str(f"[3] {str(get_source_links(st.session_state.sessionID)[1][2])}"))
                         if open_modal:
                             st.session_state["source_link"] = get_source_links(st.session_state.sessionID)[0][2]
                             st.session_state["source_name"] = get_source_links(st.session_state.sessionID)[1][2]
@@ -112,7 +112,7 @@ try:
                             modal.open()
                 if len(get_source_links(st.session_state.sessionID)[1]) > 3:
                     with source4:
-                        open_modal = st.button(get_source_links(st.session_state.sessionID)[1][3])
+                        open_modal = st.button(str(f"[4] {str(get_source_links(st.session_state.sessionID)[1][3])}"))
                         if open_modal:
                             st.session_state["source_link"] = get_source_links(st.session_state.sessionID)[0][3]
                             st.session_state["source_name"] = get_source_links(st.session_state.sessionID)[1][3]

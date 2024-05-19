@@ -61,8 +61,7 @@ def get_question_and_response(session_id):
 
 
 def get_sampled_question_ids():
-    # Generate a list of 20 question IDs (for demonstration purpose, you can replace this with your actual logic)
-    return random.sample(range(1, 22), 12)
+    return random.sample(range(1, 19), 8)
 
 def getSampledStudyType():
     study_type = random.sample(range(1, 4), 1)
@@ -76,7 +75,7 @@ def getSampledStudyType():
 
 def getShuffledOrderOfQuestions():
     # Create a list with the desired distribution
-    question_type = ["Correct"] * 10 + ["EvidentConflict"] * 5 + ["EvidentBaselessInformation"] * 5
+    question_type = ["Correct"] * 4 + ["EvidentConflict"] * 2 + ["EvidentBaselessInformation"] * 2
 
     # Shuffle the list to get a random order
     random.shuffle(question_type)
@@ -129,11 +128,11 @@ def generateNewCSFFiles (sessionID, sampled_studyType):
         for i in range(0,len(sampled_question_ids)+1):
             # Assuming 'Choice', 'Trust', 'Interaction' are placeholders and you need to fill them accordingly
             # You can modify this part according to your actual data generation logic
-            if i < 7:
+            if i < 5:
                 writer.writerow([sessionID,sampled_studyType,shuffled_questiontypes[i], sampled_question_ids[i], "SomeChoice", "SomeTrust",0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-            if i == 7:
-                writer.writerow([sessionID, sampled_studyType, "AttentionCheck", 21, "SomeChoice", "SomeTrust",0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-            if i > 7:
+            if i == 5:
+                writer.writerow([sessionID, sampled_studyType, "AttentionCheck", 18, "SomeChoice", "SomeTrust",0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+            if i > 5:
                 writer.writerow([sessionID, sampled_studyType, shuffled_questiontypes[i-1], sampled_question_ids[i-1], "SomeChoice",
                      "SomeTrust",0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
@@ -211,7 +210,7 @@ def update_questionaire(trust, choice, error, errortext, task_completion_time,
     st.session_state["source_watch_time4"] = 0
 
     ##Reset States to 0
-    if st.session_state.question_number == 13:
+    if st.session_state.question_number == 9:
         print("All tasks completed")
         switch_page("evaluation")
     else:
@@ -223,8 +222,8 @@ def displayPDF(file_path, ui_width):
     info = pdfinfo_from_path(file_path, userpw=None, poppler_path=None)
 
     maxPages = info["Pages"]
-    for page in range(1, maxPages + 1, 3):
-        images_from_path = convert_from_path(file_path, dpi=120, first_page=page,use_pdftocairo=True, last_page=min(page + 3 - 1, maxPages))
+    for page in range(1, maxPages + 1, 2):
+        images_from_path = convert_from_path(file_path, dpi=150, first_page=page,use_pdftocairo=True, last_page=min(page + 2 - 1, maxPages))
         for page in images_from_path:
             st.image(page)
 def store_and_compute_time_difference(var_name):

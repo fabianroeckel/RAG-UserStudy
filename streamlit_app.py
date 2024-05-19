@@ -24,7 +24,7 @@ def main():
     - Your responses will remain confidential and will only be used for research purposes.
 
     **Estimated Time:**
-    The experiment is expected to take approximately 30-45 minutes to complete.
+    The experiment is expected to take approximately 20-30 minutes to complete.
 
     Thank you for your participation! Let's get started and contribute to advancements in HCI research.
 

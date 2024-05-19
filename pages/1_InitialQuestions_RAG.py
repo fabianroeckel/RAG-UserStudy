@@ -23,7 +23,7 @@ def inital_questions_update_rag(rag_experience, system_usage_frequency,
 
 
 def similar_systems_experience():
-    st.subheader('Experience with RAG Systems')
+    st.subheader('How does a Retrieval augmented generation system work?')
     with st.expander("What is a RAG-System?", expanded=True):
         col_expl, col_video = st.columns([6, 4])
         with col_expl:
@@ -39,8 +39,6 @@ def similar_systems_experience():
 
         with col_video:
             st.image("media/rag_gif.gif")
-
-    st.subheader('How does a Retrieval augmented generation system work?')
     retrieval_augmentation_generation = st.radio(
         "",
         options=[
