@@ -34,7 +34,7 @@ def similar_systems_experience():
                 - **Generation**: With an updated set of information, the LLM then generates a response that not only reflects its built-in knowledge but also includes and references the newly retrieved data.
                 """
                 )
-            st.markdown("Example applications that you can use are [Perplexity.ai](https://www.perplexity.ai/) or [FinTool](https://www.fintool.com/)")
+            st.markdown("Example applications that you can use are [Perplexity.ai](https://www.perplexity.ai/) or [FinTool](https://www.fintool.com/). You can think of it as ChatGPT with access to documents.")
 
         with col_video:
             st.image("media/rag_gif.gif")
@@ -50,7 +50,7 @@ def similar_systems_experience():
         index=0  # Default selection
     )
     st.markdown("###")
-    st.subheader('Have you ever used a RAG before?')
+    st.subheader('Have you ever used a GenAI system, like ChatGPT, before?')
     rag_experience = st.selectbox('', ['Yes', 'No'])
     st.markdown("###")
     st.subheader('How often do you use similar applications or systems?')
