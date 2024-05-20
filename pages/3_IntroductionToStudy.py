@@ -6,7 +6,7 @@ from datetime import datetime
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 try:
-    st.progress(20, f"Study Progress: 15% Complete")
+    st.progress(20, f"Study Progress: 20% Complete")
     st.header("Understanding Your Task in This Study")
     st.markdown("----")
 
