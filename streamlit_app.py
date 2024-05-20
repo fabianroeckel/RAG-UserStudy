@@ -11,8 +11,8 @@ def main():
     hide_pages("pages/1_InitialQuestions.py")
     hide_pages("pages/3_IntroductionToStudy.py")
     hide_pages("pages/4_UserStudy.py")
-    hide_pages("pages/5_Evaluation.py")
-    hide_pages("pages/6_ThankYou.py")
+    hide_pages("pages/6_Evaluation_TAMandMore.py")
+    hide_pages("pages/7_ThankYou.py")
     st.title('Welcome to the Human-Computer Interaction Study')
     st.markdown("""
     ###### Conducted by KSRI – Karlsruhe Digital Service Research & Innovation Hub in Coorperation with the University of Bayreuth
