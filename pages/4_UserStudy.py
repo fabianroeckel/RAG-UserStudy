@@ -6,6 +6,7 @@ from datetime import datetime
 from pdf2image import convert_from_path, convert_from_bytes
 import boto3
 from loguru import logger
+from module import *
 
 
 try:
@@ -31,13 +32,14 @@ try:
                 st.session_state.messages.append({"role": "assistant", "content": full_response})
 
     with st.container():
-        modal = Modal(title=st.session_state["source_name"],
+        modal = Fabi_Modal(title=st.session_state["source_name"],
             key="demo-modal",
             # Optional
             padding=20,  # default value
             max_width=1000  # default value
         )
         if modal.is_open():
+
             with modal.container():
                 file_path = st.session_state["source_link"]
                 file = open(file_path, 'rb')
@@ -46,6 +48,7 @@ try:
                     pdfReader.decrypt('')
 
                 displayPDF(file_path, 900)
+
 
         question, response, decision_options, task, expander_title, expander_text = get_question_and_response(st.session_state.sessionID)
 
