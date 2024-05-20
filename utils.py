@@ -42,7 +42,7 @@ def get_question_and_response(session_id):
     if st.session_state.sampled_study_type == "SingleSource":
         response = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["Response-Single"].values[0]
     if st.session_state.sampled_study_type == "NoSources":
-        response = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["Response-Single"].values[0]
+        response = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["ResponseNoSource"].values[0]
 
     expander_title = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["ExpanderTitle"].values[0]
     expander_text = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["ExpanderText"].values[0]

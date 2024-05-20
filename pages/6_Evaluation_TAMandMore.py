@@ -287,11 +287,14 @@ try:
         bucket_name = 'rag-studyresults'
         file_path = f'./data/raw_answers/UserStudy/UserStudy_{st.session_state.sessionID}.csv'
         object_key = f'UserStudy_{st.session_state.sessionID}.csv'
-
         s3.upload_file(file_path, bucket_name, object_key)
 
         file_path = f"./data/raw_answers/UserGeneral/GeneralQuestions{st.session_state.sessionID}.csv"
         object_key = f'GeneralQuestions{st.session_state.sessionID}.csv'
+        s3.upload_file(file_path, bucket_name, object_key)
+
+        file_path = f"./data/raw_answers/Logs/logs_{st.session_state.sessionID}.log"
+        object_key = f'logs_{st.session_state.sessionID}.log'
         s3.upload_file(file_path, bucket_name, object_key)
         logger.info("Study finished")
         switch_page("thankyou")
