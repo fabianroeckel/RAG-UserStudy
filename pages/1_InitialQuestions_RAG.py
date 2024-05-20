@@ -19,8 +19,6 @@ def inital_questions_update_rag(rag_experience, system_usage_frequency,
     df.loc[row, 'InitialTrust'] = skepticism
 
     df.to_csv(file_path, index=False)
-    print(df)
-    print(df.head())
 
 
 def similar_systems_experience():

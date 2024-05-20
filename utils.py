@@ -9,7 +9,6 @@ import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 from datetime import datetime
 from pdf2image import convert_from_path, pdfinfo_from_path
-import base64
 import re
 FOOTER_ROWS = 300
 WHITE_VALUE = 255
@@ -36,8 +35,6 @@ def get_question_and_response(session_id):
     if question_type == "AttentionCheck":
         study_dataset_df = df[df['Type'] == 'AttentionCheck']
 
-
-
     question = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["Question"].values[0]
 
     response = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["Response"].values[0]
@@ -58,6 +55,7 @@ def get_question_and_response(session_id):
 
 def get_sampled_question_ids():
     return random.sample(range(1, 19), 8)
+
 
 def getSampledStudyType():
     study_type = random.sample(range(1, 4), 1)
@@ -105,6 +103,32 @@ def getCachedSessionID():
     return session_id
 
 
+def checkIfCorrect(decision):
+    user_file = f"./data/raw_answers/UserStudy/UserStudy_{st.session_state.session_id}.csv"
+    user_df = pd.read_csv(user_file)
+
+    question_id = user_df.iloc[st.session_state.question_number]["QuestionID"]
+    question_type = user_df.iloc[st.session_state.question_number]["shuffled_questiontypes"]
+
+    df = pd.read_csv("data/RAG_Dataset.csv")
+    if question_type == "Correct":
+        study_dataset_df = df[df['Type'] == 'Correct']
+
+    if question_type == "EvidentBaselessInformation":
+        study_dataset_df = df[df['Type'] == 'BaselessInformation']
+
+    if question_type == "EvidentConflict":
+        study_dataset_df = df[df['Type'] == 'EvidentConflict']
+
+    if question_type == "AttentionCheck":
+        study_dataset_df = df[df['Type'] == 'AttentionCheck']
+
+    correctDecision = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["CorrectDecision"].values[0]
+    if decision[0] == correctDecision:
+        return 1
+    else:
+        return 0
+
 
 def generateNewCSFFiles (sessionID, sampled_studyType):
     # Initialize file counter
@@ -112,7 +136,7 @@ def generateNewCSFFiles (sessionID, sampled_studyType):
     # Create a CSV file and write headers
     with open(filenameUserStudy, mode='w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(['userID', 'studyType','shuffled_questiontypes', 'QuestionID', 'Choice', 'Trust', 'Error', 'ErrorText', 'TaskCompletionTime', "ClicksSource1", "ClicksSource2", "ClicksSource3", "ClicksSource4","TotalClicks", "ViewTimeSource1", "ViewTimeSource2", "ViewTimeSource3", "ViewTimeSource4", "TotalViewTime"])
+        writer.writerow(['userID', 'studyType','shuffled_questiontypes', 'QuestionID', 'Choice',"Correct", 'Trust', 'Error', 'ErrorText', 'TaskCompletionTime', "ClicksSource1", "ClicksSource2", "ClicksSource3", "ClicksSource4","TotalClicks", "ViewTimeSource1", "ViewTimeSource2", "ViewTimeSource3", "ViewTimeSource4", "TotalViewTime"])
 
         # Get sampled question IDs
         sampled_question_ids = get_sampled_question_ids()
@@ -125,11 +149,11 @@ def generateNewCSFFiles (sessionID, sampled_studyType):
             # Assuming 'Choice', 'Trust', 'Interaction' are placeholders and you need to fill them accordingly
             # You can modify this part according to your actual data generation logic
             if i < 5:
-                writer.writerow([sessionID,sampled_studyType,shuffled_questiontypes[i], sampled_question_ids[i], "SomeChoice", "SomeTrust",0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+                writer.writerow([sessionID,sampled_studyType,shuffled_questiontypes[i], sampled_question_ids[i], "SomeChoice",0, "SomeTrust",0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
             if i == 5:
-                writer.writerow([sessionID, sampled_studyType, "AttentionCheck", 18, "SomeChoice", "SomeTrust",0, 'NoError', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+                writer.writerow([sessionID, sampled_studyType, "AttentionCheck", 18, "SomeChoice",0, "SomeTrust",0, 'NoError', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
             if i > 5:
-                writer.writerow([sessionID, sampled_studyType, shuffled_questiontypes[i-1], sampled_question_ids[i-1], "SomeChoice",
+                writer.writerow([sessionID, sampled_studyType, shuffled_questiontypes[i-1], sampled_question_ids[i-1], "SomeChoice",0,
                      "SomeTrust",0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
     fileNameGeneralQuestions = f"./data/raw_answers/UserGeneral/GeneralQuestions{sessionID}.csv"
@@ -145,7 +169,7 @@ def generateNewCSFFiles (sessionID, sampled_studyType):
     print(f"CSV file '{filenameUserStudy}' and '{fileNameGeneralQuestions}' have been generated successfully.")
 
 
-def update_questionaire(trust, choice, error, errortext, task_completion_time,
+def update_questionaire(trust, choice, error,correct, errortext, task_completion_time,
                         ClicksSource1, ClicksSource2, ClicksSource3, ClicksSource4,
                         ViewTimeSource1, ViewTimeSource2, ViewTimeSource3, ViewTimeSource4):
 
@@ -174,6 +198,9 @@ def update_questionaire(trust, choice, error, errortext, task_completion_time,
         df.loc[row, 'Error'] = error
     if not errortext:
         df.loc[row, 'ErrorText'] = str(errortext)
+
+    if not correct:
+        df.low[row, "Correct"] = correct
 
 
     #Clicks

@@ -132,7 +132,8 @@ try:
             st.markdown("Based on the question, answer and sources given on the left.")
             st.markdown("----")
             decision = st.radio(f'**{task}**', decision_options,index=0, horizontal=False)
-
+            correct = checkIfCorrect(decision)
+            logger.info(f"Decision was: {correct}")
             st.markdown(
                 """
             <style>
@@ -177,6 +178,7 @@ try:
                 update_questionaire(trust,
                                     decision,
                                     error,
+                                    correct,
                                     error_text,
                                     timeSpentPerTask["time_difference"],
                                     st.session_state["source_clicks1"],
