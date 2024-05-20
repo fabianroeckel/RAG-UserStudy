@@ -127,7 +127,7 @@ def generateNewCSFFiles (sessionID, sampled_studyType):
             if i < 5:
                 writer.writerow([sessionID,sampled_studyType,shuffled_questiontypes[i], sampled_question_ids[i], "SomeChoice", "SomeTrust",0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
             if i == 5:
-                writer.writerow([sessionID, sampled_studyType, "AttentionCheck", 18, "SomeChoice", "SomeTrust",0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+                writer.writerow([sessionID, sampled_studyType, "AttentionCheck", 18, "SomeChoice", "SomeTrust",0, 'NoError', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
             if i > 5:
                 writer.writerow([sessionID, sampled_studyType, shuffled_questiontypes[i-1], sampled_question_ids[i-1], "SomeChoice",
                      "SomeTrust",0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
