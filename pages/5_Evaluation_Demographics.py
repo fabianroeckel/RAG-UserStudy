@@ -82,4 +82,4 @@ try:
 
 except (KeyError, AttributeError) as e:
     print('I got a KeyError - reason "%s"' % str(e))
-    switch_page("streamlit_app")
+    switch_page("Evaluation_TAMandMore")
