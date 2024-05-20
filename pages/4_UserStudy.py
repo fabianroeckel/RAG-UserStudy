@@ -134,6 +134,8 @@ try:
             decision = st.radio(f'**{task}**', decision_options,index=0, horizontal=False)
             if decision == correctResponse:
                 correct = 1
+            else:
+                correct = 0
             st.markdown(
                 """
             <style>
