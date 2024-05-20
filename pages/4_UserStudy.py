@@ -159,34 +159,37 @@ try:
             error = st.radio("**Did you detect an error in the response?**", ("Dummy", "No", "Yes"), index=0, horizontal=False)
             error_text = st.text_input("**If you detect an error, paste the content of the error inside this text field**")
             if st.form_submit_button():
-                st.session_state.progress += 8
-                timeSpentPerTask = store_and_compute_time_difference("timestamp")
-                logger.info(f"Time spent on this taks: {timeSpentPerTask['time_difference']}")
-                logger.info(f"Decision correct(Y/N): {decision[0]} with the correct response being{correctResponse}")
-                logger.info(f"Selected trust {trust}")
-                logger.info(f"Selected error {error}")
-                logger.info(f"Selected error {error_text}")
-                logger.info(f"Selected error {error_text}")
-                logger.info(f"Clicks on source1 {st.session_state['source_clicks1']}, source2 {st.session_state['source_clicks2']}, source3 {st.session_state['source_clicks3']}, source4 {st.session_state['source_clicks4']}")
-                logger.info(f"Watch time on source1 {st.session_state['source_watch_time1']}")
-                logger.info(f"Watch time on source2 {st.session_state['source_watch_time2']}")
-                logger.info(f"Watch time on source3 {st.session_state['source_watch_time3']}")
-                logger.info(f"Watch time on source4 {st.session_state['source_watch_time4']}")
-                update_questionaire(trust,
-                                    decision[0],
-                                    error,
-                                    correctResponse,
-                                    error_text,
-                                    timeSpentPerTask["time_difference"],
-                                    st.session_state["source_clicks1"],
-                                    st.session_state["source_clicks2"],
-                                    st.session_state["source_clicks3"],
-                                    st.session_state["source_clicks4"],
-                                    st.session_state["source_watch_time1"],
-                                    st.session_state["source_watch_time2"],
-                                    st.session_state["source_watch_time3"],
-                                    st.session_state["source_watch_time4"]
-                                    )
+                if int(decision[0]) < 1:
+                    st.error("You need to answer the questions!")
+                if int(decision[0]) > 0:
+                    st.session_state.progress += 8
+                    timeSpentPerTask = store_and_compute_time_difference("timestamp")
+                    logger.info(f"Time spent on this taks: {timeSpentPerTask['time_difference']}")
+                    logger.info(f"Decision correct(Y/N): {decision[0]} with the correct response being{correctResponse}")
+                    logger.info(f"Selected trust {trust}")
+                    logger.info(f"Selected error {error}")
+                    logger.info(f"Selected error {error_text}")
+                    logger.info(f"Selected error {error_text}")
+                    logger.info(f"Clicks on source1 {st.session_state['source_clicks1']}, source2 {st.session_state['source_clicks2']}, source3 {st.session_state['source_clicks3']}, source4 {st.session_state['source_clicks4']}")
+                    logger.info(f"Watch time on source1 {st.session_state['source_watch_time1']}")
+                    logger.info(f"Watch time on source2 {st.session_state['source_watch_time2']}")
+                    logger.info(f"Watch time on source3 {st.session_state['source_watch_time3']}")
+                    logger.info(f"Watch time on source4 {st.session_state['source_watch_time4']}")
+                    update_questionaire(trust,
+                                        decision[0],
+                                        error,
+                                        correctResponse,
+                                        error_text,
+                                        timeSpentPerTask["time_difference"],
+                                        st.session_state["source_clicks1"],
+                                        st.session_state["source_clicks2"],
+                                        st.session_state["source_clicks3"],
+                                        st.session_state["source_clicks4"],
+                                        st.session_state["source_watch_time1"],
+                                        st.session_state["source_watch_time2"],
+                                        st.session_state["source_watch_time3"],
+                                        st.session_state["source_watch_time4"]
+                                        )
 except (KeyError, AttributeError) as e:
     print('I got a KeyError - reason "%s"' % str(e))
     switch_page("streamlit_app")
