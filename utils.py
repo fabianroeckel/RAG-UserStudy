@@ -124,6 +124,8 @@ def checkIfCorrect(decision):
         study_dataset_df = df[df['Type'] == 'AttentionCheck']
 
     correctDecision = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["CorrectDecision"].values[0]
+    print(f"The correct decision was {correctDecision}")
+    print(f"And your decision was {decision[0]}")
     if decision[0] == correctDecision:
         return 1
     else:

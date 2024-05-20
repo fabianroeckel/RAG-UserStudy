@@ -131,10 +131,8 @@ try:
             st.subheader('Please answer these questions below')
             st.markdown("Based on the question, answer and sources given on the left.")
             st.markdown("----")
-            decision = st.radio(f'**{task}**', decision_options, horizontal=False)
+            decision = st.radio(f'**{task}**', decision_options,index=0, horizontal=False)
             correct = checkIfCorrect(decision)
-            logger.info(f"Decision was: {decision[0]}")
-            logger.info(f"Correct (yes/no) was: {correct}")
             st.markdown(
                 """
             <style>
@@ -164,14 +162,13 @@ try:
                 st.session_state.progress += 5
                 timeSpentPerTask = store_and_compute_time_difference("timestamp")
                 logger.info(f"Time spent on this taks: {timeSpentPerTask['time_difference']}")
+                logger.info(f"Decision was: {decision[0]} or {decision}")
+                logger.info(f"Correct (yes/no) was: {correct}")
                 logger.info(f"Selected trust {trust}")
                 logger.info(f"Selected error {error}")
                 logger.info(f"Selected error {error_text}")
                 logger.info(f"Selected error {error_text}")
-                logger.info(f"Clicks on source1 {st.session_state['source_clicks1']}")
-                logger.info(f"Clicks on source2 {st.session_state['source_clicks2']}")
-                logger.info(f"Clicks on source3 {st.session_state['source_clicks3']}")
-                logger.info(f"Clicks on source4 {st.session_state['source_clicks4']}")
+                logger.info(f"Clicks on source1 {st.session_state['source_clicks1']}, source2 {st.session_state['source_clicks2']}, source3 {st.session_state['source_clicks3']}, source4 {st.session_state['source_clicks4']}")
                 logger.info(f"Watch time on source1 {st.session_state['source_watch_time1']}")
                 logger.info(f"Watch time on source2 {st.session_state['source_watch_time2']}")
                 logger.info(f"Watch time on source3 {st.session_state['source_watch_time3']}")
