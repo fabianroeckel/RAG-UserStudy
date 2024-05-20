@@ -24,8 +24,8 @@ def inital_questions_update_rag(rag_experience, system_usage_frequency,
 
 
 def similar_systems_experience():
-    st.subheader('How does a Retrieval augmented generation system work?')
-    with st.expander("What is a RAG-System?", expanded=True):
+    st.subheader('How does a Retrieval augmented generation (RAG) work?')
+    with st.expander("What is a RAG?", expanded=True):
         col_expl, col_video = st.columns([6, 4])
         with col_expl:
             st.markdown("**RAG**, which stands for **Retrieval-Augmented Generation**, is an AI framework designed to enhance the responses of large language models (LLMs) by incorporating real-time information from external databases or knowledge bases. This approach helps to ground the model's responses in accurate and current information, making them more reliable and contextually relevant. ")
@@ -52,7 +52,7 @@ def similar_systems_experience():
         index=0  # Default selection
     )
     st.markdown("###")
-    st.subheader('Have you ever used a RAG system before?')
+    st.subheader('Have you ever used a RAG before?')
     rag_experience = st.selectbox('', ['Yes', 'No'])
     st.markdown("###")
     st.subheader('How often do you use similar applications or systems?')

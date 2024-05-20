@@ -73,13 +73,12 @@ try:
     st.markdown("##")
     # The question
 
-    st.markdown("""You are reviewing a company's SEC 10-K filing and come across the section on 'Management's Discussion and Analysis of Financial Condition and Results of Operations' (MD&A). 
+    st.subheader("""You are reviewing a company's SEC 10-K filing and come across the section on 'Management's Discussion and Analysis of Financial Condition and Results of Operations' (MD&A). 
     Which of the following best describes the purpose of the MD&A section?
-    **Select the correct option:**
     """)
 
     # Radio button for user to select an answer
-    answer = st.radio("", [
+    answer = st.radio("Select the correct option", [
         "A. To provide an analysis of the company's financial performance from the perspective of management, including trends, risks, and future plans.",
         "B. To list all of the company's financial transactions in detail over the fiscal year.",
         "C. To provide the company's audited financial statements, including the balance sheet, income statement, and cash flow statement.",
