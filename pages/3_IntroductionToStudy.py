@@ -17,7 +17,7 @@ try:
 
     with col_text:
         st.subheader("Step 1: Introduction to RAG System")
-        st.write("Welcome to the study! You'll be using a Retrieval Augmented Generation (RAG) system designed specifically for financial tasks. A screenshot of your workspace is on the left side of the interface, where you'll interact with the system.")
+        st.write("Welcome to the study! You'll be using a Retrieval Augmented Generation (RAG) system designed specifically for financial tasks. A screenshot of your workspace is on the right side of the interface, where you'll interact with the system.")
 
     ## Step 2
     col_text, col_image = st.columns([3, 7])
@@ -44,7 +44,7 @@ try:
 
     with col_text:
         st.subheader("Step 4: Accessing Information")
-        st.write("All necessary information related to the financial task is displayed on the left side within the RAG system. If you require additional context or wish to verify the information, you can access the sources provided.")
+        st.write("All necessary information related to the financial task is displayed on the right side within the RAG system. If you require additional context or wish to verify the information, you can access the sources provided.")
 
     ## Step 5
     col_text, col_image = st.columns([3, 7])
