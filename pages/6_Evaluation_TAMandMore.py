@@ -247,7 +247,7 @@ try:
     if streamlit.session_state.sampled_study_type == "NoSources":
         BI1 = 0
         BI2 = 0
-    BI1, BI2 = user_feedback()()
+    BI1, BI2 = user_feedback()
 
     if st.button("Finish the study"):
         #age, gender, education, proficiency,
