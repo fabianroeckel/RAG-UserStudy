@@ -46,7 +46,7 @@ def main():
         sampled_study_type = getSampledStudyType()
         st.session_state["sampled_study_type"] = sampled_study_type
         logger.info(f"Assigned studytype {sampled_study_type}")
-        generateNewCSFFiles(sessionID, sampled_study_type)
+        generateNewCSFFiles(st.session_state['sessionID'], sampled_study_type)
 
         if "source_name" not in st.session_state:
             st.session_state["source_name"] = ""

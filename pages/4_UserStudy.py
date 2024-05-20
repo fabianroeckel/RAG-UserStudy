@@ -131,9 +131,10 @@ try:
             st.subheader('Please answer these questions below')
             st.markdown("Based on the question, answer and sources given on the left.")
             st.markdown("----")
-            decision = st.radio(f'**{task}**', decision_options,index=0, horizontal=False)
+            decision = st.radio(f'**{task}**', decision_options, horizontal=False)
             correct = checkIfCorrect(decision)
-            logger.info(f"Decision was: {correct}")
+            logger.info(f"Decision was: {decision[0]}")
+            logger.info(f"Correct (yes/no) was: {correct}")
             st.markdown(
                 """
             <style>
