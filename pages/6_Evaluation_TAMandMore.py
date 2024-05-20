@@ -1,3 +1,4 @@
+import streamlit
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
 from utils import *
@@ -194,11 +195,11 @@ try:
         st.markdown("##")
         return reading_ease
 
+    def user_feedback():
+        st.title('User Feedback on RAG Service')
 
-    def behavioral_intention():
-        st.title('Behavioral Intention (BI)')
-        st.subheader("I intend to use this RAG service for future relevant tasks.")
-        intention1 = st.select_slider(
+        st.subheader("The information from the PDFs was helpful for correctly answering the questions.")
+        helpfulness = st.select_slider(
             'Select an option between 1. Strongly Disagree and 7. Strongly Agree',
             options=[
                 '1. Strongly Disagree',
@@ -209,11 +210,12 @@ try:
                 '6. Agree',
                 '7. Strongly Agree'
             ],
-            key="bi_1_slider",
+            key="helpfulness_slider",
             value='4. Neither Disagree nor Agree'  # Default selection
         )
-        st.subheader('I will recommend this RAG service to others due to its benefits.')
-        intention2 = st.select_slider(
+
+        st.subheader('I trust the generated answers due to the provided sources.')
+        trust = st.select_slider(
             'Select an option between 1. Strongly Disagree and 7. Strongly Agree',
             options=[
                 '1. Strongly Disagree',
@@ -224,12 +226,12 @@ try:
                 '6. Agree',
                 '7. Strongly Agree'
             ],
-            key="bi_2_slider",
+            key="trust_slider",
             value='4. Neither Disagree nor Agree'  # Default selection
         )
+
         st.markdown("##")
-        return intention1, intention2
-
+        return helpfulness, trust
 
 
     st.progress(95, f"Study Progress: 95% Complete")
@@ -242,7 +244,10 @@ try:
     Usefulness1, Usefulness2 = perceived_usefulness()
     EaseOfUse1, EaseOfUse2 = perceived_ease_of_use()
     EaseOfReading = ease_of_reading()
-    BI1, BI2 = behavioral_intention()
+    if streamlit.session_state.sampled_study_type == "NoSources":
+        BI1 = 0
+        BI2 = 0
+    BI1, BI2 = user_feedback()()
 
     if st.button("Finish the study"):
         #age, gender, education, proficiency,
