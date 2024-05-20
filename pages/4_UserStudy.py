@@ -158,7 +158,7 @@ try:
             error = st.radio("**Did you detect an error in the response?**", ("Dummy", "No", "Yes"), index=0, horizontal=False)
             error_text = st.text_input("**If you detect an error, paste the content of the error inside this text field**")
             if st.form_submit_button():
-                st.session_state.progress += 5
+                st.session_state.progress += 8
                 timeSpentPerTask = store_and_compute_time_difference("timestamp")
                 logger.info(f"Time spent on this taks: {timeSpentPerTask['time_difference']}")
                 logger.info(f"Decision correct(Y/N): {decision[0]} with the correct response being{correctResponse}")

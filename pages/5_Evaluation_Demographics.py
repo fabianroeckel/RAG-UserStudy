@@ -63,7 +63,7 @@ try:
         return age, gender, education
     logger.info("Alle Tasks completed")
 
-    st.progress(95, f"Study Progress: 95% Complete")
+    st.progress(90, f"Study Progress: 95% Complete")
     st.title("Final Evaluation and Feedback")
     st.subheader('Please answer the following questions to provide feedback on your experience. After completing, press the "Finish the study" button to save your results at the end of the page.')
 

@@ -67,7 +67,7 @@ def financial_knowledge_questions():
 try:
     logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
     logger.add(logname)
-    st.progress(10, f"Study Progress: 10% Complete")
+    st.progress(15, f"Study Progress: 10% Complete")
     st.title('Pre-Study Questionaire: Financial Knowledge')
     selected_companies, familiarity_dict, sec_10_documents = financial_knowledge_questions()
     st.markdown("##")
