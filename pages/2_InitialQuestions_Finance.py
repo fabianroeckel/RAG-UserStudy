@@ -40,8 +40,7 @@ def financial_knowledge_questions():
             '7. Strongly Agree'
         ],
         key="financial_literacy_slider",
-        value='4. Neither Disagree nor Agree',
-        label="financial_literacy-slider"# Default selection
+        value='4. Neither Disagree nor Agree'
     )
     likert_mapping = {'1. Strongly Disagree': 1,
                       '2. Disagree': 2,
