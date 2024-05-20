@@ -50,7 +50,9 @@ def get_question_and_response(session_id):
     decision_options = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["DecisionOptions"].values[0]
     decision_options = decision_options.split(';')
     decision_options = ['0. dummy-preselect'] + decision_options
-    return question, response, decision_options, task, expander_title, expander_text
+    correctResponse = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["CorrectDecision"].values[0]
+    return question, response, decision_options, task, expander_title, expander_text, correctResponse
+
 
 
 def get_sampled_question_ids():
@@ -101,35 +103,6 @@ def getCachedSessionID():
     if session_info is None:
         raise RuntimeError("Couldn't get your Streamlit Session object.")
     return session_id
-
-
-def checkIfCorrect(decision):
-    user_file = f"./data/raw_answers/UserStudy/UserStudy_{st.session_state.sessionID}.csv"
-    user_df = pd.read_csv(user_file)
-
-    question_id = user_df.iloc[st.session_state.question_number]["QuestionID"]
-    question_type = user_df.iloc[st.session_state.question_number]["shuffled_questiontypes"]
-
-    df = pd.read_csv("data/RAG_Dataset.csv")
-    if question_type == "Correct":
-        study_dataset_df = df[df['Type'] == 'Correct']
-
-    if question_type == "EvidentBaselessInformation":
-        study_dataset_df = df[df['Type'] == 'BaselessInformation']
-
-    if question_type == "EvidentConflict":
-        study_dataset_df = df[df['Type'] == 'EvidentConflict']
-
-    if question_type == "AttentionCheck":
-        study_dataset_df = df[df['Type'] == 'AttentionCheck']
-
-    correctDecision = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["CorrectDecision"].values[0]
-    print(f"The correct decision was {correctDecision}")
-    print(f"And your decision was {decision[0]}")
-    if decision[0] == correctDecision:
-        return 1
-    else:
-        return 0
 
 
 def generateNewCSFFiles (sessionID, sampled_studyType):

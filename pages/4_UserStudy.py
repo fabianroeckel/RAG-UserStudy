@@ -45,7 +45,7 @@ try:
                 displayPDF(file_path, 900)
 
 
-        question, response, decision_options, task, expander_title, expander_text = get_question_and_response(st.session_state.sessionID)
+        question, response, decision_options, task, expander_title, expander_text, correctResponse = get_question_and_response(st.session_state.sessionID)
 
         st.progress(st.session_state.progress, f"Study Progress: {st.session_state.progress}% Complete")
         st.title(task)
@@ -132,7 +132,8 @@ try:
             st.markdown("Based on the question, answer and sources given on the left.")
             st.markdown("----")
             decision = st.radio(f'**{task}**', decision_options,index=0, horizontal=False)
-            correct = checkIfCorrect(decision)
+            if decision == correctResponse:
+                correct = 1
             st.markdown(
                 """
             <style>
@@ -163,7 +164,7 @@ try:
                 timeSpentPerTask = store_and_compute_time_difference("timestamp")
                 logger.info(f"Time spent on this taks: {timeSpentPerTask['time_difference']}")
                 logger.info(f"Decision was: {decision[0]} or {decision}")
-                logger.info(f"Correct (yes/no) was: {correct}")
+                logger.info(f"Decision correct(Y/N): {correct} with the correct response being{correctResponse}")
                 logger.info(f"Selected trust {trust}")
                 logger.info(f"Selected error {error}")
                 logger.info(f"Selected error {error_text}")
@@ -174,7 +175,7 @@ try:
                 logger.info(f"Watch time on source3 {st.session_state['source_watch_time3']}")
                 logger.info(f"Watch time on source4 {st.session_state['source_watch_time4']}")
                 update_questionaire(trust,
-                                    decision,
+                                    decision[0],
                                     error,
                                     correct,
                                     error_text,
