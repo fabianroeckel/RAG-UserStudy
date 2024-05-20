@@ -104,7 +104,7 @@ def getCachedSessionID():
 
 
 def checkIfCorrect(decision):
-    user_file = f"./data/raw_answers/UserStudy/UserStudy_{st.session_state.session_id}.csv"
+    user_file = f"./data/raw_answers/UserStudy/UserStudy_{st.session_state.sessionID}.csv"
     user_df = pd.read_csv(user_file)
 
     question_id = user_df.iloc[st.session_state.question_number]["QuestionID"]
