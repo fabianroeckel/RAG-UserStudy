@@ -132,10 +132,6 @@ try:
             st.markdown("Based on the question, answer and sources given on the left.")
             st.markdown("----")
             decision = st.radio(f'**{task}**', decision_options,index=0, horizontal=False)
-            if decision == correctResponse:
-                correct = 1
-            else:
-                correct = 0
             st.markdown(
                 """
             <style>
@@ -165,8 +161,7 @@ try:
                 st.session_state.progress += 5
                 timeSpentPerTask = store_and_compute_time_difference("timestamp")
                 logger.info(f"Time spent on this taks: {timeSpentPerTask['time_difference']}")
-                logger.info(f"Decision was: {decision[0]} or {decision}")
-                logger.info(f"Decision correct(Y/N): {correct} with the correct response being{correctResponse}")
+                logger.info(f"Decision correct(Y/N): {decision[0]} with the correct response being{correctResponse}")
                 logger.info(f"Selected trust {trust}")
                 logger.info(f"Selected error {error}")
                 logger.info(f"Selected error {error_text}")
@@ -179,7 +174,7 @@ try:
                 update_questionaire(trust,
                                     decision[0],
                                     error,
-                                    correct,
+                                    correctResponse,
                                     error_text,
                                     timeSpentPerTask["time_difference"],
                                     st.session_state["source_clicks1"],
