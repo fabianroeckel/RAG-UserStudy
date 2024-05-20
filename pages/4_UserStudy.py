@@ -42,11 +42,6 @@ try:
 
             with modal.container():
                 file_path = st.session_state["source_link"]
-                file = open(file_path, 'rb')
-                pdfReader = PyPDF2.PdfReader(file)
-                if pdfReader.is_encrypted:
-                    pdfReader.decrypt('')
-
                 displayPDF(file_path, 900)
 
 
