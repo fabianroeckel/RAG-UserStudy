@@ -42,7 +42,8 @@ try:
 
             with modal.container():
                 file_path = st.session_state["source_link"]
-                displayPDF(file_path, 900)
+                with st.container(height=800):
+                    displayPDF(file_path, 900)
 
 
         question, response, decision_options, task, expander_title, expander_text, correctResponse = get_question_and_response(st.session_state.sessionID)
