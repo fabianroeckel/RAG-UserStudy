@@ -200,7 +200,7 @@ def update_questionaire(trust, choice, error,correct, errortext, task_completion
         df.loc[row, 'ErrorText'] = str(errortext)
 
     if not correct:
-        df.low[row, "Correct"] = correct
+        df.loc[row, "Correct"] = correct
 
 
     #Clicks
