@@ -124,11 +124,11 @@ def generateNewCSFFiles (sessionID, sampled_studyType):
             # Assuming 'Choice', 'Trust', 'Interaction' are placeholders and you need to fill them accordingly
             # You can modify this part according to your actual data generation logic
             if i < 5:
-                writer.writerow([sessionID,sampled_studyType,shuffled_questiontypes[i], sampled_question_ids[i], "SomeChoice",0, "SomeTrust",0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+                writer.writerow([sessionID,sampled_studyType,shuffled_questiontypes[i], sampled_question_ids[i], 0,0, "SomeTrust",0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
             if i == 5:
-                writer.writerow([sessionID, sampled_studyType, "AttentionCheck", 18, "SomeChoice",0, "SomeTrust",0, 'NoError', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+                writer.writerow([sessionID, sampled_studyType, "AttentionCheck", 18, 0,0, "SomeTrust",0, 'NoError', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
             if i > 5:
-                writer.writerow([sessionID, sampled_studyType, shuffled_questiontypes[i-1], sampled_question_ids[i-1], "SomeChoice",0,
+                writer.writerow([sessionID, sampled_studyType, shuffled_questiontypes[i-1], sampled_question_ids[i-1], 0,0,
                      "SomeTrust",0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
     fileNameGeneralQuestions = f"./data/raw_answers/UserGeneral/GeneralQuestions{sessionID}.csv"
@@ -165,8 +165,8 @@ def update_questionaire(trust, choice, error,correct, errortext, task_completion
     # Update the corresponding row in the DataFrame
     row = st.session_state.question_number  # Specify the row index you want to update
     df.loc[row, 'Trust'] = trust_numeric
-    if not choice:
-        df.loc[row, 'Choice'] = choice
+
+    df.loc[row, 'Choice'] = choice
     df.loc[row, 'TaskCompletionTime'] = int(task_completion_time)
 
     if not error:
