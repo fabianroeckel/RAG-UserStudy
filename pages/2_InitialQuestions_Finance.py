@@ -11,7 +11,8 @@ def inital_questions_update_finance(selected_companies, familiarity_dict, sec_10
     file_path = f"./data/raw_answers/UserGeneral/GeneralQuestions{st.session_state.sessionID}.csv"
     df = pd.read_csv(file_path)
     row = 0
-    df.loc[row, 'CompaniesKnowledege'] = str(selected_companies)
+    if not selected_companies:
+        df.loc[row, 'CompaniesKnowledege'] = str(selected_companies)
     df.loc[row, 'financial_literacy'] = familiarity_dict
     df.loc[row, 'sec_10_documents'] = sec_10_documents
 
@@ -39,7 +40,8 @@ def financial_knowledge_questions():
             '7. Strongly Agree'
         ],
         key="financial_literacy_slider",
-        value='4. Neither Disagree nor Agree'  # Default selection
+        value='4. Neither Disagree nor Agree',
+        label="financial_literacy-slider"# Default selection
     )
     likert_mapping = {'1. Strongly Disagree': 1,
                       '2. Disagree': 2,

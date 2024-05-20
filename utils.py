@@ -166,11 +166,14 @@ def update_questionaire(trust, choice, error, errortext, task_completion_time,
     # Update the corresponding row in the DataFrame
     row = st.session_state.question_number  # Specify the row index you want to update
     df.loc[row, 'Trust'] = trust_numeric
-    df.loc[row, 'Choice'] = choice
+    if not choice:
+        df.loc[row, 'Choice'] = choice
     df.loc[row, 'TaskCompletionTime'] = int(task_completion_time)
 
-    df.loc[row, 'Error'] = error
-    df.loc[row, 'ErrorText'] = str(errortext)
+    if not error:
+        df.loc[row, 'Error'] = error
+    if not errortext:
+        df.loc[row, 'ErrorText'] = str(errortext)
 
 
     #Clicks

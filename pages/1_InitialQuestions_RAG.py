@@ -79,7 +79,8 @@ def skepticism_towards_ai_content():
             '7. Strongly Agree'
         ],
         key="skepticism_slider",
-        value='4. Neither Disagree nor Agree'  # Default selection
+        value='4. Neither Disagree nor Agree',
+        label="skepticism-slider"# Default selection
     )
     likert_mapping = {'1. Strongly Disagree': 1,
                       '2. Disagree': 2,
