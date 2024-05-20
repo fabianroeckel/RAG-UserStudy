@@ -16,10 +16,6 @@ WHITE_VALUE = 255
 
 
 def get_question_and_response(session_id):
-
-
-
-
     pd.set_option('display.max_colwidth', None)
     user_file = f"./data/raw_answers/UserStudy/UserStudy_{session_id}.csv"
     user_df = pd.read_csv(user_file)
@@ -211,7 +207,7 @@ def update_questionaire(trust, choice, error, errortext, task_completion_time,
 
     ##Reset States to 0
     if st.session_state.question_number == 9:
-        switch_page("evaluation")
+        switch_page("evaluation_demographics")
     else:
         st.rerun()
 
