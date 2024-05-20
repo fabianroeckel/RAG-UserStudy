@@ -82,7 +82,7 @@ try:
         "A. To provide an analysis of the company's financial performance from the perspective of management, including trends, risks, and future plans.",
         "B. To list all of the company's financial transactions in detail over the fiscal year.",
         "C. To provide the company's audited financial statements, including the balance sheet, income statement, and cash flow statement.",
-        "D. To disclose any material weaknesses in internal controls over financial reporting."
+        "D. I do not know and can not answer this question."
     ])
     logger.info(f"Answer to Knowledge Check SEC-10 {answer}")
     general_questions_completed = False
