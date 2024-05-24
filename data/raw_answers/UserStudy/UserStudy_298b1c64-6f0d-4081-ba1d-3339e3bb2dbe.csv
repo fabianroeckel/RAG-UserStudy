@@ -1,0 +1,10 @@
+userID,studyType,shuffled_questiontypes,QuestionID,Choice,Correct,Trust,Error,ErrorText,TaskCompletionTime,ClicksSource1,ClicksSource2,ClicksSource3,ClicksSource4,TotalClicks,ViewTimeSource1,ViewTimeSource2,ViewTimeSource3,ViewTimeSource4,TotalViewTime
+298b1c64-6f0d-4081-ba1d-3339e3bb2dbe,SingleSource,Correct,18,1,1,4,Dummy,,14,1,0,0,0,1,7,0,0,0,7
+298b1c64-6f0d-4081-ba1d-3339e3bb2dbe,SingleSource,EvidentBaselessInformation,13,1,2,4,Dummy,,1,0,0,0,0,0,0,0,0,0,0
+298b1c64-6f0d-4081-ba1d-3339e3bb2dbe,SingleSource,Correct,4,2,2,4,Dummy,,1,0,0,0,0,0,0,0,0,0,0
+298b1c64-6f0d-4081-ba1d-3339e3bb2dbe,SingleSource,EvidentConflict,14,1,1,4,Dummy,,32,1,0,0,0,1,25,0,0,0,25
+298b1c64-6f0d-4081-ba1d-3339e3bb2dbe,SingleSource,Correct,8,2,2,4,Dummy,,2,0,0,0,0,0,0,0,0,0,0
+298b1c64-6f0d-4081-ba1d-3339e3bb2dbe,SingleSource,AttentionCheck,18,1,1,5,Dummy,,12,0,0,0,0,0,0,0,0,0,0
+298b1c64-6f0d-4081-ba1d-3339e3bb2dbe,SingleSource,EvidentBaselessInformation,10,1,2,4,Dummy,,4,0,0,0,0,0,0,0,0,0,0
+298b1c64-6f0d-4081-ba1d-3339e3bb2dbe,SingleSource,Correct,7,1,1,4,Dummy,,3,0,0,0,0,0,0,0,0,0,0
+298b1c64-6f0d-4081-ba1d-3339e3bb2dbe,SingleSource,EvidentConflict,17,1,2,4,Dummy,,3,0,0,0,0,0,0,0,0,0,0
