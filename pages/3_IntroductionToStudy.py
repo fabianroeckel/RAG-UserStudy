@@ -47,14 +47,16 @@ try:
         st.write("All necessary information related to the financial task is displayed on the right side within the RAG system. If you require additional context or wish to verify the information, you can access the sources provided.")
 
     ## Step 5
-    if st.session_state["sampled_study_type"] != "NoSources":
+    if st.session_state["sampled_study_type"] == "NoSources":
+        print("Nosources")
+    else:
         col_text, col_image = st.columns([3, 7])
         with col_image:
             st.image("media/Explanations/slides/Folie5.jpeg")
 
         with col_text:
             st.subheader("Step 5: Verifying Accuracy")
-            st.write("You may have the option to check the PDFs file with the related information. To ensure the accuracy of the information provided by the RAG system, you can navigate through the attached PDF(s). Relevant sections within the PDF(s) are highlighted in yellow, making it easier for you to verify the correctness of the responses.")
+            st.write("You may or may not have the option to check the PDFs file with the related information. To ensure the accuracy of the information provided by the RAG system, you can navigate through the attached PDF(s). Relevant sections within the PDF(s) are highlighted in yellow, making it easier for you to verify the correctness of the responses.")
 
     ## Step 6
     col_text, col_image = st.columns([3, 7])
