@@ -105,7 +105,7 @@ try:
     logger.info(f"AI Skepticism {skepticism}")
 
     st.write('Thank you for providing the information. You may proceed with the experiment now.')
-    if st.button('Start with the Experiment'):
+    if st.button('Next'):
         inital_questions_update_rag(rag_experience, system_usage_frequency, skepticism)
         switch_page("initialQuestions_Finance")
 except (KeyError, AttributeError) as e:

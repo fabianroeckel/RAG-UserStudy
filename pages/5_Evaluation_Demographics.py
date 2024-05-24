@@ -14,7 +14,7 @@ try:
     logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
     logger.add(logname)
 
-    def final_evaluation_per_user_demographics(age, gender, education, proficiency):
+    def final_evaluation_per_user_demographics(age,prolificID, gender, education, proficiency):
         likert_mapping = {'1. Strongly Disagree': 1,
                           '2. Disagree': 2,
                           '3. Somewhat Disagree': 3,
@@ -26,6 +26,9 @@ try:
         file_path = f"./data/raw_answers/UserGeneral/GeneralQuestions{st.session_state.sessionID}.csv"
         df = pd.read_csv(file_path)
         row = 0
+
+        #ProlificID required for payment
+        df.loc[row, 'prolificID'] = prolificID
 
         df.loc[row, 'Age'] = age
         # GENDER
@@ -52,6 +55,9 @@ try:
 
         return proficiency
 
+    def prolific_id():
+        prolific_id = st.text_input(label="What is your ProlificID?")
+        return prolific_id
 
     def demographic_questions():
         st.title('Demographic Information')
@@ -68,12 +74,14 @@ try:
     st.subheader('Please answer the following questions to provide feedback on your experience. After completing, press the "Finish the study" button to save your results at the end of the page.')
 
     age, gender, education = demographic_questions()
+    prolific_id = prolific_id()
     st.markdown("##")
     proficiency = language_level()
 
     if st.button("Next set of questions"):
         #age, gender, education, proficiency,
-        final_evaluation_per_user_demographics(age, gender, education,proficiency)
+        final_evaluation_per_user_demographics(age,prolific_id, gender, education,proficiency)
+        logger.info(f"The prolificID of the user is: {prolific_id}")
         logger.info(f"The age of the user is: {age}")
         logger.info(f"The gender of the user is: {gender}")
         logger.info(f"The education level is {education}")

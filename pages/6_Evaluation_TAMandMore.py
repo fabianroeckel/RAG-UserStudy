@@ -195,6 +195,30 @@ try:
         st.markdown("##")
         return reading_ease
 
+
+    def pre_study_feedback():
+        st.subheader("Your Feedback for our Study")
+        st.write("If you have any concerns or improvement suggestions about the study design please enter them here:")
+        improvement_ideas = st.text_input()
+
+        st.write("What is your opinion on the length of the questionnaire?")
+        questionnaire_length = st.selectbox(options=("About right", "Too long", "Too short"))
+
+        st.write("What is your opinion on the clarity of the questions?")
+        questionnaire_clarity = st.selectbox(options=("Poor", "Satisfactory", "Good", "Very Good", "Excellent"))
+
+        st.write("What is your opinion on the structure and format of the questionnaire?")
+        questionnaire_structure = st.selectbox(options=("Poor", "Satisfactory", "Good", "Very Good", "Excellent"))
+
+        fileNameGeneralQuestions = f"./data/raw_answers/PreStudy/PreStudy{st.session_state.sessionID}.csv"
+        with open(fileNameGeneralQuestions, mode='w', newline='') as file:
+            writer = csv.writer(file)
+            ##add header
+            writer.writerow(
+                ['userID', "improvement_ideas", 'questionnaire_length', 'questionnaire_clarity', 'questionnaire_structure'])
+            writer.writerow([st.session_state.sessionID, improvement_ideas, questionnaire_length, questionnaire_clarity, questionnaire_structure])
+
+
     def user_feedback():
         st.title('User Feedback on RAG Service')
 
@@ -249,7 +273,7 @@ try:
         BI2 = 0
     BI1, BI2 = user_feedback()
 
-    if st.button("Finish the study"):
+    if st.button("Next"):
         #age, gender, education, proficiency,
         logger.info(f"EaseofReading: {EaseOfReading}")
         logger.info(f"FinalTrust: {FinalTrust}")
@@ -285,10 +309,6 @@ try:
 
         # Upload a CSV file
         bucket_name = 'rag-studyresults'
-        file_path = f'./data/raw_answers/UserStudy/UserStudy_{st.session_state.sessionID}.csv'
-        object_key = f'UserStudy_{st.session_state.sessionID}.csv'
-        s3.upload_file(file_path, bucket_name, object_key)
-
         file_path = f"./data/raw_answers/UserGeneral/GeneralQuestions{st.session_state.sessionID}.csv"
         object_key = f'GeneralQuestions{st.session_state.sessionID}.csv'
         s3.upload_file(file_path, bucket_name, object_key)
@@ -297,7 +317,7 @@ try:
         object_key = f'logs_{st.session_state.sessionID}.log'
         s3.upload_file(file_path, bucket_name, object_key)
         logger.info("Study finished")
-        switch_page("thankyou")
+        switch_page("PreStudyFeedback")
 
 except (KeyError, AttributeError) as e:
     print('I got a KeyError - reason "%s"' % str(e))

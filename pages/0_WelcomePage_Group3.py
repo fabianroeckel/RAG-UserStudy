@@ -4,6 +4,7 @@ from streamlit_extras.switch_page_button import switch_page
 from st_pages import hide_pages, Page
 from loguru import logger
 
+
 def main():
     st.progress(0, text=f"Study Progress: 0% Complete")
     hide_pages("streamlit_app.py")
@@ -18,7 +19,7 @@ def main():
     ###### Conducted by KSRI – Karlsruhe Digital Service Research & Innovation Hub in coorperation with the University of Bayreuth
     In this study you will be provided with 8 Q&A tasks that are answered by a Generative Artificial Intelligence (GenAI) system, that can either be fake or genuine. You will be asked to answer each question, with the help of an GenAI and mark incorrect answers by the GenAI.
     The findings will help to inform our understanding of how people behave and make decisions when collaborating with GenAI. With your participation in the study, you make a meaningful contribution to an important research project. Be assured - your time is well invested!
-    
+
     Keep in mind your payment will partly depend on your performance on these tasks. **For each correct answer you will get 10 pennies**.
     In the following, we will first give you an introduction into the used GenAI and the content of the documents (financial reports), and ask some questions before and after the experiment.
     Welcome to our online experiment exploring the interaction with RAG-systems.
@@ -45,14 +46,17 @@ def main():
     """)
 
     attention_check1 = st.checkbox("I hereby confirm that I am using a Laptop or Desktop to complete the study.")
-    attention_check2 = st.checkbox("I hereby confirm that I have read and understood the information above and that I voluntarily consent to participate in this study.")
+    attention_check2 = st.checkbox(
+        "I hereby confirm that I have read and understood the information above and that I voluntarily consent to participate in this study.")
     attention_check3 = st.checkbox("I hereby confirm that I will not use any other resources for this study.")
 
-    input_field = st.text_input("This is an attention check. Please type in your answer in lower_case letters. What color is grass?")
+    input_field = st.text_input(
+        "This is an attention check. Please type in your answer in lower_case letters. What color is grass?")
 
     if st.button('Start Experiment'):
         if not attention_check1 and not attention_check2 and not attention_check3:
-            st.error("Make sure to read all the necessary information and agree with the statements above by ticking the box.")
+            st.error(
+                "Make sure to read all the necessary information and agree with the statements above by ticking the box.")
         if attention_check1 and attention_check2 and attention_check3:
             if 'sessionID' not in st.session_state:
                 sessionID = getSessionID()
@@ -64,7 +68,7 @@ def main():
             if 'question_number' not in st.session_state:
                 st.session_state["question_number"] = 0
 
-            sampled_study_type = getSampledStudyType()
+            sampled_study_type = "MultiSource"
             st.session_state["sampled_study_type"] = sampled_study_type
             logger.info(f"Assigned studytype {sampled_study_type}")
             generateNewCSFFiles(st.session_state['sessionID'], sampled_study_type)
@@ -93,9 +97,10 @@ def main():
                 st.session_state["total_watch_time"] = 0
 
             if "task_completion_time" not in st.session_state:
-                st.session_state["task_completion_time"] =  0
+                st.session_state["task_completion_time"] = 0
 
             switch_page("consentToParticipate")
+
 
 st.set_page_config(layout="wide")
 main()

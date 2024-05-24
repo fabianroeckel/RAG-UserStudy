@@ -47,13 +47,14 @@ try:
         st.write("All necessary information related to the financial task is displayed on the right side within the RAG system. If you require additional context or wish to verify the information, you can access the sources provided.")
 
     ## Step 5
-    col_text, col_image = st.columns([3, 7])
-    with col_image:
-        st.image("media/Explanations/slides/Folie5.jpeg")
+    if st.session_state["sampled_study_type"] != "NoSources":
+        col_text, col_image = st.columns([3, 7])
+        with col_image:
+            st.image("media/Explanations/slides/Folie5.jpeg")
 
-    with col_text:
-        st.subheader("Step 5: Verifying Accuracy")
-        st.write("You may have the option to check the PDFs file with the related information. To ensure the accuracy of the information provided by the RAG system, you can navigate through the attached PDF(s). Relevant sections within the PDF(s) are highlighted in yellow, making it easier for you to verify the correctness of the responses.")
+        with col_text:
+            st.subheader("Step 5: Verifying Accuracy")
+            st.write("You may have the option to check the PDFs file with the related information. To ensure the accuracy of the information provided by the RAG system, you can navigate through the attached PDF(s). Relevant sections within the PDF(s) are highlighted in yellow, making it easier for you to verify the correctness of the responses.")
 
     ## Step 6
     col_text, col_image = st.columns([3, 7])
@@ -61,15 +62,23 @@ try:
         st.image("media/Explanations/slides/Folie6.jpeg")
 
     with col_text:
-        st.subheader("Step 6: Responding and Feedback")
+        if st.session_state["sampled_study_type"] == "NoSources":
+            number = 5
+        else:
+            number = 6
+        st.subheader(f"Step {number}: Responding and Feedback")
         st.write("After reviewing the information and verifying its accuracy, proceed to answer the questions related to the financial task. You'll find these questions on the right side within the RAG system interface. Feel free to indicate your confidence level in the responses or report any errors you may have identified.")
 
+    attentioncheck1 = st.checkbox("I hereby confirm that I have read the explanations carefully and I am ready to start the experiment.")
     if st.button('I Understand! Let\'s start the Experiment'):
-        st.session_state.progress = 20
-        if "timestamp" not in st.session_state:
-            st.session_state["timestamp"] = datetime.now()
-        logger.info(f"Introduction to study completed and User study starts")
-        switch_page("Userstudy")
+        if attentioncheck1:
+            st.session_state.progress = 20
+            if "timestamp" not in st.session_state:
+                st.session_state["timestamp"] = datetime.now()
+            logger.info(f"Introduction to study completed and User study starts")
+            switch_page("Userstudy")
+        else:
+            st.error("Make sure to read the explanations carefully and confirm it by ticking the checkbox above.")
 except (KeyError, AttributeError) as e:
     print('I got a KeyError - reason "%s"' % str(e))
     switch_page("streamlit_app")

@@ -188,8 +188,8 @@ try:
                                         st.session_state["source_watch_time1"],
                                         st.session_state["source_watch_time2"],
                                         st.session_state["source_watch_time3"],
-                                        st.session_state["source_watch_time4"]
-                                        )
+                                        st.session_state["source_watch_time4"])
+
 except (KeyError, AttributeError) as e:
     print('I got a KeyError - reason "%s"' % str(e))
     switch_page("streamlit_app")

@@ -88,7 +88,7 @@ try:
     general_questions_completed = False
 
     st.write('Thank you for providing the information. You may proceed with the experiment now.')
-    if st.button('Start with the Experiment'):
+    if st.button('Next'):
         logger.info(f"Experiment started {datetime.now()}")
         inital_questions_update_finance(selected_companies, familiarity_dict, sec_10_documents)
         logger.info(f"Initial questions selected companies {selected_companies}")

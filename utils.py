@@ -10,6 +10,7 @@ from streamlit_extras.switch_page_button import switch_page
 from datetime import datetime
 from pdf2image import convert_from_path, pdfinfo_from_path
 import re
+import boto3
 FOOTER_ROWS = 300
 WHITE_VALUE = 255
 
@@ -135,8 +136,8 @@ def generateNewCSFFiles (sessionID, sampled_studyType):
     with open(fileNameGeneralQuestions, mode='w', newline='') as file:
         writer = csv.writer(file)
         ##add header
-        writer.writerow(['userID', 'Age', 'Gender', 'Education', 'LanguageLevel', 'RAG-PreviousExperience', 'RAG-Usage', 'InitialTrust', 'CompaniesKnowledege', 'financial_literacy', 'sec_10_documents', 'EaseOfReading', 'FinalTrust', 'WillingnessToUse', 'CognitiveLoad', 'Usefulness1', 'Usefulness2', 'EaseOfUse1', 'EaseOfUse2', 'BI1', 'BI2'])
-        writer.writerow([sessionID, 0, 0, 0, 0, 0, 0,
+        writer.writerow(['userID', "prolificID", 'Age', 'Gender', 'Education', 'LanguageLevel', 'RAG-PreviousExperience', 'RAG-Usage', 'InitialTrust', 'CompaniesKnowledege', 'financial_literacy', 'sec_10_documents', 'EaseOfReading', 'FinalTrust', 'WillingnessToUse', 'CognitiveLoad', 'Usefulness1', 'Usefulness2', 'EaseOfUse1', 'EaseOfUse2', 'BI1', 'BI2'])
+        writer.writerow([sessionID,"IDBLABLA", 0, 0, 0, 0, 0, 0,
                          0,0,0,0, 0, 0, 0,0,0, 0, 0, 0, 0, 0])
 
 
@@ -206,7 +207,32 @@ def update_questionaire(trust, choice, error,correct, errortext, task_completion
 
     ##Reset States to 0
     if st.session_state.question_number == 9:
+
+        # Check if Streamlit secrets are available
+        if "AWS_ACCESS_KEY_ID" in st.secrets and "AWS_SECRET_ACCESS_KEY" in st.secrets:
+            aws_access_key_id = st.secrets["AWS_ACCESS_KEY_ID"]
+            aws_secret_access_key = st.secrets["AWS_SECRET_ACCESS_KEY"]
+        else:
+            # If Streamlit secrets are not available, manually load environment variables from .env file
+            with open('.env') as f:
+                for line in f:
+                    key, value = line.strip().split('=')
+                    os.environ[key] = value
+
+            # Retrieve AWS credentials from environment variables
+            aws_access_key_id = os.getenv("AWS_ACCESS_KEY_ID")
+            aws_secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
+
+        # Initialize an S3 client
+        s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+
+        # Upload a CSV file
+        bucket_name = 'rag-studyresults'
+        file_path = f'./data/raw_answers/UserStudy/UserStudy_{st.session_state.sessionID}.csv'
+        object_key = f'UserStudy_{st.session_state.sessionID}.csv'
+        s3.upload_file(file_path, bucket_name, object_key)
         switch_page("evaluation_demographics")
+
     else:
         st.rerun()
 
