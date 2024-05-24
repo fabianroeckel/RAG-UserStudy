@@ -17,7 +17,7 @@ try:
     logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
     logger.add(logname)
 
-    def pre_study_feedback(fileNameGeneralQuestions):
+    def pre_study_feedback():
         st.subheader("Your Feedback for our Study")
         improvement_ideas = st.text_input(label="If you have any concerns or improvement suggestions about the study design please enter them here:")
 
