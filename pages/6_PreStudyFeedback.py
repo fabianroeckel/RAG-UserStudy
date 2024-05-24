@@ -16,7 +16,7 @@ from pydrive.drive import GoogleDrive
 try:
     logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
     logger.add(logname)
-    fileNameGeneralQuestions = f"./data/raw_answers/PreStudy/PreStudy{st.session_state.sessionID}.csv"
+
     def pre_study_feedback(fileNameGeneralQuestions):
         st.subheader("Your Feedback for our Study")
         improvement_ideas = st.text_input(label="If you have any concerns or improvement suggestions about the study design please enter them here:")
@@ -27,6 +27,10 @@ try:
 
         questionnaire_structure = st.selectbox(label="What is your opinion on the structure and format of the questionnaire?", options=("Poor", "Satisfactory", "Good", "Very Good", "Excellent"))
 
+        return improvement_ideas, questionnaire_length, questionnaire_clarity, questionnaire_structure
+
+    def store_inputs(improvement_ideas, questionnaire_length, questionnaire_clarity, questionnaire_structure):
+        fileNameGeneralQuestions = f"./data/raw_answers/PreStudy/PreStudy{st.session_state.sessionID}.csv"
         with open(fileNameGeneralQuestions, mode='w', newline='') as file:
             writer = csv.writer(file)
             ##add header
@@ -35,11 +39,15 @@ try:
             writer.writerow([st.session_state.sessionID, improvement_ideas, questionnaire_length, questionnaire_clarity, questionnaire_structure])
 
 
+
     st.progress(99, f"Study Progress: 95% Complete")
     st.title("Final Evaluation and Feedback")
     st.subheader('Please answer the following questions to provide feedback on your experience. After completing, press the "Finish the study" button to save your results at the end of the page.')
 
-    pre_study_feedback(fileNameGeneralQuestions)
+    improvement_ideas, questionnaire_length, questionnaire_clarity, questionnaire_structure = pre_study_feedback()
+    store_inputs(improvement_ideas, questionnaire_length, questionnaire_clarity, questionnaire_structure)
+
+
 
     if st.button("Finish the study"):
         # Check if Streamlit secrets are available
