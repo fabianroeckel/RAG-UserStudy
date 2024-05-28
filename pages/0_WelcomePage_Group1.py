@@ -51,7 +51,7 @@ def main():
     attention_check3 = st.checkbox("I hereby confirm that I will not use any other resources for this study.")
 
     input_field = st.text_input(
-        "This is an attention check. Please type in your answer in lower_case letters. What color is grass?")
+        "This is an attention check. Please type in your answer in lower case letters. What color is grass?")
 
     if st.button('Start Experiment'):
         if not attention_check1 and not attention_check2 and not attention_check3:
