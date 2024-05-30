@@ -23,7 +23,7 @@ def inital_questions_update_rag(rag_experience, system_usage_frequency,
 
 def similar_systems_experience():
     st.subheader('How does a Retrieval augmented generation (RAG) work?')
-    with st.expander("What is a RAG?", expanded=True):
+    with st.expander("", expanded=True):
         col_expl, col_video = st.columns([6, 4])
         with col_expl:
             st.markdown("**RAG**, which stands for **Retrieval-Augmented Generation**, is an AI framework designed to enhance the responses of large language models (LLMs) by incorporating real-time information from external databases or knowledge bases. This approach helps to ground the model's responses in accurate and current information, making them more reliable and contextually relevant. ")
@@ -38,8 +38,12 @@ def similar_systems_experience():
 
         with col_video:
             st.image("media/rag_gif.gif")
+
+
+    st.divider()
+    st.subheader("What is a RAG?")
     retrieval_augmentation_generation = st.radio(
-        "",
+        "Select the option that accurately describes the inner workings of the system.",
         options=[
             "a) It searches for relevant information, augments it, and generates a response.",
             "b) It generates a response without retrieving any external data.",

@@ -52,7 +52,7 @@ def financial_knowledge_questions():
 
 
     # Question 3
-    st.subheader("Have you previously worked with or read SEC-10 documents?")
+    st.subheader("Have you previously worked with or read quarterly or yearly financial reports?")
     sec_10_documents = st.radio("Select one:", ["Yes", "No"])
 
     sec_mapping = {"Yes":1, "No":0}
@@ -73,7 +73,7 @@ try:
     st.markdown("##")
     # The question
 
-    st.subheader("""You are reviewing a company's SEC 10-K filing and come across the section on 'Management's Discussion and Analysis of Financial Condition and Results of Operations' (MD&A). 
+    st.subheader("""You are reviewing a company's quarterly reports and come across the section on 'Management's Discussion and Analysis of Financial Condition and Results of Operations' (MD&A). 
     Which of the following best describes the purpose of the MD&A section?
     """)
 
