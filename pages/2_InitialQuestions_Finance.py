@@ -52,7 +52,7 @@ def financial_knowledge_questions():
 
 
     # Question 3
-    st.subheader("Have you previously worked with or read quarterly or yearly financial reports?")
+    st.subheader("Have you previously worked with or read quarterly financial reports?")
     sec_10_documents = st.radio("Select one:", ["Yes", "No"])
 
     sec_mapping = {"Yes":1, "No":0}
