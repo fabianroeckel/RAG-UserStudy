@@ -8,7 +8,7 @@ from loguru import logger
 
 
 def inital_questions_update_rag(rag_experience, system_usage_frequency,
-                            skepticism):
+                            skepticism, retrieval_augmentation_generation):
     print()
     file_path = f"./data/raw_answers/UserGeneral/GeneralQuestions{st.session_state.sessionID}.csv"
     df = pd.read_csv(file_path)
@@ -17,6 +17,7 @@ def inital_questions_update_rag(rag_experience, system_usage_frequency,
     df.loc[row, 'RAG-PreviousExperience'] = rag_experience
     df.loc[row, 'RAG-Usage'] = system_usage_frequency
     df.loc[row, 'InitialTrust'] = skepticism
+    df.loc[row, 'KnowledgeCheckRag'] = retrieval_augmentation_generation
 
     df.to_csv(file_path, index=False)
 
@@ -53,6 +54,8 @@ def similar_systems_experience():
         key="rag_system_question",
         index=0  # Default selection
     )
+
+
     st.markdown("###")
     st.subheader('Have you ever used a GenAI system, like ChatGPT, before?')
     rag_experience = st.selectbox('', ['Yes', 'No'])
@@ -64,7 +67,7 @@ def similar_systems_experience():
     rag_experience_mapping = {'No': 0, 'Yes': 1}
     system_usage_mapping = {'Daily': 1, 'Weekly': 2, 'Monthly': 3, 'Rarely': 4, 'Never': 0}
 
-    return rag_experience_mapping[rag_experience], system_usage_mapping[system_usage_frequency]
+    return rag_experience_mapping[rag_experience], system_usage_mapping[system_usage_frequency], retrieval_augmentation_generation
 
 def skepticism_towards_ai_content():
     st.subheader('Skepticism towards AI')
@@ -98,10 +101,10 @@ try:
     logger.add(logname)
     logger.info("PreQuestions Rag started")
     st.progress(10, f"Study Progress: 10% Complete")
-    st.title('Pre-Study Questionaire: AI-Systems')
+    st.title('Pre-Study Questionnaire: AI-Systems')
     st.write('Please provide some demographic information before starting the experiment.')
 
-    rag_experience, system_usage_frequency = similar_systems_experience()
+    rag_experience, system_usage_frequency, retrieval_augmentation_generation  = similar_systems_experience()
     logger.info(f"Previous RAG Experience {rag_experience}")
     logger.info(f"System usage frequency {system_usage_frequency}")
     st.markdown("##")
@@ -110,7 +113,7 @@ try:
 
     st.write('Thank you for providing the information. You may proceed with the experiment now.')
     if st.button('Next'):
-        inital_questions_update_rag(rag_experience, system_usage_frequency, skepticism)
+        inital_questions_update_rag(rag_experience, system_usage_frequency, skepticism, retrieval_augmentation_generation)
         switch_page("initialQuestions_Finance")
 except (KeyError, AttributeError) as e:
     print('I got a KeyError - reason "%s"' % str(e))

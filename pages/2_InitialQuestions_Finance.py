@@ -7,7 +7,7 @@ from datetime import datetime
 from loguru import logger
 
 
-def inital_questions_update_finance(selected_companies, familiarity_dict, sec_10_documents):
+def inital_questions_update_finance(selected_companies, familiarity_dict, sec_10_documents, knowledgecheck_finance):
     file_path = f"./data/raw_answers/UserGeneral/GeneralQuestions{st.session_state.sessionID}.csv"
     df = pd.read_csv(file_path)
     row = 0
@@ -15,6 +15,7 @@ def inital_questions_update_finance(selected_companies, familiarity_dict, sec_10
         df.loc[row, 'CompaniesKnowledege'] = str(selected_companies)
     df.loc[row, 'financial_literacy'] = familiarity_dict
     df.loc[row, 'sec_10_documents'] = sec_10_documents
+    df.loc[row, "KnowledgeCheckFinance"] = knowledgecheck_finance
 
     df.to_csv(file_path, index=False)
 
@@ -78,19 +79,19 @@ try:
     """)
 
     # Radio button for user to select an answer
-    answer = st.radio("Select the correct option", [
+    knowledgecheck_finance = st.radio("Select the correct option", [
         "A. To provide an analysis of the company's financial performance from the perspective of management, including trends, risks, and future plans.",
         "B. To list all of the company's financial transactions in detail over the fiscal year.",
         "C. To provide the company's audited financial statements, including the balance sheet, income statement, and cash flow statement.",
         "D. I do not know and can not answer this question."
     ])
-    logger.info(f"Answer to Knowledge Check SEC-10 {answer}")
+    logger.info(f"Answer to Knowledge Check SEC-10 {knowledgecheck_finance}")
     general_questions_completed = False
 
     st.write('Thank you for providing the information. You may proceed with the experiment now.')
     if st.button('Next'):
         logger.info(f"Experiment started {datetime.now()}")
-        inital_questions_update_finance(selected_companies, familiarity_dict, sec_10_documents)
+        inital_questions_update_finance(selected_companies, familiarity_dict, sec_10_documents, knowledgecheck_finance)
         logger.info(f"Initial questions selected companies {selected_companies}")
         logger.info(f"Initial questions financial_literacy {familiarity_dict}")
         logger.info(f"Initial questions sec_10_documents {sec_10_documents}")

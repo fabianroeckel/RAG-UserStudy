@@ -136,9 +136,9 @@ def generateNewCSFFiles (sessionID, sampled_studyType):
     with open(fileNameGeneralQuestions, mode='w', newline='') as file:
         writer = csv.writer(file)
         ##add header
-        writer.writerow(['userID', "prolificID", 'Age', 'Gender', 'Education', 'LanguageLevel', 'RAG-PreviousExperience', 'RAG-Usage', 'InitialTrust', 'CompaniesKnowledege', 'financial_literacy', 'sec_10_documents', 'EaseOfReading', 'FinalTrust', 'WillingnessToUse', 'CognitiveLoad', 'Usefulness1', 'Usefulness2', 'EaseOfUse1', 'EaseOfUse2', 'BI1', 'BI2'])
-        writer.writerow([sessionID,"IDBLABLA", 0, 0, 0, 0, 0, 0,
-                         0,0,0,0, 0, 0, 0,0,0, 0, 0, 0, 0, 0])
+        writer.writerow(['userID', "prolificID", 'Age', 'Gender', 'Education', 'LanguageLevel','KnowledgeCheckRag', 'RAG-PreviousExperience', 'RAG-Usage', 'InitialTrust', 'CompaniesKnowledege','KnowledgeCheckFinance', 'financial_literacy', 'sec_10_documents', 'EaseOfReading', 'FinalTrust', 'WillingnessToUse', 'CognitiveLoad', 'Usefulness1', 'Usefulness2', 'EaseOfUse1', 'EaseOfUse2', 'BI1', 'BI2'])
+        writer.writerow([sessionID,"IDBLABLA",0, 0, 0, 0, "a", 0, 0,
+                         0,0,"a", 0,0, 0, 0, 0,0,0, 0, 0, 0, 0, 0])
 
 
 

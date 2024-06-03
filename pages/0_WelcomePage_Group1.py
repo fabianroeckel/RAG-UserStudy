@@ -52,6 +52,7 @@ def main():
 
     input_field = st.text_input(
         "This is an attention check. Please type in your answer in lower case letters. What color is grass?")
+    logger.info(f"Attention check: {input_field}")
 
     if st.button('Start Experiment'):
         if not attention_check1 and not attention_check2 and not attention_check3:
