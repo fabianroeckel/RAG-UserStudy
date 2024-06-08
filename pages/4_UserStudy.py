@@ -49,7 +49,6 @@ try:
         question, response, decision_options, task, expander_title, expander_text, correctResponse = get_question_and_response(st.session_state.sessionID)
 
         st.progress(st.session_state.progress, f"Study Progress: {st.session_state.progress}% Complete")
-        st.title(task)
         st.markdown("On the left side, you will find the chat with your RAG, designed to assist you in answering the question above. The red icon and text box display the question submitted to the RAG system. The yellow icon indicates the system's response, including all the source documents used to generate the answer. By clicking on the source documents, all relevant passages will be highlighted in yellow for easy reference.")
         with st.expander(expander_title):
             st.markdown(expander_text)
