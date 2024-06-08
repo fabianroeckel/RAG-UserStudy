@@ -39,7 +39,7 @@ def main():
     **Estimated Time:**
     The experiment is expected to take approximately 20-30 minutes to complete.
 
-    Thank you for your participation! Let's get started and contribute to advancements in HCI research.
+    Thank you for your participation! Let's get started and contribute to advancements in research.
 
     ---
     """)
@@ -50,7 +50,7 @@ def main():
     attention_check3 = st.checkbox("I hereby confirm that I will not use any other resources for this study.")
 
     input_field = st.text_input(
-        "This is an attention check. Please type in your answer in lower_case letters. What color is grass?")
+        "This is an attention check. Please type in your answer in lowercase letters. What color is grass?")
     logger.info(f"Attention check: {input_field}")
 
     if st.button('Start Experiment'):

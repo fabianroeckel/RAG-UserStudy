@@ -16,7 +16,7 @@ try:
         st.image("media/Explanations/slides/Folie1.jpeg")
 
     with col_text:
-        st.subheader("Step 1: Introduction to RAG System")
+        st.subheader("Step 1: Introduction to our RAG System")
         st.write("Welcome to the study! You'll be using a Retrieval Augmented Generation (RAG) system designed specifically for financial tasks. A screenshot of your workspace is on the right side of the interface, where you'll interact with the system.")
 
     ## Step 2

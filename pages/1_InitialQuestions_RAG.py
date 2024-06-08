@@ -101,7 +101,7 @@ try:
     logger.add(logname)
     logger.info("PreQuestions Rag started")
     st.progress(10, f"Study Progress: 10% Complete")
-    st.title('Pre-Study Questionnaire: AI-Systems')
+    st.title('Introduction and Pre-Study Questionnaire: AI-Systems')
     st.write('Please provide some demographic information before starting the experiment.')
 
     rag_experience, system_usage_frequency, retrieval_augmentation_generation  = similar_systems_experience()

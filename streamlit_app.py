@@ -15,7 +15,7 @@ def main():
     hide_pages("pages/7_ThankYou.py")
     st.title('Welcome to our study and thank you for taking part!')
     st.markdown("""
-    ###### Conducted by KSRI – Karlsruhe Digital Service Research & Innovation Hub in coorperation with the University of Bayreuth
+    ###### Conducted by KSRI – Karlsruhe Digital Service Research & Innovation Hub in cooperation with the University of Bayreuth
     In this study you will be provided with 8 Q&A tasks that are answered by a Generative Artificial Intelligence (GenAI) system, that can either be fake or genuine. You will be asked to answer each question, with the help of an GenAI and mark incorrect answers by the GenAI.
     The findings will help to inform our understanding of how people behave and make decisions when collaborating with GenAI. With your participation in the study, you make a meaningful contribution to an important research project. Be assured - your time is well invested!
     
@@ -38,7 +38,7 @@ def main():
     **Estimated Time:**
     The experiment is expected to take approximately 20-30 minutes to complete.
 
-    Thank you for your participation! Let's get started and contribute to advancements in HCI research.
+    Thank you for your participation! Let's get started and contribute to advancements in research.
 
     ---
     """)
