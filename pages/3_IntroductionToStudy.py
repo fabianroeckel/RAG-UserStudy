@@ -55,7 +55,7 @@ try:
             st.image("media/Explanations/slides/Folie5.jpeg")
 
         with col_text:
-            st.subheader("Step 5: Verifying Accuracy")
+            st.subheader("Step 5: Review Responses")
             st.write("You may or may not have the option to check the PDFs file with the related information. To ensure the accuracy of the information provided by the RAG system, you can navigate through the attached PDF(s). Relevant sections within the PDF(s) are highlighted in yellow, making it easier for you to verify the correctness of the responses.")
 
     ## Step 6
