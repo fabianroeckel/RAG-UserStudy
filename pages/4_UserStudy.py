@@ -159,9 +159,9 @@ try:
             error = st.radio("**Did you detect an error in the response?**", ("Dummy", "No", "Yes"), index=0, horizontal=False)
             error_text = st.text_input("**If you detect an error, paste the content of the error inside this text field**")
             if st.form_submit_button():
-                if int(decision[0]) < 1:
-                    st.error("You need to answer the questions!")
-                if int(decision[0]) > 0:
+                if int(decision[0]) < 1 or error == "Dummy" or trust == "4. Neither Disagree nor Agree":
+                    st.error("You need to answer all the questions (Decision, Trust and Error-Detection!)")
+                if int(decision[0]) > 0 and error != "Dummy" and trust != "4. Neither Disagree nor Agree":
                     st.session_state.progress += 8
                     timeSpentPerTask = store_and_compute_time_difference("timestamp")
                     logger.info(f"Time spent on this taks: {timeSpentPerTask['time_difference']}")

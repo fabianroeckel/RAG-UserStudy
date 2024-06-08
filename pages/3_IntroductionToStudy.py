@@ -71,9 +71,15 @@ try:
         st.subheader(f"Step {number}: Responding and Feedback")
         st.write("After reviewing the information and verifying its accuracy, proceed to answer the questions related to the financial task. You'll find these questions on the right side within the RAG system interface. Feel free to indicate your confidence level in the responses or report any errors you may have identified.")
 
+    st.divider()
+    attention_check_answer = st.radio(
+        "Which color is used to highlight relevant information in the source documents?",
+        ('Blue', 'Yellow', 'Green', 'Red'), horizontal=True, index=None
+    )
     attentioncheck1 = st.checkbox("I hereby confirm that I have read the explanations carefully and I am ready to start the experiment.")
+
     if st.button('I Understand! Let\'s start the Experiment'):
-        if attentioncheck1:
+        if attentioncheck1 and attention_check_answer == "Yellow":
             st.session_state.progress = 20
             if "timestamp" not in st.session_state:
                 st.session_state["timestamp"] = datetime.now()

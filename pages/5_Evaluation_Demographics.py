@@ -15,14 +15,6 @@ try:
     logger.add(logname)
 
     def final_evaluation_per_user_demographics(age,prolificID, gender, education, proficiency):
-        likert_mapping = {'1. Strongly Disagree': 1,
-                          '2. Disagree': 2,
-                          '3. Somewhat Disagree': 3,
-                          '4. Neither Disagree nor Agree': 4,
-                          '5. Somewhat Agree': 5,
-                          '6. Agree': 6,
-                          '7. Strongly Agree': 7}
-
         file_path = f"./data/raw_answers/UserGeneral/GeneralQuestions{st.session_state.sessionID}.csv"
         df = pd.read_csv(file_path)
         row = 0
@@ -51,7 +43,7 @@ try:
         st.title('Language Level')
         proficiency = st.selectbox('How would you rate your proficiency with the English language of the system?',
                                    ['BasicUser(A1-A2)', 'IndependentUser(B1-B2)', 'ProficientUser(C1-C2)',
-                                    'Native Speaker'])
+                                    'Native Speaker'], index=None)
 
         return proficiency
 
@@ -61,10 +53,10 @@ try:
 
     def demographic_questions():
         st.title('Demographic Information')
-        age = st.number_input('What is your age?', min_value=18, max_value=120)
-        gender = st.selectbox('What is your gender?', ['Male', 'Female', 'Other'])
+        age = st.number_input('What is your age?', min_value=18, max_value=120, value=None)
+        gender = st.selectbox('What is your gender?', ['Male', 'Female', 'Other'], index=None)
         education = st.selectbox('What is your level of education?',
-                                 ['High School', 'Bachelor\'s Degree', 'Master\'s Degree', 'PhD', 'Other'])
+                                 ['High School', 'Bachelor\'s Degree', 'Master\'s Degree', 'PhD', 'Other'], index=None)
 
         return age, gender, education
     logger.info("Alle Tasks completed")
@@ -80,13 +72,16 @@ try:
 
     if st.button("Next set of questions"):
         #age, gender, education, proficiency,
-        final_evaluation_per_user_demographics(age,prolific_id, gender, education,proficiency)
-        logger.info(f"The prolificID of the user is: {prolific_id}")
-        logger.info(f"The age of the user is: {age}")
-        logger.info(f"The gender of the user is: {gender}")
-        logger.info(f"The education level is {education}")
-        logger.info(f"The language profiency is {proficiency}")
-        switch_page("Evaluation_TAMandMore")
+        if age is None or gender is None or education is None or prolific_id is None or proficiency is None:
+            st.error("You need to answer the questions!")
+        else:
+            final_evaluation_per_user_demographics(age, prolific_id, gender, education,proficiency)
+            logger.info(f"The prolificID of the user is: {prolific_id}")
+            logger.info(f"The age of the user is: {age}")
+            logger.info(f"The gender of the user is: {gender}")
+            logger.info(f"The education level is {education}")
+            logger.info(f"The language profiency is {proficiency}")
+            switch_page("Evaluation_TAMandMore")
 
 except (KeyError, AttributeError) as e:
     print('I got a KeyError - reason "%s"' % str(e))

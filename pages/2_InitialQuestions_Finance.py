@@ -27,10 +27,11 @@ def financial_knowledge_questions():
     companies_options = ["Amazon", "Microsoft", "Nvidia", "Intel", "Apple"]
     st.subheader("Do you know the following companies and vaguely what they do? If yes, select them" )
     selected_companies = st.multiselect("Select companies:", companies_options)
+    st.divider()
     # Question 2
     st.subheader("I understand key financial terms and can accurately interpret financial reports and data.")
-    financial_literacy = st.select_slider(
-        'Select an option between 1. Strongly Disagree and 7. Strongly Agree',
+    financial_literacy = st.radio(
+        '',
         options=[
             '1. Strongly Disagree',
             '2. Disagree',
@@ -41,24 +42,15 @@ def financial_knowledge_questions():
             '7. Strongly Agree'
         ],
         key="financial_literacy_slider",
-        value='4. Neither Disagree nor Agree'
+        index=None,
+        horizontal=True
     )
-    likert_mapping = {'1. Strongly Disagree': 1,
-                      '2. Disagree': 2,
-                      '3. Somewhat Disagree': 3,
-                      '4. Neither Disagree nor Agree': 4,
-                      '5. Somewhat Agree': 5,
-                      '6. Agree': 6,
-                      '7. Strongly Agree': 7}
-
-
+    st.divider()
     # Question 3
     st.subheader("Have you previously worked with or read quarterly financial reports?")
-    sec_10_documents = st.radio("Select one:", ["Yes", "No"])
-
-    sec_mapping = {"Yes":1, "No":0}
-
-    return selected_companies, likert_mapping[financial_literacy], sec_mapping[sec_10_documents]
+    sec_10_documents = st.radio("", ["Yes", "No"], index=None, horizontal=True)
+    st.divider()
+    return selected_companies, financial_literacy, sec_10_documents
 
 
 
@@ -70,32 +62,42 @@ try:
     logger.add(logname)
     st.progress(15, f"Study Progress: 15% Complete")
     st.title('Pre-Study Questionaire: Financial Knowledge')
-    selected_companies, familiarity_dict, sec_10_documents = financial_knowledge_questions()
+    selected_companies, financial_literacy, sec_10_documents = financial_knowledge_questions()
     st.markdown("##")
     # The question
 
-    st.subheader("""You are reviewing a company's quarterly reports and come across the section on 'Management's Discussion and Analysis of Financial Condition and Results of Operations' (MD&A). 
-    Which of the following best describes the purpose of the MD&A section?
+    st.subheader("""You are reviewing a company's quarterly reports and come across the section on 'Management's Discussion and Analysis of Financial Condition and Results of Operations' (MD&A)?
     """)
-
     # Radio button for user to select an answer
-    knowledgecheck_finance = st.radio("Select the correct option", [
+    knowledgecheck_finance = st.radio("Which of the following best describes the purpose of the MD&A section?", [
         "A. To provide an analysis of the company's financial performance from the perspective of management, including trends, risks, and future plans.",
         "B. To list all of the company's financial transactions in detail over the fiscal year.",
         "C. To provide the company's audited financial statements, including the balance sheet, income statement, and cash flow statement.",
         "D. I do not know and can not answer this question."
-    ])
+    ], index=None)
     logger.info(f"Answer to Knowledge Check SEC-10 {knowledgecheck_finance}")
     general_questions_completed = False
 
     st.write('Thank you for providing the information. You may proceed with the experiment now.')
     if st.button('Next'):
-        logger.info(f"Experiment started {datetime.now()}")
-        inital_questions_update_finance(selected_companies, familiarity_dict, sec_10_documents, knowledgecheck_finance)
-        logger.info(f"Initial questions selected companies {selected_companies}")
-        logger.info(f"Initial questions financial_literacy {familiarity_dict}")
-        logger.info(f"Initial questions sec_10_documents {sec_10_documents}")
-        switch_page("introductionToStudy")
+        likert_mapping = {'1. Strongly Disagree': 1,
+                          '2. Disagree': 2,
+                          '3. Somewhat Disagree': 3,
+                          '4. Neither Disagree nor Agree': 4,
+                          '5. Somewhat Agree': 5,
+                          '6. Agree': 6,
+                          '7. Strongly Agree': 7}
+        sec_mapping = {"Yes": 1, "No": 0}
+        if financial_literacy is None or sec_10_documents is None or knowledgecheck_finance is None:
+            st.error("You need to answer the questions!")
+
+        if financial_literacy is not None and sec_10_documents is not None and knowledgecheck_finance is not None:
+            logger.info(f"Experiment started {datetime.now()}")
+            inital_questions_update_finance(selected_companies, likert_mapping[financial_literacy], sec_mapping[sec_10_documents], knowledgecheck_finance)
+            logger.info(f"Initial questions selected companies {selected_companies}")
+            logger.info(f"Initial questions financial_literacy {likert_mapping[financial_literacy]}")
+            logger.info(f"Initial questions sec_10_documents {sec_10_documents}")
+            switch_page("introductionToStudy")
 except (KeyError, AttributeError) as e:
     print('I got a KeyError - reason "%s"' % str(e))
     switch_page("streamlit_app")

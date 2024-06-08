@@ -13,3 +13,4 @@ pydrive
 boto3
 st-pages
 loguru
+streamlit-survey

@@ -21,11 +21,11 @@ try:
         st.subheader("Your Feedback for our Study")
         improvement_ideas = st.text_input(label="If you have any concerns or improvement suggestions about the study design please enter them here:")
 
-        questionnaire_length = st.selectbox(label="What is your opinion on the length of the questionnaire?", options=("About right", "Too long", "Too short"))
+        questionnaire_length = st.selectbox(label="What is your opinion on the length of the questionnaire?", options=("About right", "Too long", "Too short"), index=None)
 
-        questionnaire_clarity = st.selectbox("What is your opinion on the clarity of the questions?", options=("Poor", "Satisfactory", "Good", "Very Good", "Excellent"))
+        questionnaire_clarity = st.selectbox("What is your opinion on the clarity of the questions?", options=("Poor", "Satisfactory", "Good", "Very Good", "Excellent"), index=None)
 
-        questionnaire_structure = st.selectbox(label="What is your opinion on the structure and format of the questionnaire?", options=("Poor", "Satisfactory", "Good", "Very Good", "Excellent"))
+        questionnaire_structure = st.selectbox(label="What is your opinion on the structure and format of the questionnaire?", options=("Poor", "Satisfactory", "Good", "Very Good", "Excellent"), index=None)
 
         return improvement_ideas, questionnaire_length, questionnaire_clarity, questionnaire_structure
 
@@ -39,6 +39,12 @@ try:
             writer.writerow([st.session_state.sessionID, improvement_ideas, questionnaire_length, questionnaire_clarity, questionnaire_structure])
 
 
+    def nav_to(url):
+        nav_script = """
+            <meta http-equiv="refresh" content="0; url='%s'">
+        """ % (url)
+        st.write(nav_script, unsafe_allow_html=True)
+
 
     st.progress(99, f"Study Progress: 95% Complete")
     st.title("Final Evaluation and Feedback")
@@ -50,30 +56,33 @@ try:
 
 
     if st.button("Finish the study"):
-        # Check if Streamlit secrets are available
-        if "AWS_ACCESS_KEY_ID" in st.secrets and "AWS_SECRET_ACCESS_KEY" in st.secrets:
-            aws_access_key_id = st.secrets["AWS_ACCESS_KEY_ID"]
-            aws_secret_access_key = st.secrets["AWS_SECRET_ACCESS_KEY"]
+        if questionnaire_structure is None or questionnaire_clarity is None or questionnaire_length is None:
+            st.error("You need to answer the questions!")
         else:
-            # If Streamlit secrets are not available, manually load environment variables from .env file
-            with open('.env') as f:
-                for line in f:
-                    key, value = line.strip().split('=')
-                    os.environ[key] = value
+            # Check if Streamlit secrets are available
+            if "AWS_ACCESS_KEY_ID" in st.secrets and "AWS_SECRET_ACCESS_KEY" in st.secrets:
+                aws_access_key_id = st.secrets["AWS_ACCESS_KEY_ID"]
+                aws_secret_access_key = st.secrets["AWS_SECRET_ACCESS_KEY"]
+            else:
+                # If Streamlit secrets are not available, manually load environment variables from .env file
+                with open('.env') as f:
+                    for line in f:
+                        key, value = line.strip().split('=')
+                        os.environ[key] = value
 
-            # Retrieve AWS credentials from environment variables
-            aws_access_key_id = os.getenv("AWS_ACCESS_KEY_ID")
-            aws_secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
+                # Retrieve AWS credentials from environment variables
+                aws_access_key_id = os.getenv("AWS_ACCESS_KEY_ID")
+                aws_secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
 
-        # Initialize an S3 client
-        s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+            # Initialize an S3 client
+            s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
 
-        # Upload a CSV file
-        bucket_name = 'rag-studyresults'
-        file_path = f"./data/raw_answers/PreStudy/PreStudy{st.session_state.sessionID}.csv"
-        object_key = f'PreStudy{st.session_state.sessionID}.csv'
-        s3.upload_file(file_path, bucket_name, object_key)
-        switch_page("thankyou")
+            # Upload a CSV file
+            bucket_name = 'rag-studyresults'
+            file_path = f"./data/raw_answers/PreStudy/PreStudy{st.session_state.sessionID}.csv"
+            object_key = f'PreStudy{st.session_state.sessionID}.csv'
+            s3.upload_file(file_path, bucket_name, object_key)
+            nav_to("https://app.prolific.com/submissions/complete?cc=CFUMHU8L")
 
 except (KeyError, AttributeError) as e:
     print('I got a KeyError - reason "%s"' % str(e))
