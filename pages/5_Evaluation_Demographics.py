@@ -63,7 +63,7 @@ try:
 
     st.progress(90, f"Study Progress: 90% Complete")
     st.title("Final Evaluation and Feedback")
-    st.subheader('Please answer the following questions to provide feedback on your experience. After completing, press the "Finish the study" button to save your results at the end of the page.')
+    st.subheader('Please answer the following questions to provide feedback on your experience.')
 
     age, gender, education = demographic_questions()
     prolific_id = prolific_id()
