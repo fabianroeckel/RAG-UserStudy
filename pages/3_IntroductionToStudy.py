@@ -26,7 +26,7 @@ try:
 
     with col_text:
         st.subheader("Step 2: Identifying the Task")
-        st.write("You can see your assignment highlighted in orange on the right. ")
+        st.write("You can see your assignment highlighted in orange on the right. Try to make the correct decision based on the information in the chat interface (left).")
 
     ## Step 3
     col_text, col_image = st.columns([3, 7])
