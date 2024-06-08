@@ -22,7 +22,6 @@ def main():
 
     Keep in mind your payment will partly depend on your performance on these tasks. **For each correct answer you will get 10 pennies**.
     In the following, we will first give you an introduction into the used GenAI and the content of the documents (financial reports), and ask some questions before and after the experiment.
-    Welcome to our online experiment exploring the interaction with RAG-systems.
 
     **Instructions:**
     - Please provide accurate responses to the questions presented in each section.
