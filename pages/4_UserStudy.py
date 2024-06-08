@@ -50,7 +50,7 @@ try:
 
         st.progress(st.session_state.progress, f"Study Progress: {st.session_state.progress}% Complete")
         st.title("Complete your task on the right using the information provided in the chat interface")
-        st.markdown("On the left side, you will find the chat with your RAG, designed to assist you in answering the question on the right. The red icon and text box display the question submitted to the RAG system. The yellow icon indicates the system's response, including all the source documents used to generate the answer. By clicking on the source documents, all relevant passages will be highlighted in yellow for easy reference.")
+        st.markdown("On the left side, you will find the chat with your RAG, designed to assist you in answering the question on the right. The red icon and text box display the question submitted to the RAG system. The yellow icon indicates the system's response, including all the source documents used to generate the answer. Optional: By clicking on the source documents, all relevant passages will be highlighted in yellow for easy reference.")
         with st.expander(expander_title):
             st.markdown(expander_text)
 
