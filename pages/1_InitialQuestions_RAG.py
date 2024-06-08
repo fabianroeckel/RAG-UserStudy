@@ -88,7 +88,7 @@ try:
     logger.info("PreQuestions Rag started")
     st.progress(10, f"Study Progress: 10% Complete")
     st.title('Introduction and Pre-Study Questionnaire: AI-Systems')
-    st.write('In this study you will interact with a generative AI application. To be more precise with a Retrieval-Augmented-Generation System (RAG)')
+    st.write('In this study you will interact with a generative AI application. To be more precise with a Retrieval-Augmented-Generation System (RAG).')
 
     rag_experience, system_usage_frequency, retrieval_augmentation_generation = similar_systems_experience()
     logger.info(f"Previous RAG Experience {rag_experience}")
