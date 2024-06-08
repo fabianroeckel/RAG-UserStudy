@@ -82,7 +82,7 @@ try:
             file_path = f"./data/raw_answers/PreStudy/PreStudy{st.session_state.sessionID}.csv"
             object_key = f'PreStudy{st.session_state.sessionID}.csv'
             s3.upload_file(file_path, bucket_name, object_key)
-            nav_to("https://app.prolific.com/submissions/complete?cc=CFUMHU8L")
+            switch_page("ThankYou")
 
 except (KeyError, AttributeError) as e:
     print('I got a KeyError - reason "%s"' % str(e))

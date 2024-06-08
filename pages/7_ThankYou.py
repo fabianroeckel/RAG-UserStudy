@@ -4,18 +4,17 @@ from loguru import logger
 
 def main():
     st.title("Thank You for Participating!")
-
     st.write(
         """
         ## Your Contribution is Appreciated
 
-        Thank you for taking the time to participate in our study. Your input is valuable 
-        and will help us in our research. If you have any questions or feedback, please 
-        don't hesitate to reach out to us.
-
-        We sincerely appreciate your contribution!
+        Thank you for taking the time to participate in our study. You can use the link below to get back to Proflic:
         """
     )
+    st.markdown("https://app.prolific.com/submissions/complete?cc=CFUMHU8L")
+
+
+
 
     # You can add any additional content or contact information here
 
