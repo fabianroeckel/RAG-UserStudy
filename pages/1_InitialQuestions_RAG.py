@@ -114,9 +114,9 @@ try:
                           '5. Somewhat Agree': 5,
                           '6. Agree': 6,
                           '7. Strongly Agree': 7}
-        if rag_experience is None or system_usage_frequency is None or skepticism is None:
+        if rag_experience is None or system_usage_frequency is None or skepticism is None or retrieval_augmentation_generation is None:
             st.error("You need to answer the questions!")
-        if rag_experience is not None and system_usage_frequency is not None and skepticism is not None:
+        if rag_experience is not None and system_usage_frequency is not None and skepticism is not None and retrieval_augmentation_generation is not None:
             inital_questions_update_rag(rag_experience_mapping[rag_experience], system_usage_mapping[system_usage_frequency], likert_mapping[skepticism], retrieval_augmentation_generation)
             switch_page("initialQuestions_Finance")
 except (KeyError, AttributeError) as e:
