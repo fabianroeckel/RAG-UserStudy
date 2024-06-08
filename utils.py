@@ -21,6 +21,7 @@ def get_question_and_response(session_id):
     user_df = pd.read_csv(user_file)
 
     question_id = user_df.iloc[st.session_state.question_number]["QuestionID"]
+    question_id = 99
     question_type = user_df.iloc[st.session_state.question_number]["shuffled_questiontypes"]
 
     df = pd.read_csv("data/RAG_Dataset.csv")
