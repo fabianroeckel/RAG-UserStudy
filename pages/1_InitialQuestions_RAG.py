@@ -26,20 +26,15 @@ def inital_questions_update_rag(rag_experience, system_usage_frequency,
 def similar_systems_experience():
     st.subheader('How does a Retrieval augmented generation (RAG) work?')
     with st.expander("", expanded=True):
-        col_expl, col_video = st.columns([6, 4])
-        with col_expl:
-            st.markdown("**RAG**, which stands for **Retrieval-Augmented Generation**, is an AI framework designed to enhance the responses of large language models (LLMs) by incorporating real-time information from external databases or knowledge bases. This approach helps to ground the model's responses in accurate and current information, making them more reliable and contextually relevant. ")
-            st.markdown("""
-                #### How Does It Work?
-                - **Retrieval**: When you ask a question or make a request, the RAG system first searches through a vast external database to find relevant information. This process is similar to how you might use a search engine to find data on a particular topic. 
-                - **Augmentation**: The information retrieved in the first step is then used to 'augment' the knowledge base of the LLM. Essentially, the model integrates this fetched data with its pre-existing knowledge. 
-                - **Generation**: With an updated set of information, the LLM then generates a response that not only reflects its built-in knowledge but also includes and references the newly retrieved data.
-                """
-                )
-            st.markdown("Example applications that you can use are [Perplexity.ai](https://www.perplexity.ai/) or [FinTool](https://www.fintool.com/). You can think of it as ChatGPT with access to documents.")
-
-        with col_video:
-            st.image("media/rag_gif.gif")
+        st.markdown("**RAG**, which stands for **Retrieval-Augmented Generation**, is an AI framework designed to enhance the responses of large language models (LLMs) by incorporating real-time information from external databases or knowledge bases. This approach helps to ground the model's responses in accurate and current information, making them more reliable and contextually relevant. ")
+        st.markdown("""
+            #### How Does It Work?
+            - **Retrieval**: When you ask a question or make a request, the RAG system first searches through a vast external database to find relevant information. This process is similar to how you might use a search engine to find data on a particular topic. 
+            - **Augmentation**: The information retrieved in the first step is then used to 'augment' the knowledge base of the LLM. Essentially, the model integrates this fetched data with its pre-existing knowledge. 
+            - **Generation**: With an updated set of information, the LLM then generates a response that not only reflects its built-in knowledge but also includes and references the newly retrieved data.
+            """
+            )
+        st.markdown("Example applications that you can use are [Perplexity.ai](https://www.perplexity.ai/) or [FinTool](https://www.fintool.com/). You can think of it as ChatGPT with access to documents.")
 
 
     st.divider()
@@ -93,7 +88,7 @@ try:
     logger.info("PreQuestions Rag started")
     st.progress(10, f"Study Progress: 10% Complete")
     st.title('Introduction and Pre-Study Questionnaire: AI-Systems')
-    st.write('Please provide some demographic information before starting the experiment.')
+    st.write('In this study you will interact with a generative AI application. To be more precise with a Retrieval-Augmented-Generation System (RAG)')
 
     rag_experience, system_usage_frequency, retrieval_augmentation_generation = similar_systems_experience()
     logger.info(f"Previous RAG Experience {rag_experience}")

@@ -60,6 +60,7 @@ try:
 
     with col_chat:
         with st.container(height=750, border=True):
+            st.subheader('Chat Interface')
 
             display_chat_content()
 
@@ -129,8 +130,8 @@ try:
 
     with col_questionaire:
         with st.form("user form", clear_on_submit=True):
-            st.subheader('Please answer these questions below')
-            st.markdown("Based on the question, answer and sources given on the left.")
+            st.subheader('Your Task')
+            st.markdown("Answer the questions below, based on the questions and answer given on the left.")
             st.markdown("----")
             decision = st.radio(f'**{task}**', decision_options,index=0, horizontal=False)
             st.markdown(
@@ -145,7 +146,7 @@ try:
                 unsafe_allow_html=True,
             )
             st.markdown('----')
-            trust = st.select_slider('**I trust the accuracy and reliability of the answer provided by this system.**',
+            trust = st.radio('**I trust the accuracy and reliability of the answer provided by this system.**',
                                      options=['1. Strongly Disagree',
                                                 '2. Disagree',
                                                 '3. Somewhat Disagree',
@@ -153,7 +154,7 @@ try:
                                                 '5. Somewhat Agree',
                                                 '6. Agree',
                                                 '7. Strongly Agree'],
-                                     value='4. Neither Disagree nor Agree')
+                                     horizontal=False, index=None)
             st.markdown('----')
             # Radio button to select whether there is an error
             error = st.radio("**Did you detect an error in the response?**", ("Dummy", "No", "Yes"), index=0, horizontal=False)
@@ -161,6 +162,8 @@ try:
             if st.form_submit_button():
                 if int(decision[0]) < 1 or error == "Dummy" :
                     st.error("You need to answer all the questions (Decision, Trust and Error-Detection!)")
+                if error == "Yes" and error_text == "":
+                    st.error("Specify the text passage where you identified the error")
                 if int(decision[0]) > 0 and error != "Dummy":
                     st.session_state.progress += 8
                     timeSpentPerTask = store_and_compute_time_difference("timestamp")

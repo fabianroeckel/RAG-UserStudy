@@ -44,7 +44,7 @@ try:
 
     with col_text:
         st.subheader("Step 4: Accessing Information")
-        st.write("All necessary information related to the financial task is displayed on the right side within the RAG system. If you require additional context or wish to verify the information, you can access the sources provided.")
+        st.write("All necessary information related to the financial task is displayed within the RAG system. If you require additional context or wish to verify the information, you can access the sources provided.")
 
     ## Step 5
     if st.session_state["sampled_study_type"] == "NoSources":
@@ -79,7 +79,7 @@ try:
     attentioncheck1 = st.checkbox("I hereby confirm that I have read the explanations carefully and I am ready to start the experiment.")
 
     if st.button('I Understand! Let\'s start the Experiment'):
-        if attentioncheck1 and attention_check_answer == "Yellow":
+        if attentioncheck1:
             st.session_state.progress = 20
             if "timestamp" not in st.session_state:
                 st.session_state["timestamp"] = datetime.now()
