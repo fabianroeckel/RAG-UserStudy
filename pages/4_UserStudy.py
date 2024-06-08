@@ -162,9 +162,7 @@ try:
             if st.form_submit_button():
                 if int(decision[0]) < 1 or error == "Dummy" :
                     st.error("You need to answer all the questions (Decision, Trust and Error-Detection!)")
-                if error == "Yes" and error_text == "":
-                    st.error("Specify the text passage where you identified the error")
-                if (int(decision[0]) > 0 and error != "Dummy" ) and not (error == "Yes" and error_text == ""):
+                if (int(decision[0]) > 0 and error != "Dummy" ):
                     st.session_state.progress += 8
                     timeSpentPerTask = store_and_compute_time_difference("timestamp")
                     logger.info(f"Time spent on this taks: {timeSpentPerTask['time_difference']}")
