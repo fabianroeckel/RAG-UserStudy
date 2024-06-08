@@ -17,7 +17,7 @@ try:
 
     with col_text:
         st.subheader("Step 1: Introduction to our RAG System")
-        st.write("Welcome to the study! You'll be using a Retrieval Augmented Generation (RAG) system designed specifically for financial tasks. A screenshot of your workspace is shown to the right. It is the interface where you see the interaction with the system.")
+        st.write("Welcome to the study! You'll be using a Retrieval Augmented Generation (RAG) system designed specifically for financial tasks. To the right is a screenshot of your workspace. It consists of the chat interface and the space for your answers.")
 
     ## Step 2
     col_text, col_image = st.columns([3, 7])
