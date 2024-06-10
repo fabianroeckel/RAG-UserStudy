@@ -13,7 +13,13 @@ try:
     ## Step 1
     col_text, col_image = st.columns([3, 7])
     with col_image:
-        st.image("media/Explanations/slides/Folie1.jpeg")
+        if st.session_state["sampled_study_type"] == "MultiSource":
+            st.image("media/Explanations/Explanations/MultiSource/Folie1.jpeg")
+        if st.session_state["sampled_study_type"] == "NoSources":
+            st.image("media/Explanations/Explanations/NoSource/Folie7.jpeg")
+        if st.session_state["sampled_study_type"] == "SingleSource":
+            st.image("media/Explanations/Explanations/SingleSource/Folie13.jpeg")
+
 
     with col_text:
         st.subheader("Step 1: Introduction to our RAG System")
@@ -22,7 +28,12 @@ try:
     ## Step 2
     col_text, col_image = st.columns([3, 7])
     with col_image:
-        st.image("media/Explanations/slides/Folie2.jpeg")
+        if st.session_state["sampled_study_type"] == "MultiSource":
+            st.image("media/Explanations/Explanations/MultiSource/Folie2.jpeg")
+        if st.session_state["sampled_study_type"] == "NoSources":
+            st.image("media/Explanations/Explanations/NoSource/Folie8.jpeg")
+        if st.session_state["sampled_study_type"] == "SingleSource":
+            st.image("media/Explanations/Explanations/SingleSource/Folie14.jpeg")
 
     with col_text:
         st.subheader("Step 2: Identifying the Task")
@@ -31,7 +42,12 @@ try:
     ## Step 3
     col_text, col_image = st.columns([3, 7])
     with col_image:
-        st.image("media/Explanations/slides/Folie3.jpeg")
+        if st.session_state["sampled_study_type"] == "MultiSource":
+            st.image("media/Explanations/Explanations/MultiSource/Folie3.jpeg")
+        if st.session_state["sampled_study_type"] == "NoSources":
+            st.image("media/Explanations/Explanations/NoSource/Folie9.jpeg")
+        if st.session_state["sampled_study_type"] == "SingleSource":
+            st.image("media/Explanations/Explanations/SingleSource/Folie15.jpeg")
 
     with col_text:
         st.subheader("Step 3: Understanding Financial Terms")
@@ -40,7 +56,12 @@ try:
     ## Step 4
     col_text, col_image = st.columns([3, 7])
     with col_image:
-        st.image("media/Explanations/slides/Folie4.jpeg")
+        if st.session_state["sampled_study_type"] == "MultiSource":
+            st.image("media/Explanations/Explanations/MultiSource/Folie4.jpeg")
+        if st.session_state["sampled_study_type"] == "NoSources":
+            st.image("media/Explanations/Explanations/NoSource/Folie10.jpeg")
+        if st.session_state["sampled_study_type"] == "SingleSource":
+            st.image("media/Explanations/Explanations/SingleSource/Folie16.jpeg")
 
     with col_text:
         st.subheader("Step 4: Accessing Information")
@@ -52,7 +73,12 @@ try:
     else:
         col_text, col_image = st.columns([3, 7])
         with col_image:
-            st.image("media/Explanations/slides/Folie5.jpeg")
+            if st.session_state["sampled_study_type"] == "MultiSource":
+                st.image("media/Explanations/Explanations/MultiSource/Folie5.jpeg")
+            if st.session_state["sampled_study_type"] == "NoSources":
+                st.image("media/Explanations/Explanations/NoSource/Folie11.jpeg")
+            if st.session_state["sampled_study_type"] == "SingleSource":
+                st.image("media/Explanations/Explanations/SingleSource/Folie17.jpeg")
 
         with col_text:
             st.subheader("Step 5: Review Responses")
@@ -61,7 +87,12 @@ try:
     ## Step 6
     col_text, col_image = st.columns([3, 7])
     with col_image:
-        st.image("media/Explanations/slides/Folie6.jpeg")
+        if st.session_state["sampled_study_type"] == "MultiSource":
+            st.image("media/Explanations/Explanations/MultiSource/Folie6.jpeg")
+        if st.session_state["sampled_study_type"] == "NoSources":
+            st.image("media/Explanations/Explanations/NoSource/Folie12.jpeg")
+        if st.session_state["sampled_study_type"] == "SingleSource":
+            st.image("media/Explanations/Explanations/SingleSource/Folie18.jpeg")
 
     with col_text:
         if st.session_state["sampled_study_type"] == "NoSources":
