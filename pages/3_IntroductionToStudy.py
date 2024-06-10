@@ -65,7 +65,7 @@ try:
 
     with col_text:
         st.subheader("Step 4: Accessing Information")
-        st.write("All necessary information related to the financial task is displayed within the RAG system. If you need additional context or want to verify the information, you can access the resources provided. You can see the question asked above next to the small red icon. And the answer given by the system next to the orange icon")
+        st.write("All necessary information related to the financial task is displayed within the RAG system. If you need additional context or want to verify the information, you can access the resources provided. You can see the question asked above next to the small red icon. And the answer given by the system next to the orange icon.")
 
     ## Step 5
     if st.session_state["sampled_study_type"] == "NoSources":
