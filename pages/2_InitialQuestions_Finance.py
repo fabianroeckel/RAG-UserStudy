@@ -4,7 +4,6 @@ from utils import *
 from streamlit_extras import vertical_slider
 import extra_streamlit_components as stx
 from datetime import datetime
-from loguru import logger
 
 
 def inital_questions_update_finance(selected_companies, familiarity_dict, sec_10_documents, knowledgecheck_finance):
@@ -85,14 +84,17 @@ try:
                           '5. Somewhat Agree': 5,
                           '6. Agree': 6,
                           '7. Strongly Agree': 7}
+        log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                    f"{datetime}: Selected companies {selected_companies}")
+        log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                    f"{datetime}: Answer to Knowledge Check SEC-10 {knowledgecheck_finance}")
+        log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                    f"{datetime}: financial_literacy {likert_mapping[financial_literacy]}")
+        log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                    f"{datetime}: sec_10_documents {sec_10_documents}")
+        log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                    f"{datetime}: Experiment started {datetime.now()}")
 
-        logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
-        logger.add(logname)
-        logger.info(f"Answer to Knowledge Check SEC-10 {knowledgecheck_finance}")
-        logger.info(f"Experiment started {datetime.now()}")
-        logger.info(f"Initial questions selected companies {selected_companies}")
-        logger.info(f"Initial questions financial_literacy {likert_mapping[financial_literacy]}")
-        logger.info(f"Initial questions sec_10_documents {sec_10_documents}")
 
         sec_mapping = {"Yes": 1, "No": 0}
         if financial_literacy is None or sec_10_documents is None or knowledgecheck_finance is None or not selected_companies:

@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
-from loguru import logger
 from datetime import datetime
+from utils import *
 
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
@@ -79,13 +79,12 @@ try:
     attentioncheck1 = st.checkbox("I hereby confirm that I have read the explanations carefully and I am ready to start the experiment.")
 
     if st.button('I Understand! Let\'s start the Experiment'):
-        logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
-        logger.add(logname)
+        log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt", f"{datetime}: Introduction to study completed and User study starts")
+
         if attentioncheck1:
             st.session_state.progress = 20
             if "timestamp" not in st.session_state:
                 st.session_state["timestamp"] = datetime.now()
-            logger.info(f"Introduction to study completed and User study starts")
             switch_page("Userstudy")
         else:
             st.error("Make sure to read the explanations carefully and confirm it by ticking the checkbox above.")

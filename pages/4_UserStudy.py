@@ -5,14 +5,10 @@ from time import sleep
 from datetime import datetime
 from pdf2image import convert_from_path, convert_from_bytes
 import boto3
-from loguru import logger
 from module import *
 
 
 try:
-    logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
-    logger.add(logname)
-
     def display_chat_content():
         st.session_state.messages = []
         st.session_state.messages.append({"role": "user", "content": question})
@@ -77,7 +73,8 @@ try:
                     st.session_state["source_clicks1"] += 1
                     st.session_state["source_watch_time1_datetime"] = datetime.now()
                     st.session_state["last_clicked_source"] = 1
-                    logger.info(f"Source: {st.session_state['source_name']} opened")
+                    log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                                f"{datetime}: Source: {st.session_state['source_name']} opened")
                     modal.open()
 
             if st.session_state.sampled_study_type == "MultiSource":
@@ -90,7 +87,8 @@ try:
                         st.session_state["source_clicks1"] += 1
                         st.session_state["source_watch_time1_datetime"] = datetime.now()
                         st.session_state["last_clicked_source"] = 1
-                        logger.info(f"Source: {st.session_state['source_name']} opened")
+                        log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                                    f"{datetime}: Source: {st.session_state['source_name']} opened")
                         modal.open()
                 with source2:
                     open_modal = st.button(str(f"[2] {str(get_source_links(st.session_state.sessionID)[1][1])}"))
@@ -101,7 +99,8 @@ try:
                         st.session_state["total_source_clicks"] += 1
                         st.session_state["source_watch_time2_datetime"] = datetime.now()
                         st.session_state["last_clicked_source"] = 2
-                        logger.info(f"Source: {st.session_state['source_name']} opened")
+                        log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                                    f"{datetime}: Source: {st.session_state['source_name']} opened")
                         modal.open()
                 if len(get_source_links(st.session_state.sessionID)[1]) >2:
                     with source3:
@@ -113,7 +112,8 @@ try:
                             st.session_state["total_source_clicks"] += 1
                             st.session_state["source_watch_time3_datetime"] = datetime.now()
                             st.session_state["last_clicked_source"] = 3
-                            logger.info(f"Source: {st.session_state['source_name']} opened")
+                            log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                                        f"{datetime}: Source: {st.session_state['source_name']} opened")
                             modal.open()
                 if len(get_source_links(st.session_state.sessionID)[1]) > 3:
                     with source4:
@@ -125,7 +125,8 @@ try:
                             st.session_state["total_source_clicks"] += 1
                             st.session_state["source_watch_time4_datetime"] = datetime.now()
                             st.session_state["last_clicked_source"] = 4
-                            logger.info(f"Source: {st.session_state['source_name']} opened")
+                            log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                                        f"{datetime}: Source: {st.session_state['source_name']} opened")
                             modal.open()
 
     with col_questionaire:
@@ -165,19 +166,35 @@ try:
                 if (int(decision[0]) > 0 and error != "Dummy" ) and trust is not None:
                     st.session_state.progress += 8
                     timeSpentPerTask = store_and_compute_time_difference("timestamp")
-                    logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
-                    logger.add(logname)
-                    logger.info(f"Time spent on this taks: {timeSpentPerTask['time_difference']}")
-                    logger.info(f"Decision correct(Y/N): {decision[0]} with the correct response being{correctResponse}")
-                    logger.info(f"Selected trust {trust}")
-                    logger.info(f"Selected error {error}")
-                    logger.info(f"Selected error {error_text}")
-                    logger.info(f"Selected error {error_text}")
-                    logger.info(f"Clicks on source1 {st.session_state['source_clicks1']}, source2 {st.session_state['source_clicks2']}, source3 {st.session_state['source_clicks3']}, source4 {st.session_state['source_clicks4']}")
-                    logger.info(f"Watch time on source1 {st.session_state['source_watch_time1']}")
-                    logger.info(f"Watch time on source2 {st.session_state['source_watch_time2']}")
-                    logger.info(f"Watch time on source3 {st.session_state['source_watch_time3']}")
-                    logger.info(f"Watch time on source4 {st.session_state['source_watch_time4']}")
+                    log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt", f"{datetime}: Time spent on this taks: {timeSpentPerTask['time_difference']}")
+
+                    log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                                f"{datetime}: Decision correct(Y/N): {decision[0]} with the correct response being: {correctResponse}")
+
+                    log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                                f"{datetime}: Selected trust {trust}")
+
+                    log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                                f"{datetime}: Selected error {error}")
+
+                    log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                                f"{datetime}: ErrorText: {error_text}")
+
+                    log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                                f"{datetime}: Clicks on source1 {st.session_state['source_clicks1']}, source2 {st.session_state['source_clicks2']}, source3 {st.session_state['source_clicks3']}, source4 {st.session_state['source_clicks4']}")
+
+                    log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                                f"{datetime}: Watch time on source1 {st.session_state['source_watch_time1']}")
+
+                    log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                                f"{datetime}: Watch time on source1 {st.session_state['source_watch_time2']}")
+
+                    log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                                f"{datetime}: Watch time on source1 {st.session_state['source_watch_time3']}")
+
+                    log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                                f"{datetime}: Watch time on source1 {st.session_state['source_watch_time4']}")
+
                     update_questionaire(trust,
                                         decision[0],
                                         error,

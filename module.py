@@ -8,7 +8,7 @@ from datetime import datetime
 
 try:
     from streamlit import rerun as rerun  # type: ignore
-    from loguru import logger
+    from utils import *
 except ImportError:
     # conditional import for streamlit version <1.27
     from streamlit import experimental_rerun as rerun  # type: ignore
@@ -120,12 +120,9 @@ class Fabi_Modal:
             with close_button:
                 close_ = st.button('Close', key=f'{self.key}-close')
                 if close_:
-                    logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
-                    logger.add(logname)
-                    logger.info("last opened source was closed")
-                    print(f"Updating watch time for: {st.session_state['last_clicked_source']}")
+                    log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                                f"{datetime}: last opened source was closed")
                     current_time = datetime.now()
-                    print(f"current_time: {current_time}")
                     time_difference = (current_time - st.session_state[
                         f"source_watch_time{st.session_state['last_clicked_source']}_datetime"]).total_seconds()
                     st.session_state[f"source_watch_time{st.session_state['last_clicked_source']}"] += float(

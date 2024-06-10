@@ -140,10 +140,23 @@ def generateNewCSFFiles (sessionID, sampled_studyType):
         writer.writerow([sessionID,"IDBLABLA",0, 0, 0, 0, "a", 0, 0,
                          0,0,"a", 0,0, 0, 0, 0,0,0, 0, 0, 0, 0, 0])
 
+    fileNameLogs = f"./data/raw_answers/Logs/logs_{sessionID}.txt"
+    with open(fileNameLogs, mode='w', newline='') as file:
+        pass
+
 
 
     print(f"CSV file '{filenameUserStudy}' and '{fileNameGeneralQuestions}' have been generated successfully.")
 
+def log_to_file(file_name, message):
+    """
+    This function appends a given message as a new line in the specified file.
+
+    :param file_name: str - The name of the file where the log should be written.
+    :param message: str - The message to log.
+    """
+    with open(file_name, 'a') as file:
+        file.write(message + "\n")
 
 def update_questionaire(trust, choice, error,correct, errortext, task_completion_time,
                         ClicksSource1, ClicksSource2, ClicksSource3, ClicksSource4,

@@ -4,7 +4,6 @@ from utils import *
 from streamlit_extras import vertical_slider
 import extra_streamlit_components as stx
 from datetime import datetime
-from loguru import logger
 import streamlit_survey as ss
 
 
@@ -92,11 +91,12 @@ try:
     skepticism = skepticism_towards_ai_content()
     st.write('Thank you for providing the information. You may proceed with the experiment now.')
     if st.button('Next'):
-        logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
-        logger.add(logname)
-        logger.info(f"AI Skepticism {skepticism}")
-        logger.info(f"Previous RAG Experience {rag_experience}")
-        logger.info(f"System usage frequency {system_usage_frequency}")
+        log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                    f"{datetime}: AI Skepticism {skepticism}")
+        log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                    f"{datetime}: Previous RAG Experience {rag_experience}")
+        log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                    f"{datetime}: System usage frequency {system_usage_frequency}")
         #mappings
         rag_experience_mapping = {'No': 0, 'Yes': 1}
         system_usage_mapping = {'Daily': 1, 'Weekly': 2, 'Monthly': 3, 'Rarely': 4, 'Never': 0}

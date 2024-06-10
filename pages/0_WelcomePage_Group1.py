@@ -2,7 +2,6 @@ import streamlit as st
 from utils import *
 from streamlit_extras.switch_page_button import switch_page
 from st_pages import hide_pages, Page
-from loguru import logger
 
 
 def main():
@@ -51,9 +50,8 @@ def main():
 
     input_field = st.text_input(
         "This is an attention check. Please type in your answer in lower case letters. What is the color of grass?")
-    logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
-    logger.add(logname)
-    logger.info(f"Attention check: {input_field}")
+    log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                f"{datetime}: Attention check: {input_field}")
 
     if st.button('Start Experiment'):
         if not attention_check1 and not attention_check2 and not attention_check3:
@@ -63,18 +61,16 @@ def main():
             if 'sessionID' not in st.session_state:
                 sessionID = getSessionID()
                 st.session_state['sessionID'] = sessionID
-                logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
-                logger.add(logname)
-                logger.info(f"New userID created {sessionID}")
+                log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                            f"{datetime}: New userID created {sessionID}")
 
             if 'question_number' not in st.session_state:
                 st.session_state["question_number"] = 0
 
             sampled_study_type = "NoSources"
             st.session_state["sampled_study_type"] = sampled_study_type
-            logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
-            logger.add(logname)
-            logger.info(f"Assigned studytype {sampled_study_type}")
+            log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                        f"{datetime}: Assigned studytype {sampled_study_type}")
             generateNewCSFFiles(st.session_state['sessionID'], sampled_study_type)
 
             if "source_name" not in st.session_state:

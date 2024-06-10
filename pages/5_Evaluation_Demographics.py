@@ -4,7 +4,6 @@ from utils import *
 from streamlit_extras import vertical_slider
 import extra_streamlit_components as stx
 import boto3
-from loguru import logger
 
 
 
@@ -67,14 +66,24 @@ try:
     proficiency = language_level()
 
     if st.button("Next set of questions"):
-        logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
-        logger.add(logname)
-        logger.info(f"The prolificID of the user is: {prolific_id}")
-        logger.info(f"The age of the user is: {age}")
-        logger.info(f"The gender of the user is: {gender}")
-        logger.info(f"The education level is {education}")
-        logger.info(f"The language profiency is {proficiency}")
-        logger.info("Alle Tasks completed")
+        log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                                f"{datetime}: The prolificID of the user is: {prolific_id}")
+
+        log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                    f"{datetime}: The age of the user is: {age}")
+
+        log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                    f"{datetime}: The gender of the user is: {gender}")
+
+        log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                    f"{datetime}: The education level is {education}")
+
+        log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                    f"{datetime}: The language profiency is {proficiency}")
+
+        log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                    f"{datetime}: All tasks completed")
+
         #age, gender, education, proficiency,
         if age is None or gender is None or education is None or prolific_id is None or proficiency is None:
             st.error("You need to answer the questions!")
