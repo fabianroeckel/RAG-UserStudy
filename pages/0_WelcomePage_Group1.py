@@ -50,8 +50,7 @@ def main():
 
     input_field = st.text_input(
         "This is an attention check. Please type in your answer in lower case letters. What is the color of grass?")
-    log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                f"{datetime}: Attention check: {input_field}")
+
 
     if st.button('Start Experiment'):
         if not attention_check1 and not attention_check2 and not attention_check3:
@@ -63,6 +62,8 @@ def main():
                 st.session_state['sessionID'] = sessionID
                 log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
                             f"{datetime}: New userID created {sessionID}")
+                log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
+                            f"{datetime}: Attention check: {input_field}")
 
             if 'question_number' not in st.session_state:
                 st.session_state["question_number"] = 0
