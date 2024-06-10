@@ -79,6 +79,8 @@ try:
     attentioncheck1 = st.checkbox("I hereby confirm that I have read the explanations carefully and I am ready to start the experiment.")
 
     if st.button('I Understand! Let\'s start the Experiment'):
+        logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
+        logger.add(logname)
         if attentioncheck1:
             st.session_state.progress = 20
             if "timestamp" not in st.session_state:

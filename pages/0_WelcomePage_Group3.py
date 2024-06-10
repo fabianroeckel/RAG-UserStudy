@@ -51,7 +51,9 @@ def main():
 
     input_field = st.text_input(
         "This is an attention check. Please type in your answer in lowercase letters. What color is of grass?")
-    logger.info(f"Attention check: {input_field}")
+    logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
+    logger.add(logname)
+    logger .info(f"Attention check: {input_field}")
 
     if st.button('Start Experiment'):
         if not attention_check1 and not attention_check2 and not attention_check3:
@@ -70,6 +72,8 @@ def main():
 
             sampled_study_type = "MultiSource"
             st.session_state["sampled_study_type"] = sampled_study_type
+            logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
+            logger.add(logname)
             logger.info(f"Assigned studytype {sampled_study_type}")
             generateNewCSFFiles(st.session_state['sessionID'], sampled_study_type)
 

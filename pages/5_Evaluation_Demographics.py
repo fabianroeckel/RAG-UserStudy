@@ -11,9 +11,6 @@ from loguru import logger
 
 
 try:
-    logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
-    logger.add(logname)
-
     def final_evaluation_per_user_demographics(age,prolificID, gender, education, proficiency):
         file_path = f"./data/raw_answers/UserGeneral/GeneralQuestions{st.session_state.sessionID}.csv"
         df = pd.read_csv(file_path)
@@ -59,7 +56,6 @@ try:
                                  ['High School', 'Bachelor\'s Degree', 'Master\'s Degree', 'PhD', 'Other'], index=None)
 
         return age, gender, education
-    logger.info("Alle Tasks completed")
 
     st.progress(90, f"Study Progress: 90% Complete")
     st.title("Final Evaluation and Feedback")
@@ -71,16 +67,19 @@ try:
     proficiency = language_level()
 
     if st.button("Next set of questions"):
+        logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
+        logger.add(logname)
+        logger.info(f"The prolificID of the user is: {prolific_id}")
+        logger.info(f"The age of the user is: {age}")
+        logger.info(f"The gender of the user is: {gender}")
+        logger.info(f"The education level is {education}")
+        logger.info(f"The language profiency is {proficiency}")
+        logger.info("Alle Tasks completed")
         #age, gender, education, proficiency,
         if age is None or gender is None or education is None or prolific_id is None or proficiency is None:
             st.error("You need to answer the questions!")
         else:
             final_evaluation_per_user_demographics(age, prolific_id, gender, education,proficiency)
-            logger.info(f"The prolificID of the user is: {prolific_id}")
-            logger.info(f"The age of the user is: {age}")
-            logger.info(f"The gender of the user is: {gender}")
-            logger.info(f"The education level is {education}")
-            logger.info(f"The language profiency is {proficiency}")
             switch_page("Evaluation_TAMandMore")
 
 except (KeyError, AttributeError) as e:

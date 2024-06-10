@@ -83,22 +83,20 @@ def skepticism_towards_ai_content():
     return skepticism
 
 try:
-    logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
-    logger.add(logname)
-    logger.info("PreQuestions Rag started")
     st.progress(10, f"Study Progress: 10% Complete")
     st.title('Introduction and Pre-Study Questionnaire: AI-Systems')
     st.write('In this study you will interact with a generative AI application. To be more precise with a Retrieval-Augmented-Generation System (RAG).')
 
     rag_experience, system_usage_frequency, retrieval_augmentation_generation = similar_systems_experience()
-    logger.info(f"Previous RAG Experience {rag_experience}")
-    logger.info(f"System usage frequency {system_usage_frequency}")
     st.markdown("##")
     skepticism = skepticism_towards_ai_content()
-    logger.info(f"AI Skepticism {skepticism}")
-
     st.write('Thank you for providing the information. You may proceed with the experiment now.')
     if st.button('Next'):
+        logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
+        logger.add(logname)
+        logger.info(f"AI Skepticism {skepticism}")
+        logger.info(f"Previous RAG Experience {rag_experience}")
+        logger.info(f"System usage frequency {system_usage_frequency}")
         #mappings
         rag_experience_mapping = {'No': 0, 'Yes': 1}
         system_usage_mapping = {'Daily': 1, 'Weekly': 2, 'Monthly': 3, 'Rarely': 4, 'Never': 0}

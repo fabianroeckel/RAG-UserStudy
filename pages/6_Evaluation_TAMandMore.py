@@ -300,6 +300,8 @@ try:
 
 
         else:
+            logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
+            logger.add(logname)
             #age, gender, education, proficiency,
             logger.info(f"EaseofReading: {EaseOfReading}")
             logger.info(f"FinalTrust: {FinalTrust}")

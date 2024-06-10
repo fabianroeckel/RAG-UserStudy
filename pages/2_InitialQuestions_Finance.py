@@ -24,8 +24,8 @@ def financial_knowledge_questions():
     st.subheader("Financial Knowledge Assessment")
 
     # Question 1
-    companies_options = ["Amazon", "Microsoft", "Nvidia", "Intel", "Apple"]
-    st.subheader("Do you know the following companies and vaguely what they do? If yes, select them" )
+    companies_options = ["Amazon", "Microsoft", "Nvidia", "Intel", "Apple", "I do not know any of these companies"]
+    st.subheader("Do you know the following companies and vaguely what they do? If yes, select them")
     selected_companies = st.multiselect("Select companies:", companies_options)
     st.divider()
     # Question 2
@@ -58,8 +58,6 @@ def financial_knowledge_questions():
 
 
 try:
-    logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
-    logger.add(logname)
     st.progress(15, f"Study Progress: 15% Complete")
     st.title('Pre-Study Questionaire: Financial Knowledge')
     selected_companies, financial_literacy, sec_10_documents = financial_knowledge_questions()
@@ -75,7 +73,7 @@ try:
         "C. To provide the company's audited financial statements, including the balance sheet, income statement, and cash flow statement.",
         "D. I do not know and can not answer this question."
     ], index=None)
-    logger.info(f"Answer to Knowledge Check SEC-10 {knowledgecheck_finance}")
+
     general_questions_completed = False
 
     st.write('Thank you for providing the information. You may proceed with the experiment now.')
@@ -87,16 +85,21 @@ try:
                           '5. Somewhat Agree': 5,
                           '6. Agree': 6,
                           '7. Strongly Agree': 7}
+
+        logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
+        logger.add(logname)
+        logger.info(f"Answer to Knowledge Check SEC-10 {knowledgecheck_finance}")
+        logger.info(f"Experiment started {datetime.now()}")
+        logger.info(f"Initial questions selected companies {selected_companies}")
+        logger.info(f"Initial questions financial_literacy {likert_mapping[financial_literacy]}")
+        logger.info(f"Initial questions sec_10_documents {sec_10_documents}")
+
         sec_mapping = {"Yes": 1, "No": 0}
-        if financial_literacy is None or sec_10_documents is None or knowledgecheck_finance is None:
+        if financial_literacy is None or sec_10_documents is None or knowledgecheck_finance is None or not selected_companies:
             st.error("You need to answer the questions!")
 
-        if financial_literacy is not None and sec_10_documents is not None and knowledgecheck_finance is not None:
-            logger.info(f"Experiment started {datetime.now()}")
+        if financial_literacy is not None and sec_10_documents is not None and knowledgecheck_finance is not None and bool(selected_companies):
             inital_questions_update_finance(selected_companies, likert_mapping[financial_literacy], sec_mapping[sec_10_documents], knowledgecheck_finance)
-            logger.info(f"Initial questions selected companies {selected_companies}")
-            logger.info(f"Initial questions financial_literacy {likert_mapping[financial_literacy]}")
-            logger.info(f"Initial questions sec_10_documents {sec_10_documents}")
             switch_page("introductionToStudy")
 except (KeyError, AttributeError) as e:
     print('I got a KeyError - reason "%s"' % str(e))

@@ -51,6 +51,8 @@ def main():
 
     input_field = st.text_input(
         "This is an attention check. Please type in your answer in lower case letters. What is the color of grass?")
+    logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
+    logger.add(logname)
     logger.info(f"Attention check: {input_field}")
 
     if st.button('Start Experiment'):
@@ -70,6 +72,8 @@ def main():
 
             sampled_study_type = "NoSources"
             st.session_state["sampled_study_type"] = sampled_study_type
+            logname = f"data/raw_answers/Logs/logs_{st.session_state['sessionID']}.log"
+            logger.add(logname)
             logger.info(f"Assigned studytype {sampled_study_type}")
             generateNewCSFFiles(st.session_state['sessionID'], sampled_study_type)
 
