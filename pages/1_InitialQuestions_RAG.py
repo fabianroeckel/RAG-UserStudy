@@ -100,13 +100,13 @@ try:
         #mappings
         rag_experience_mapping = {'No': 0, 'Yes': 1}
         system_usage_mapping = {'Daily': 1, 'Weekly': 2, 'Monthly': 3, 'Rarely': 4, 'Never': 0}
-        likert_mapping = {'1. Strongly Disagree': 1,
-                          '2. Disagree': 2,
-                          '3. Somewhat Disagree': 3,
+        likert_mapping = {'1. Strongly Disagree': 7,
+                          '2. Disagree': 6,
+                          '3. Somewhat Disagree': 5,
                           '4. Neither Disagree nor Agree': 4,
-                          '5. Somewhat Agree': 5,
-                          '6. Agree': 6,
-                          '7. Strongly Agree': 7}
+                          '5. Somewhat Agree': 3,
+                          '6. Agree': 2,
+                          '7. Strongly Agree': 1}
         if rag_experience is None or system_usage_frequency is None or skepticism is None or retrieval_augmentation_generation is None:
             st.error("You need to answer the questions!")
         if rag_experience is not None and system_usage_frequency is not None and skepticism is not None and retrieval_augmentation_generation is not None:

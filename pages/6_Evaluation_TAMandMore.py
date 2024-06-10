@@ -20,11 +20,19 @@ try:
                           '6. Agree': 6,
                           '7. Strongly Agree': 7}
 
+        reversed_likert_mapping = {'1. Strongly Disagree': 7,
+                          '2. Disagree': 6,
+                          '3. Somewhat Disagree': 5,
+                          '4. Neither Disagree nor Agree': 4,
+                          '5. Somewhat Agree': 3,
+                          '6. Agree': 2,
+                          '7. Strongly Agree': 1}
+
         file_path = f"./data/raw_answers/UserGeneral/GeneralQuestions{st.session_state.sessionID}.csv"
         df = pd.read_csv(file_path)
         row = 0
         df.loc[row, 'EaseOfReading'] = likert_mapping[EaseOfReading]
-        df.loc[row, 'FinalTrust'] = likert_mapping[FinalTrust]
+        df.loc[row, 'FinalTrust'] = reversed_likert_mapping[FinalTrust]
         df.loc[row, 'WillingnessToUse'] = likert_mapping[WillingnessToUse]
         df.loc[row, 'CognitiveLoad'] = likert_mapping[CognitiveLoad]
         df.loc[row, 'Usefulness1'] = likert_mapping[Usefulness1]
