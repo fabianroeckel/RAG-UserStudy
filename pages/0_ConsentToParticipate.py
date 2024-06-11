@@ -46,6 +46,6 @@ Email: poststelle@datenschutz-bayern.de
     st.markdown("**By clicking on the button I consent to participate in this study.**")
     if st.button('I consent'):
         log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                    f"{datetime}: consent granted ")
+                    f"{datetime.datetime.now()}: consent granted ")
         switch_page("initialQuestions_RAG")
 main()

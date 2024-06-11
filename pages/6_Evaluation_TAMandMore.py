@@ -5,6 +5,7 @@ from utils import *
 from streamlit_extras import vertical_slider
 import extra_streamlit_components as stx
 import boto3
+from datetime import datetime
 
 
 
@@ -302,34 +303,34 @@ try:
 
         else:
             log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                        f"{datetime}: EaseofReading: {EaseOfReading}")
+                        f"{datetime.now()}: EaseofReading: {EaseOfReading}")
 
             log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                        f"{datetime}: FinalTrust: {FinalTrust}")
+                        f"{datetime.now()}: FinalTrust: {FinalTrust}")
 
             log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                        f"{datetime}: WillingnessToUse: {WillingnessToUse}")
+                        f"{datetime.now()}: WillingnessToUse: {WillingnessToUse}")
 
             log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                        f"{datetime}: CognitiveLoad: {CognitiveLoad}")
+                        f"{datetime.now()}: CognitiveLoad: {CognitiveLoad}")
 
             log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                        f"{datetime}: Usefulness1: {Usefulness1}")
+                        f"{datetime.now()}: Usefulness1: {Usefulness1}")
 
             log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                        f"{datetime}: Usefulness2: {Usefulness2}")
+                        f"{datetime.now()}: Usefulness2: {Usefulness2}")
 
             log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                        f"{datetime}: EaseOfUse1: {EaseOfUse1}")
+                        f"{datetime.now()}: EaseOfUse1: {EaseOfUse1}")
 
             log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                        f"{datetime}: EaseOfUse2: {EaseOfUse2}")
+                        f"{datetime.now()}: EaseOfUse2: {EaseOfUse2}")
 
             log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                        f"{datetime}: BI1: {BI1}")
+                        f"{datetime.now()}: BI1: {BI1}")
 
             log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                        f"{datetime}: BI2: {BI2}")
+                        f"{datetime.now()}: BI2: {BI2}")
 
             final_evaluation_per_user(EaseOfReading, FinalTrust, WillingnessToUse, CognitiveLoad, Usefulness1, Usefulness2,
                                       EaseOfUse1, EaseOfUse2, BI1, BI2)
@@ -362,7 +363,7 @@ try:
             object_key = f'logs_{st.session_state.sessionID}.txt'
             s3.upload_file(file_path, bucket_name, object_key)
             log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                        f"{datetime}: Study finished")
+                        f"{datetime.now()}: Study finished")
             switch_page("PreStudyFeedback")
 
 except (KeyError, AttributeError) as e:

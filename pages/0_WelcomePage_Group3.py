@@ -2,6 +2,7 @@ import streamlit as st
 from utils import *
 from streamlit_extras.switch_page_button import switch_page
 from st_pages import hide_pages, Page
+import datetime
 
 
 def main():
@@ -61,9 +62,9 @@ def main():
                 sessionID = getSessionID()
                 st.session_state['sessionID'] = sessionID
                 log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                            f"{datetime}: New userID created {sessionID}")
+                            f"{datetime.datetime.now()}: New userID created {sessionID}")
                 log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                            f"{datetime}: Attention check: {input_field}")
+                            f"{datetime.datetime.now()}: Attention check: {input_field}")
 
             if 'question_number' not in st.session_state:
                 st.session_state["question_number"] = 0
@@ -71,7 +72,7 @@ def main():
             sampled_study_type = "MultiSource"
             st.session_state["sampled_study_type"] = sampled_study_type
             log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                        f"{datetime}: Assigned studytype {sampled_study_type}")
+                        f"{datetime.datetime.now()}: Assigned studytype {sampled_study_type}")
             generateNewCSFFiles(st.session_state['sessionID'], sampled_study_type)
 
             if "source_name" not in st.session_state:

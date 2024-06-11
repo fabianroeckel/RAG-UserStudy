@@ -85,15 +85,15 @@ try:
                           '6. Agree': 6,
                           '7. Strongly Agree': 7}
         log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                    f"{datetime}: Selected companies {selected_companies}")
+                    f"{datetime.now()}: Selected companies {selected_companies}")
         log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                    f"{datetime}: Answer to Knowledge Check SEC-10 {knowledgecheck_finance}")
+                    f"{datetime.now()}: Answer to Knowledge Check SEC-10 {knowledgecheck_finance}")
         log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                    f"{datetime}: financial_literacy {likert_mapping[financial_literacy]}")
+                    f"{datetime.now()}: financial_literacy {likert_mapping[financial_literacy]}")
         log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                    f"{datetime}: sec_10_documents {sec_10_documents}")
+                    f"{datetime.now()}: sec_10_documents {sec_10_documents}")
         log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                    f"{datetime}: Experiment started {datetime.now()}")
+                    f"{datetime.now()}: Experiment started {datetime.now()}")
 
 
         sec_mapping = {"Yes": 1, "No": 0}

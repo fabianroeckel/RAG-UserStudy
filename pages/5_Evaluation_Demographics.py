@@ -4,6 +4,7 @@ from utils import *
 from streamlit_extras import vertical_slider
 import extra_streamlit_components as stx
 import boto3
+from datetime import datetime
 
 
 
@@ -67,22 +68,22 @@ try:
 
     if st.button("Next set of questions"):
         log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                                f"{datetime}: The prolificID of the user is: {prolific_id}")
+                                f"{datetime.now()}: The prolificID of the user is: {prolific_id}")
 
         log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                    f"{datetime}: The age of the user is: {age}")
+                    f"{datetime.now()}: The age of the user is: {age}")
 
         log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                    f"{datetime}: The gender of the user is: {gender}")
+                    f"{datetime.now()}: The gender of the user is: {gender}")
 
         log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                    f"{datetime}: The education level is {education}")
+                    f"{datetime.now()}: The education level is {education}")
 
         log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                    f"{datetime}: The language profiency is {proficiency}")
+                    f"{datetime.now()}: The language profiency is {proficiency}")
 
         log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt",
-                    f"{datetime}: All tasks completed")
+                    f"{datetime.now()}: All tasks completed")
 
         #age, gender, education, proficiency,
         if age is None or gender is None or education is None or prolific_id is None or proficiency is None:
