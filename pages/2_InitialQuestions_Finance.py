@@ -10,8 +10,7 @@ def inital_questions_update_finance(selected_companies, familiarity_dict, sec_10
     file_path = f"./data/raw_answers/UserGeneral/GeneralQuestions{st.session_state.sessionID}.csv"
     df = pd.read_csv(file_path)
     row = 0
-    if not selected_companies:
-        df.loc[row, 'CompaniesKnowledege'] = str(selected_companies)
+    df.loc[row, 'CompaniesKnowledege'] = str(selected_companies)
     df.loc[row, 'financial_literacy'] = familiarity_dict
     df.loc[row, 'sec_10_documents'] = sec_10_documents
     df.loc[row, "KnowledgeCheckFinance"] = knowledgecheck_finance
