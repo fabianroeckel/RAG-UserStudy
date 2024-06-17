@@ -50,7 +50,6 @@ def get_question_and_response(session_id):
     task = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["Task"].values[0]
     decision_options = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["DecisionOptions"].values[0]
     decision_options = decision_options.split(';')
-    decision_options = ['0. dummy-preselect'] + decision_options
     correctResponse = study_dataset_df.loc[study_dataset_df["QuestionID"] == question_id]["CorrectDecision"].values[0]
     return question, response, decision_options, task, expander_title, expander_text, correctResponse
 
@@ -132,7 +131,7 @@ def generateNewCSFFiles (sessionID, sampled_studyType):
                 writer.writerow([sessionID, sampled_studyType, shuffled_questiontypes[i-1], sampled_question_ids[i-1], 0,0,
                      "SomeTrust",0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
-    fileNameGeneralQuestions = f"./data/raw_answers/UserGeneral/GeneralQuestions{sessionID}.csv"
+    fileNameGeneralQuestions = f"./data/raw_answers/UserGeneral/GeneralQuestions{st.session_state['sessionID']}.csv"
     with open(fileNameGeneralQuestions, mode='w', newline='') as file:
         writer = csv.writer(file)
         ##add header

@@ -136,18 +136,7 @@ try:
             st.subheader('Your Task')
             st.markdown("Answer the questions below, based on the questions and answer given on the left.")
             st.markdown("----")
-            decision = st.radio(f'**{task}**', decision_options,index=0, horizontal=False)
-            st.markdown(
-                """
-            <style>
-                div[role=radiogroup] label:first-of-type {
-                    visibility: hidden;
-                    height: 0px;
-                }
-            </style>
-            """,
-                unsafe_allow_html=True,
-            )
+            decision = st.radio(f'**{task}**', decision_options, index=None, horizontal=False)
             st.markdown('----')
             trust = st.radio('**I trust the accuracy and reliability of the answer provided by this system.**',
                                      options=['1. Strongly Disagree',
@@ -160,7 +149,7 @@ try:
                                      horizontal=False, index=None)
             st.markdown('----')
             # Radio button to select whether there is an error
-            error = st.radio("**Did you detect an error in the response?**", ("Dummy", "No", "Yes"), index=0, horizontal=False)
+            error = st.radio("**Did you detect an error in the response?**", ("No", "Yes"), index=None, horizontal=True)
             error_text = st.text_input("**If you detect an error, paste the content of the error inside this text field**")
             if st.form_submit_button():
                 if int(decision[0]) < 1 or error == "Dummy" or trust is None :
