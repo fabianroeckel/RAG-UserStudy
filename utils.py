@@ -14,6 +14,29 @@ import boto3
 FOOTER_ROWS = 300
 WHITE_VALUE = 255
 
+def upload_logs():
+    if "AWS_ACCESS_KEY_ID" in st.secrets and "AWS_SECRET_ACCESS_KEY" in st.secrets:
+        aws_access_key_id = st.secrets["AWS_ACCESS_KEY_ID"]
+        aws_secret_access_key = st.secrets["AWS_SECRET_ACCESS_KEY"]
+    else:
+        # If Streamlit secrets are not available, manually load environment variables from .env file
+        with open('.env') as f:
+            for line in f:
+                key, value = line.strip().split('=')
+                os.environ[key] = value
+
+        # Retrieve AWS credentials from environment variables
+        aws_access_key_id = os.getenv("AWS_ACCESS_KEY_ID")
+        aws_secret_access_key = os.getenv("AWS_SECRET_ACCESS_KEY")
+
+    # Initialize an S3 client
+    s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+
+    # Upload a CSV file
+    bucket_name = 'rag-studyresults'
+    file_path = f"./data/raw_answers/Logs/logs_{st.session_state.sessionID}.txt"
+    object_key = f'logs_{st.session_state.sessionID}.txt'
+    s3.upload_file(file_path, bucket_name, object_key)
 
 def get_question_and_response(session_id):
     pd.set_option('display.max_colwidth', None)

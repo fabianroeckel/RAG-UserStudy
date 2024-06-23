@@ -152,9 +152,9 @@ try:
             error = st.radio("**Did you detect an error in the response?**", ("No", "Yes"), index=None, horizontal=True)
             error_text = st.text_input("**If you detect an error, paste the content of the error inside this text field**")
             if st.form_submit_button():
-                if int(decision[0]) < 1 or error == "Dummy" or trust is None :
+                if decision is None or error is None or trust is None:
                     st.error("You need to answer all the questions (Decision, Trust and Error-Detection!)")
-                if (int(decision[0]) > 0 and error != "Dummy" ) and trust is not None:
+                else:
                     st.session_state.progress += 8
                     timeSpentPerTask = store_and_compute_time_difference("timestamp")
                     log_to_file(f"./data/raw_answers/Logs/logs_{st.session_state['sessionID']}.txt", f"{datetime.now()}: Time spent on this taks: {timeSpentPerTask['time_difference']}")
